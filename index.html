@@ -419,10 +419,10 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
 .panel .lines{margin:8px 0 0;padding-left:18px;font-size:.98rem}
 .panel .lines li{margin:3px 0}
 .btn-line{background:none;border:2px solid var(--ink);color:var(--ink);box-shadow:none}
-.center{display:none;align-items:center;gap:4px;flex-wrap:wrap;max-width:200px;background:rgba(0,0,0,.25);border:2px dashed rgba(244,235,211,.3);border-radius:12px;padding:6px 8px;position:relative}
-.center.on{display:flex}
-.center::before{content:"Centre";position:absolute;top:-10px;left:8px;font-size:.7rem;font-weight:900;background:#1a2418;padding:0 6px;color:var(--parch3)}
-.center img{width:40px}
+.cpile{display:none;align-items:center;gap:4px;flex-wrap:wrap;max-width:200px;background:rgba(0,0,0,.25);border:2px dashed rgba(244,235,211,.3);border-radius:12px;padding:6px 8px;position:relative}
+.cpile.on{display:flex}
+.cpile::before{content:"Centre";position:absolute;top:-10px;left:8px;font-size:.7rem;font-weight:900;background:#1a2418;padding:0 6px;color:var(--parch3)}
+.cpile img{width:40px}
 @media (max-width:640px){.panel .main.dm{grid-template-columns:1fr;gap:8px}.panel .main.dm .dpc{width:112px;transform:rotate(-2deg)}.choices button{min-width:0;flex:1 1 40%}}
 .panel .rule{margin-top:10px;font-size:.9rem;color:#5d5040;background:rgba(138,95,176,.1);border-left:3px solid var(--violet);padding:6px 10px;border-radius:6px}
 .panel .row4{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:10px;margin:6px 0 4px}
@@ -729,7 +729,7 @@ footer a:hover{color:var(--gold)}
       <div class="mid">
         <div class="midcards">
           <div class="decree-mini" id="dmini"><div class="c3"><div class="b"></div><div class="fr"><div class="blank"><b id="dmT">—</b><span id="dmE"></span></div></div></div></div>
-          <div class="center" id="center" aria-label="Territoires au centre"></div>
+          <div class="cpile" id="center" aria-label="Territoires au centre"></div>
           <div class="pile" id="pile" title="Pioche de territoires"><div class="stk"><img src="img/t-dos.webp" alt=""><img src="img/t-dos.webp" alt=""><img src="img/t-dos.webp" alt="Pioche de territoires"></div><span class="cnt" id="pileN">0</span><small>Pioche</small></div>
         </div>
         <div>
@@ -847,7 +847,7 @@ footer a:hover{color:var(--gold)}
         </div>
       </div>
       <div class="o-thanks">
-        <p>🙏 Merci aux premiers rebelles qui jouent à PUTSCH</p>
+        <p>🙏 Un immense merci aux joueuses et joueurs qui ont déjà leur exemplaire de la première édition :</p>
         <div class="thanks" id="thanks"></div>
       </div>
     </div>
