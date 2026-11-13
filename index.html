@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PUTSCH ! Le jeu de cartes où la stratégie rencontre la trahison</title>
+<meta name="description" content="PUTSCH ! Jeu d'ambiance de bluff et de trahison pour 4 à 5 rebelles, 30 minutes, dès 10 ans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400;900&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16120f; --ink2:#221c17; --ink3:#2e2620;
+  --parch:#f4ebd3; --parch2:#e6d9b5; --parch3:#b8a77c;
+  --violet:#8a5fb0; --violet-d:#5e3d7d; --violet-l:#b896d6;
+  --gold:#ffd21f; --gold-d:#d9a400; --fire:#f07f1d; --blood:#c0392b;
+  --vallee:#2e7d32; --cotes:#1f5aa6; --hautes:#d4a514; --basfonds:#c0392b;
+  --display:'Londrina Solid', 'Impact', sans-serif;
+  --body:'Nunito', system-ui, sans-serif;
+  --r:18px; --maxw:1180px;
+  --shadow:0 18px 40px -12px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--ink);color:var(--parch);font-family:var(--body);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);font-weight:900;line-height:1;margin:0;letter-spacing:.01em}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* ---------- Boutons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;border:0;border-radius:999px;padding:.9em 1.6em;font-family:var(--display);font-size:1.3rem;letter-spacing:.04em;text-decoration:none;text-transform:uppercase;transition:transform .15s ease, box-shadow .15s ease, background .2s;white-space:nowrap}
+.btn:active{transform:translateY(2px) scale(.98)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 5px 0 var(--gold-d),0 12px 26px -8px rgba(255,210,31,.55)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--gold-d),0 18px 32px -8px rgba(255,210,31,.7)}
+.btn-gold:active{box-shadow:0 2px 0 var(--gold-d)}
+.btn-violet{background:var(--violet);color:#fff;box-shadow:0 5px 0 var(--violet-d)}
+.btn-violet:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--violet-d)}
+.btn-ghost{background:transparent;color:var(--parch);border:2px solid rgba(244,235,211,.45)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ink{background:var(--ink);color:var(--gold);box-shadow:0 5px 0 #000}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-sm{font-size:1.05rem;padding:.65em 1.2em}
+
+/* ---------- Header ---------- */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s, box-shadow .3s, padding .3s;padding:14px 0}
+.hdr.scrolled{background:rgba(22,18,15,.95);box-shadow:0 1px 0 rgba(255,210,31,.18);padding:8px 0}
+.hdr .wrap{display:flex;align-items:center;gap:18px}
+.hdr-logo{height:46px;width:auto;transition:height .3s;filter:drop-shadow(0 0 8px rgba(255,170,0,.45))}
+.hdr.scrolled .hdr-logo{height:38px}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{font-family:var(--display);font-size:1.15rem;text-decoration:none;padding:.35em .75em;border-radius:999px;letter-spacing:.03em;transition:background .2s,color .2s}
+.nav a:hover{background:rgba(255,210,31,.12);color:var(--gold)}
+.hdr .btn{font-size:1.05rem;padding:.6em 1.15em}
+.burger{display:none;margin-left:auto;background:none;border:0;width:46px;height:46px;border-radius:12px}
+.burger span{display:block;width:26px;height:3px;background:var(--parch);margin:5px auto;border-radius:3px;transition:transform .25s,opacity .25s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+@media (max-width:980px){
+  .nav{position:fixed;top:0;left:0;width:100%;height:100vh;height:100dvh;background:rgba(22,18,15,.98);flex-direction:column;align-items:center;justify-content:center;gap:10px;transform:translateY(-100%);visibility:hidden;transition:transform .4s cubic-bezier(.7,0,.2,1),visibility 0s .4s;margin:0}
+  .nav.open{transform:none;visibility:visible;transition:transform .4s cubic-bezier(.7,0,.2,1)}
+  .nav a{font-size:2.2rem}
+  .burger{display:block;position:relative;z-index:2}
+  .hdr .btn{display:none}
+}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:110px 0 70px;
+  background:radial-gradient(ellipse 80% 60% at 50% 105%, rgba(240,127,29,.45), transparent 60%),
+             radial-gradient(ellipse 60% 50% at 50% 30%, #3a2a45 0%, transparent 70%), var(--ink)}
+#embers{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:30px;width:100%}
+.hero-copy{text-align:left}
+.hero-logo{width:min(330px,70vw);margin:0 0 10px -10px;animation:logoIn 1.1s cubic-bezier(.2,1.4,.4,1) both, glow 3.5s ease-in-out 1.1s infinite}
+@keyframes logoIn{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 10px rgba(255,200,0,.55)) drop-shadow(0 0 26px rgba(255,120,0,.3))}50%{filter:drop-shadow(0 0 18px rgba(255,210,0,.85)) drop-shadow(0 0 44px rgba(255,90,0,.5))}}
+.hero h1{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:400;color:var(--parch);max-width:16ch}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lead{font-size:1.15rem;color:#d9ccb0;max-width:46ch;margin:16px 0 22px}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(244,235,211,.08);border:1px solid rgba(244,235,211,.2);padding:.45em .95em;border-radius:999px;font-weight:800;font-size:.98rem}
+.badge svg{width:20px;height:20px;color:var(--gold)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px}
+.fan{position:relative;height:clamp(330px,44vw,520px);perspective:1200px}
+.fan .fc{position:absolute;left:50%;bottom:4%;width:clamp(150px,17vw,230px);aspect-ratio:440/600;border-radius:14px;box-shadow:var(--shadow);transform-origin:50% 120%;
+  transition:transform .9s cubic-bezier(.2,1.2,.3,1), filter .3s;transform:translate(-50%,0) rotate(0deg);cursor:pointer}
+.fan .fc img{width:100%;height:100%;border-radius:14px;object-fit:cover}
+.fan .fc:hover{filter:brightness(1.12);z-index:9!important}
+.scroll-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--display);letter-spacing:.2em;font-size:.95rem;color:rgba(244,235,211,.6);display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none}
+.scroll-hint i{width:2px;height:28px;background:linear-gradient(var(--gold),transparent);animation:drip 1.6s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero-copy{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero-logo{margin:0 auto 6px}
+  .badges,.hero-ctas{justify-content:center}
+  .fan{order:-1;height:210px;margin-top:-20px}
+  .fan .fc{width:108px}
+  .hero-logo{width:min(220px,58vw)}
+  .hero h1{font-size:1.9rem}
+  .hero p.lead{font-size:1.02rem}
+}
+
+/* ---------- Marquee ---------- */
+.marquee{background:var(--gold);color:var(--ink);overflow:hidden;transform:rotate(-1.6deg);margin:-14px -10px 0;position:relative;z-index:3;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.marquee .track{display:flex;width:max-content;animation:marq 26s linear infinite}
+.marquee span{font-family:var(--display);font-size:clamp(1.4rem,3vw,2.1rem);padding:.35em 0;white-space:nowrap}
+.marquee span b{color:var(--violet-d);padding:0 .6em}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- Sections ---------- */
+section{position:relative;padding:clamp(70px,10vw,120px) 0}
+.kicker{display:inline-block;font-family:var(--display);font-size:1.15rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.h2{font-size:clamp(2.5rem,6vw,4.4rem);margin-bottom:16px}
+.sub{font-size:1.12rem;max-width:60ch;color:#d4c7aa}
+.center{text-align:center}.center .sub{margin-left:auto;margin-right:auto}
+.paper{background:var(--parch);color:var(--ink);
+  background-image:radial-gradient(rgba(120,90,40,.10) 1px, transparent 1.4px),radial-gradient(ellipse at 20% 0%, rgba(255,255,255,.6), transparent 60%),radial-gradient(ellipse at 100% 100%, rgba(150,115,60,.22), transparent 55%);
+  background-size:7px 7px,100% 100%,100% 100%}
+.paper .kicker{color:var(--violet-d)}
+.paper .sub{color:#4a3f33}
+.torn-top::before,.torn-bot::after{content:"";position:absolute;left:0;right:0;height:26px;background:inherit;z-index:2;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 26' preserveAspectRatio='none'%3E%3Cpath d='M0 26 L0 12 L8 16 L15 8 L24 14 L31 6 L40 13 L47 9 L55 15 L63 5 L71 12 L80 8 L88 15 L96 7 L104 13 L112 9 L120 14 L120 26Z' fill='black'/%3E%3C/svg%3E") 0 0/240px 26px repeat-x;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 26' preserveAspectRatio='none'%3E%3Cpath d='M0 26 L0 12 L8 16 L15 8 L24 14 L31 6 L40 13 L47 9 L55 15 L63 5 L71 12 L80 8 L88 15 L96 7 L104 13 L112 9 L120 14 L120 26Z' fill='black'/%3E%3C/svg%3E") 0 0/240px 26px repeat-x}
+.torn-top::before{top:-25px;background-image:none;background-color:var(--parch)}
+.torn-bot::after{bottom:-25px;transform:scaleY(-1);background-image:none;background-color:var(--parch)}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s ease, transform .8s cubic-bezier(.2,.9,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+
+/* ---------- Histoire ---------- */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.story p{font-size:1.18rem}
+.story .drop::first-letter{font-family:var(--display);font-size:4.2em;float:left;line-height:.8;margin:.06em .1em 0 0;color:var(--violet)}
+.hexes{position:relative;height:420px}
+.hex{position:absolute;width:44%;aspect-ratio:338/300;perspective:900px;cursor:pointer}
+.hex .in3d{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,1.4,.4,1)}
+.hex.flip .in3d{transform:rotateY(180deg)}
+.hex img{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 12px 14px rgba(0,0,0,.35))}
+.hex img.f{transform:rotateY(180deg)}
+.hex:nth-child(1){left:2%;top:4%;animation:bob 6s ease-in-out infinite}
+.hex:nth-child(2){right:2%;top:0;animation:bob 6s ease-in-out -1.5s infinite}
+.hex:nth-child(3){left:12%;bottom:2%;animation:bob 6s ease-in-out -3s infinite}
+.hex:nth-child(4){right:6%;bottom:8%;animation:bob 6s ease-in-out -4.5s infinite}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -12px}}
+.hint{font-size:.95rem;color:#6b5d48;font-weight:700;margin-top:14px;display:flex;gap:8px;align-items:center}
+@media (max-width:860px){.story{grid-template-columns:1fr}.hexes{height:330px;max-width:420px;margin:0 auto;width:100%}}
+
+/* ---------- Victoire ---------- */
+.wins{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.win{background:var(--ink2);border:1px solid rgba(244,235,211,.12);border-radius:24px;padding:30px;position:relative;overflow:hidden}
+.win h3{font-size:2.2rem;color:var(--gold);margin-bottom:8px}
+.win p{margin:0;color:#d4c7aa}
+.win .tag{display:inline-block;font-family:var(--display);background:var(--violet);color:#fff;border-radius:999px;padding:.15em .8em;font-size:1rem;letter-spacing:.06em;margin-bottom:14px}
+.four{display:flex;justify-content:center;margin:6px 0 20px;height:120px;align-items:center}
+.four img{width:108px;margin:0 -6px;transform:translateX(var(--x,0)) rotate(var(--r,0));transition:transform 1s cubic-bezier(.3,1.5,.4,1)}
+.win.in .four img{--x:0!important;--r:0deg!important}
+.four img:nth-child(1){--x:-60px;--r:-25deg}.four img:nth-child(2){--x:-20px;--r:12deg}.four img:nth-child(3){--x:20px;--r:-10deg}.four img:nth-child(4){--x:60px;--r:22deg}
+.bars{display:flex;align-items:flex-end;justify-content:center;gap:14px;height:110px;margin:6px 0 20px}
+.bars div{width:38px;border-radius:8px 8px 0 0;background:var(--parch3);height:0;transition:height 1.1s cubic-bezier(.3,1.3,.4,1);position:relative}
+.bars div.top{background:var(--gold)}
+.bars div.top::after{content:"👑";position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:22px}
+@media (max-width:760px){.wins{grid-template-columns:1fr}}
+
+/* ---------- Carrousel cartes (coverflow) ---------- */
+.cards-sec{background:radial-gradient(ellipse 70% 50% at 50% 40%, #33204a 0%, transparent 70%), var(--ink);overflow:hidden}
+.cf-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;margin-top:40px}
+.cf{position:relative;height:clamp(360px,46vw,500px);perspective:1400px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.cf-slide{position:absolute;left:50%;top:50%;width:clamp(190px,24vw,300px);aspect-ratio:440/600;margin:0;transition:transform .6s cubic-bezier(.2,.9,.25,1), opacity .6s, filter .6s;cursor:pointer;will-change:transform}
+.cf-slide .face{width:100%;height:100%;border-radius:16px;overflow:hidden;box-shadow:0 30px 50px -18px rgba(0,0,0,.8);position:relative;background:var(--parch)}
+.cf-slide img,.cf-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cf-slide video{opacity:0;transition:opacity .4s}
+.cf-slide.active video.playing{opacity:1}
+.cf-slide.active .face{box-shadow:0 0 0 3px var(--gold),0 30px 60px -16px rgba(0,0,0,.9),0 0 60px rgba(255,210,31,.25)}
+.cf-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:10px}
+.arrow{width:54px;height:54px;border-radius:50%;border:2px solid rgba(244,235,211,.35);background:rgba(0,0,0,.25);display:grid;place-items:center;transition:all .2s}
+.arrow:hover{border-color:var(--gold);color:var(--gold);transform:scale(1.08)}
+.arrow svg{width:22px;height:22px}
+.dots{display:flex;gap:8px}
+.dots button{width:11px;height:11px;border-radius:999px;border:0;background:rgba(244,235,211,.3);padding:0;transition:all .3s}
+.dots button.on{background:var(--gold);width:30px}
+.info{background:var(--parch);color:var(--ink);border-radius:24px;padding:28px;box-shadow:var(--shadow);position:relative}
+.info h3{font-size:3rem;color:var(--violet-d)}
+.info .meta{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--parch);border-radius:999px;padding:.25em .8em;font-weight:800;font-size:.92rem}
+.chip.gold{background:var(--gold);color:var(--ink)}
+.chip.v{background:var(--violet);color:#fff}
+.chip img{width:18px;height:18px}
+.info p{margin:0 0 18px;font-size:1.08rem}
+.info .swap{animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@media (max-width:900px){.cf-layout{grid-template-columns:1fr}.info{text-align:center}.info .meta{justify-content:center}}
+
+/* Carte Repli dessinée */
+.repli{position:absolute;inset:0;background:var(--parch);border-radius:inherit;padding:6%;display:flex;container-type:inline-size}
+.repli .inner{flex:1;background:#141210;border-radius:6%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background-image:radial-gradient(circle at 50% 42%, #5a4a3a 0%, #141210 62%)}
+.repli .inner svg{width:56%;color:var(--parch2);filter:drop-shadow(0 4px 0 #000)}
+.repli .ban{position:absolute;left:4%;right:4%;bottom:7%;background:var(--parch);border:2px solid #141210;border-radius:6px;text-align:center;font-family:var(--display);font-weight:900;color:var(--violet);font-size:17cqw;line-height:1.15;padding:.05em 0}
+.repli .flag{position:absolute;left:9%;top:0;width:16%;height:15%;background:var(--violet);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);display:grid;place-items:center;color:var(--parch);font-family:var(--display);font-size:9cqw}
+
+/* ---------- Tour en 3 temps ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;counter-reset:s}
+.step{background:#fffaf0;border:2px solid var(--ink);border-radius:22px;padding:26px;position:relative;box-shadow:6px 6px 0 var(--ink);transition:transform .25s, box-shadow .25s}
+.step:hover{transform:translate(-3px,-3px) rotate(-.6deg);box-shadow:10px 10px 0 var(--ink)}
+.step .num{position:absolute;top:-22px;left:22px;width:52px;height:52px;border-radius:50%;background:var(--violet);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:1.9rem;border:3px solid var(--ink)}
+.step h3{font-size:2rem;margin:22px 0 8px}
+.step p{margin:0;color:#3e342a}
+.step .ill{height:90px;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px}
+.step .ill .mini{width:52px;aspect-ratio:440/600;border-radius:6px;background:#141210 url(img/logo.svg) center/70% no-repeat;border:3px solid var(--parch2);box-shadow:0 6px 10px rgba(0,0,0,.25)}
+.step:hover .ill .mini:nth-child(1){transform:rotate(-12deg) translateY(-6px)}
+.step:hover .ill .mini:nth-child(3){transform:rotate(12deg) translateY(-6px)}
+.step .ill .mini{transition:transform .3s}
+.shout{font-family:var(--display);font-size:2.4rem;color:var(--blood);animation:shake 1.4s ease-in-out infinite;display:inline-block}
+@keyframes shake{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-6deg) scale(1.08)}85%{transform:rotate(6deg) scale(1.08)}}
+@media (max-width:860px){.steps{grid-template-columns:1fr;gap:40px}}
+
+/* ---------- Mini-jeu ---------- */
+.demo-sec{background:radial-gradient(ellipse at 50% 0%, #2c3b2a 0%, #16120f 70%)}
+.table{margin-top:34px;background:linear-gradient(180deg,#22301f,#1a2418);border:3px solid #3c5236;border-radius:28px;padding:18px;box-shadow:inset 0 0 80px rgba(0,0,0,.55), var(--shadow);position:relative}
+.foes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.board{background:rgba(244,235,211,.06);border:2px solid rgba(244,235,211,.14);border-radius:18px;padding:12px;position:relative;transition:border-color .25s, background .25s, transform .25s}
+.board .top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.board .dot{width:14px;height:14px;border-radius:50%;flex:none;border:2px solid rgba(0,0,0,.4)}
+.board .nm{font-family:var(--display);font-size:1.35rem;line-height:1}
+.board .gold{margin-left:auto;display:flex;align-items:center;gap:4px;font-weight:900}
+.board .gold img{width:22px;height:22px}
+.board .row{display:flex;gap:10px;align-items:center}
+.terrs{display:flex;flex-wrap:wrap;gap:3px;flex:1;min-height:40px;align-content:flex-start}
+.terrs .t{width:42px;aspect-ratio:338/300;position:relative;transition:transform .4s}
+.terrs .t img{width:100%;height:100%}
+.terrs .t.new{animation:tin .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes tin{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
+.terrs .t .eye{position:absolute;right:-3px;top:-3px;width:16px;height:16px;border-radius:50%;background:var(--ink);display:grid;place-items:center;font-size:10px;border:1px solid var(--parch3)}
+.slot{width:56px;aspect-ratio:440/600;perspective:600px;flex:none}
+.slot .c3{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.3,.5,1)}
+.slot.show .c3{transform:rotateY(180deg)}
+.slot .b,.slot .fr{position:absolute;inset:0;border-radius:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.slot .b{background:#141210 url(img/logo.svg) center/72% no-repeat;border:2px solid var(--parch2)}
+.slot .fr{transform:rotateY(180deg);background:var(--parch)}
+.slot .fr img{width:100%;height:100%;object-fit:cover}
+.slot.empty .c3{opacity:.25}
+.slot.empty .b{background:transparent;border:2px dashed var(--parch3)}
+.board.targetable{cursor:crosshair;border-color:var(--blood);background:rgba(192,57,43,.15);animation:pulse .7s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.025)}}
+.board.hit{animation:hit .5s}
+@keyframes hit{0%,100%{transform:none}20%{transform:translateX(-7px) rotate(-1deg)}40%{transform:translateX(7px) rotate(1deg)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.board.glow{border-color:var(--gold);background:rgba(255,210,31,.12)}
+.board .tgt{position:absolute;top:-11px;right:10px;z-index:3;background:var(--blood);color:#fff;font-weight:900;font-size:.78rem;padding:2px 8px;border-radius:999px;opacity:0;transform:scale(.6);transition:all .3s}
+.board .tgt.on{opacity:1;transform:none}
+.mid{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin:16px 0}
+.decree-mini{width:190px;aspect-ratio:552/394;perspective:800px}
+.decree-mini .c3{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,1.3,.5,1)}
+.decree-mini.show .c3{transform:rotateY(180deg)}
+.decree-mini .b,.decree-mini .fr{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px}
+.decree-mini .b{background:url(img/decret-verso.webp) center/cover}
+.decree-mini .fr{transform:rotateY(180deg);background:url(img/decret-recto.webp) center/cover;overflow:hidden}
+.decree-mini .fr .blank{position:absolute;inset:14% 12% 18% 12%;background:#efe6cb;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink);padding:4px}
+.decree-mini .fr b{font-family:var(--display);font-size:1rem;line-height:1}
+.decree-mini .fr span{font-size:.62rem;font-weight:800;line-height:1.2;margin-top:3px}
+.status{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.1}
+.status small{display:block;font-family:var(--body);font-size:.95rem;color:#c9bc9f;font-weight:700;margin-top:6px;line-height:1.4}
+.timer{height:8px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden;margin-top:10px;display:none}
+.timer i{display:block;height:100%;background:var(--blood);width:100%}
+.me{background:rgba(138,95,176,.16);border-color:rgba(184,150,214,.5)}
+.me .terrs .t{width:54px}
+.hand{display:flex;gap:10px;overflow-x:auto;padding:14px 10px 30px;scroll-snap-type:x mandatory}
+.hcard{flex:none;width:74px;aspect-ratio:440/600;border-radius:8px;position:relative;border:0;padding:0;background:var(--parch);scroll-snap-align:start;transition:transform .2s, box-shadow .2s, opacity .2s;box-shadow:0 8px 14px rgba(0,0,0,.4)}
+.hcard img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.hcard .n{position:absolute;top:-8px;right:-8px;background:var(--gold);color:var(--ink);font-weight:900;font-size:.85rem;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink);z-index:2}
+.hcard:hover:not(:disabled){transform:translateY(-10px) rotate(-2deg);box-shadow:0 16px 24px rgba(0,0,0,.5)}
+.hcard.sel{transform:translateY(-14px);box-shadow:0 0 0 3px var(--gold),0 16px 24px rgba(0,0,0,.5)}
+.hcard:disabled{opacity:.28;cursor:not-allowed}
+.hcard .lbl{position:absolute;left:0;right:0;bottom:-22px;text-align:center;font-size:.72rem;font-weight:800;color:#d4c7aa}
+.hand-wrap{padding-bottom:0}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:12px}
+.turnc{font-family:var(--display);font-size:1.3rem;color:var(--gold)}
+.log{margin-top:16px;background:rgba(0,0,0,.35);border-radius:16px;padding:12px 14px;max-height:230px;overflow:auto;font-size:.95rem}
+.log li{list-style:none;padding:6px 0;border-bottom:1px dashed rgba(244,235,211,.12);animation:pop .4s}
+.log ul{margin:0;padding:0}
+.log .muted{color:#9f927a}
+.count{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:6}
+.count span{font-family:var(--display);font-size:clamp(6rem,18vw,11rem);color:var(--gold);text-shadow:0 8px 0 #000,0 0 40px rgba(255,180,0,.7);animation:cnt .8s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes cnt{from{transform:scale(2.4);opacity:0}60%{opacity:1}to{transform:scale(1);opacity:.0}}
+.pickbox{position:absolute;inset:0;background:rgba(10,8,6,.9);border-radius:26px;display:none;z-index:9;padding:20px}
+.pickbox.on{display:block;animation:pop .4s}
+.pk-in{text-align:center;max-width:900px;margin:24px auto 0}
+.pickbox h3{font-size:clamp(2.2rem,5vw,3.4rem);color:var(--gold)}
+.pickbox p{max-width:52ch;margin:8px auto 20px;color:#d9ccb0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 18px;text-align:left}
+.ol{display:block;font-family:var(--display);font-size:1.15rem;letter-spacing:.04em;color:var(--gold);margin-bottom:8px}
+.pk-in > .ol{text-align:center;margin-bottom:12px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{border:2px solid rgba(244,235,211,.22);background:rgba(244,235,211,.05);border-radius:14px;padding:10px 12px;text-align:left;color:var(--parch);transition:all .2s;line-height:1.25}
+.seg button b{display:block;font-size:1rem}
+.seg button small{display:block;font-size:.8rem;color:#b9ad93;font-weight:700;margin-top:2px}
+.seg button:hover{border-color:rgba(255,210,31,.6)}
+.seg button.on{border-color:var(--gold);background:rgba(255,210,31,.14);box-shadow:0 0 0 1px var(--gold) inset}
+.seg button.on small{color:var(--gold)}
+.pickbox p.legend{margin:8px 0 0;font-size:.86rem;color:#c9bc9f;max-width:none;text-align:left}
+.modechip{display:inline-block;font-family:var(--body);font-size:.75rem;font-weight:800;letter-spacing:.02em;color:var(--parch);background:rgba(244,235,211,.1);border:1px solid rgba(244,235,211,.2);border-radius:999px;padding:2px 10px;vertical-align:middle;margin-left:6px}
+.midcards.nodec .decree-mini{display:none}
+@media (max-width:760px){.opts{grid-template-columns:1fr;gap:12px}.seg button{padding:8px 10px}.seg button b{font-size:.92rem}.modechip{display:block;margin:4px 0 0;width:max-content}}
+.pk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.pk{border:0;background:none;padding:0;text-align:center;color:var(--parch);transition:transform .25s}
+.pk .im{aspect-ratio:220/300;border-radius:12px;overflow:hidden;box-shadow:0 14px 26px rgba(0,0,0,.6);transition:box-shadow .25s}
+.pk img{width:100%;height:100%;object-fit:cover}
+.pk b{display:block;font-family:var(--display);font-weight:400;font-size:1.35rem;margin-top:10px}
+.pk small{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:.85rem;color:#c9bc9f}
+.pk small i{width:10px;height:10px;border-radius:50%}
+.pk:hover,.pk:focus-visible{transform:translateY(-10px) rotate(-1.5deg)}
+.pk:hover .im,.pk:focus-visible .im{box-shadow:0 0 0 3px var(--pc),0 20px 34px rgba(0,0,0,.7)}
+.scout{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:14px 0 4px}
+.scout button{border:0;background:none;padding:0;width:96px;text-align:center;font-weight:800;font-size:.8rem;color:var(--ink);transition:transform .2s}
+.scout button img{width:100%;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
+.scout button:not(:disabled):hover{transform:translateY(-8px) scale(1.05)}
+.scout button:not(:disabled) img{animation:pulseImg 1s ease-in-out infinite alternate}
+@keyframes pulseImg{to{filter:drop-shadow(0 0 10px rgba(138,95,176,.9))}}
+.scout button:disabled{opacity:.55;cursor:default}
+.scout em{display:block;font-style:normal;color:#8a7b62;font-size:.72rem}
+.terrs .t.known img{opacity:.92}
+.terrs .t .seen{position:absolute;right:-3px;top:-3px;width:16px;height:16px;border-radius:50%;background:var(--violet);display:grid;place-items:center;font-size:9px;border:1px solid var(--parch)}
+@media (max-width:860px){.pk-grid{grid-template-columns:repeat(3,1fr)}.pk-grid .pk:nth-child(n+4){transform:none}}
+@media (max-width:520px){.pk-in{margin-top:8px}.pk-grid{gap:10px}.pk b{font-size:1.05rem}.pk small{font-size:.72rem}.scout button{width:76px}}
+.endbox{position:absolute;inset:0;background:rgba(10,8,6,.55);border-radius:26px;display:none;z-index:8}
+.endbox.on{display:block}
+.eb-in{position:sticky;top:76px;margin:24px auto;width:min(600px,92%);background:var(--parch);color:var(--ink);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 #000;padding:18px 20px 16px;text-align:left;animation:panelIn .45s cubic-bezier(.2,1.3,.4,1)}
+.eb-in .kick{display:inline-block;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:4px 11px;border-radius:999px;background:var(--violet);color:#fff;margin-bottom:10px}
+.eb-in.lose .kick{background:var(--blood)}
+.eb-in.win .kick{background:var(--ink);color:var(--gold)}
+.eb-in .head{display:grid;grid-template-columns:78px 1fr;gap:16px;align-items:center;margin-bottom:12px}
+.eb-in .head .emb{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;font-size:2.4rem;background:var(--ink);box-shadow:0 8px 14px rgba(0,0,0,.3)}
+.eb-in.lose .emb{background:#3a1a16}
+.eb-in h3{font-family:var(--display);font-weight:900;font-size:clamp(1.9rem,4.4vw,2.5rem);line-height:1;color:var(--violet-d);margin:0 0 6px}
+.eb-in.lose h3{color:var(--blood)}
+.eb-in .txt{font-size:1.04rem;line-height:1.45}
+.eb-in .txt b.p,.stand b.p{white-space:nowrap}
+.dotc{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:0;border:1px solid rgba(0,0,0,.35)}
+.stand{width:100%;border-collapse:collapse;margin:4px 0 12px;font-size:.94rem}
+.stand td{padding:6px 8px;border-bottom:1px dashed rgba(22,18,15,.18)}
+.stand tr.me td{background:rgba(138,95,176,.13);font-weight:800}
+.stand td:first-child{width:26px;font-family:var(--display);font-size:1.2rem;color:#8a7b62}
+.stand tr:first-child td:first-child{color:var(--gold-d)}
+.stand td.n{text-align:right;white-space:nowrap;color:#4a3f33}
+.stand .reg{display:inline-flex;gap:3px;margin-left:8px;vertical-align:middle}
+.stand .reg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.stand .reg i.unk{background:transparent;border:1.5px dashed #8a7b62;box-sizing:border-box}
+.stand small{color:#8a7b62;font-weight:700}
+.next{font-size:.92rem;color:#3e342a;background:rgba(138,95,176,.1);border-left:3px solid var(--violet);padding:9px 12px;border-radius:6px;margin:0 0 4px}
+.next > b{display:block;margin-bottom:4px;color:var(--violet-d)}
+.next ul{margin:0;padding-left:18px}
+.next li{margin:1px 0}
+.next p{margin:6px 0 0}
+.eb-in .foot{display:flex;justify-content:flex-end;margin-top:12px}
+@media (max-width:640px){.eb-in{position:relative;top:auto;margin:14px auto;padding:14px}.eb-in .head{grid-template-columns:56px 1fr;gap:12px}.eb-in .head .emb{width:56px;height:56px;font-size:1.7rem}.stand{font-size:.84rem}.stand .reg{display:none}}
+.midcards{display:flex;gap:18px;align-items:center}
+.pile{position:relative;width:76px;flex:none;text-align:center}
+.pile .stk{position:relative;width:76px;height:70px}
+.pile .stk img{position:absolute;width:64px;left:6px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.4))}
+.pile .stk img:nth-child(1){top:10px;left:2px;transform:rotate(-7deg)}
+.pile .stk img:nth-child(2){top:5px;transform:rotate(5deg)}
+.pile .stk img:nth-child(3){top:0;left:8px}
+.pile .cnt{position:absolute;top:-8px;right:-6px;background:var(--gold);color:var(--ink);font-weight:900;font-size:.8rem;min-width:26px;height:26px;padding:0 4px;border-radius:13px;display:grid;place-items:center;border:2px solid var(--ink);z-index:2}
+.pile small{display:block;font-weight:800;font-size:.78rem;color:#c9bc9f;margin-top:2px}
+.pile.bump .stk{animation:bump .45s}
+@keyframes bump{50%{transform:scale(1.14) rotate(-3deg)}}
+.zones{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;margin-top:12px}
+.zones>*{min-width:0}
+.table{overflow-x:clip}
+.zlbl{font-family:var(--display);font-size:1.1rem;color:var(--parch3);letter-spacing:.04em;transition:color .3s}
+.zone.focus .zlbl{color:var(--gold)}
+.discard{display:flex;flex-wrap:wrap;gap:6px;max-width:300px;padding:12px 2px 8px;min-height:90px;align-content:flex-start}
+.dc{width:52px;aspect-ratio:440/600;border-radius:5px;border:0;padding:0;background:var(--parch);position:relative;overflow:hidden;transition:transform .2s, box-shadow .2s;box-shadow:0 4px 8px rgba(0,0,0,.4)}
+.dc img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) brightness(.75)}
+.dc:disabled{cursor:default}
+.dc.pickable{cursor:pointer;box-shadow:0 0 0 3px var(--gold),0 4px 8px rgba(0,0,0,.4);animation:pulse .7s ease-in-out infinite alternate}
+.dc.pickable img,.dc.sel img{filter:none}
+.dc.pickable:hover{transform:translateY(-6px)}
+.dc.sel{box-shadow:0 0 0 3px var(--violet-l);transform:translateY(-8px)}
+.disc-empty{font-size:.88rem;color:#8f826b;font-weight:700}
+.hcard.pickable{box-shadow:0 0 0 3px var(--blood),0 8px 14px rgba(0,0,0,.4);animation:pulse .7s ease-in-out infinite alternate}
+.board.chosen{border-color:var(--gold);background:rgba(255,210,31,.16);cursor:pointer}
+.board.chosen .tgt,.board .tgt.on{opacity:1;transform:none}
+.flyer{position:fixed;z-index:130;pointer-events:none;transition:transform .9s cubic-bezier(.5,0,.3,1);filter:drop-shadow(0 10px 12px rgba(0,0,0,.55))}
+@media (max-width:760px){.zones{grid-template-columns:1fr;gap:6px}.discard{max-width:none;min-height:70px}.dc{width:44px}.midcards{justify-content:center}.pile{width:66px}.pile .stk{width:66px;height:62px}.pile .stk img{width:54px}}
+.narr{position:absolute;inset:0;z-index:8;display:none;background:rgba(10,8,6,.55);border-radius:26px}
+.narr.on{display:block}
+.panel{position:sticky;top:84px;margin:40px auto;width:min(600px,92%);background:var(--parch);color:var(--ink);border-radius:22px;border:3px solid var(--ink);box-shadow:8px 8px 0 #000;padding:18px 20px 16px}
+.panel.anim{animation:panelIn .45s cubic-bezier(.2,1.3,.4,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px) rotate(-1.2deg) scale(.96)}to{opacity:1;transform:none}}
+.panel .rorder{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.panel .rorder span i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.panel h4 .no{font-size:.6em;color:#8a7b62}
+.board .nm small.rb{font-family:var(--body);font-size:.8rem;font-weight:800;color:var(--violet-l)}
+.panel .rorder span{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:rgba(22,18,15,.08);color:#7a6c55}
+.panel .rorder span.done{background:rgba(22,18,15,.18);color:#4a3f33;text-decoration:line-through}
+.panel .rorder span.cur{background:var(--violet);color:#fff}
+.panel .main{display:grid;grid-template-columns:104px 1fr;gap:16px;align-items:center}
+.panel .pc{width:104px;aspect-ratio:440/600;border-radius:10px;overflow:hidden;box-shadow:0 10px 18px rgba(0,0,0,.35);transform:rotate(-3deg);background:var(--parch)}
+.panel .pc img{width:100%;height:100%;object-fit:cover}
+.panel h4{font-family:var(--display);font-weight:900;font-size:2rem;line-height:1;color:var(--violet-d);margin-bottom:6px}
+.panel .txt{font-size:1.08rem;line-height:1.45}
+.panel .muted{color:#8a7b62;font-size:.92em}
+.panel .main.dm{grid-template-columns:132px 1fr}
+.dpc{width:132px;aspect-ratio:552/394;background:url(img/decret-recto.webp) center/cover;border-radius:8px;position:relative;box-shadow:0 10px 18px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.dpc b{position:absolute;inset:15% 12% 19%;background:#efe6cb;border-radius:4px;display:grid;place-items:center;text-align:center;font-family:var(--display);font-weight:900;font-size:.95rem;line-height:1.05;padding:2px}
+.choices{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 4px}
+.choices button{border:2px solid var(--ink);background:#fffaf0;border-radius:12px;padding:8px 14px;font-weight:800;color:var(--ink);box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s;min-width:120px}
+.choices button small{display:block;font-weight:700;font-size:.75rem;color:#8a7b62}
+.choices button:not(:disabled):hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink);background:#fff}
+.choices button:disabled{opacity:.4;cursor:default;box-shadow:none}
+.panel .lines{margin:8px 0 0;padding-left:18px;font-size:.98rem}
+.panel .lines li{margin:3px 0}
+.btn-line{background:none;border:2px solid var(--ink);color:var(--ink);box-shadow:none}
+.center{display:none;align-items:center;gap:4px;flex-wrap:wrap;max-width:200px;background:rgba(0,0,0,.25);border:2px dashed rgba(244,235,211,.3);border-radius:12px;padding:6px 8px;position:relative}
+.center.on{display:flex}
+.center::before{content:"Centre";position:absolute;top:-10px;left:8px;font-size:.7rem;font-weight:900;background:#1a2418;padding:0 6px;color:var(--parch3)}
+.center img{width:40px}
+@media (max-width:640px){.panel .main.dm{grid-template-columns:1fr;gap:8px}.panel .main.dm .dpc{width:112px;transform:rotate(-2deg)}.choices button{min-width:0;flex:1 1 40%}}
+.panel .rule{margin-top:10px;font-size:.9rem;color:#5d5040;background:rgba(138,95,176,.1);border-left:3px solid var(--violet);padding:6px 10px;border-radius:6px}
+.panel .row4{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:10px;margin:6px 0 4px}
+.panel .row4 div{text-align:center;font-size:.8rem;font-weight:800;line-height:1.2}
+.panel .row4 .pc{width:100%;transform:none;margin-bottom:6px}
+.panel .row4 em{display:block;font-style:normal;color:var(--blood);font-size:.74rem}
+.panel .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.panel .skip{background:none;border:0;color:#6b5d48;font-weight:800;text-decoration:underline;font-size:.9rem;padding:4px}
+.panel .k{font-size:.8rem;color:#8a7b62;font-weight:700}
+@media (max-width:640px){.panel{top:70px;margin:24px auto;padding:14px}.panel .main{grid-template-columns:72px 1fr;gap:12px}.panel .pc{width:72px}.panel h4{font-size:1.5rem}.panel .txt{font-size:1rem}.panel .k{display:none}.panel .row4{gap:6px}.panel .row4[data-n="5"]{grid-template-columns:repeat(3,1fr)}.panel .row4 div{font-size:.7rem}}
+.disclaimer{font-size:.88rem;color:#a99c82;margin-top:10px}
+@media (max-width:760px){
+  .foes{gap:6px}
+  .foes.f4{grid-template-columns:repeat(2,1fr)}
+  .foes .board{padding:8px 6px}
+  .foes .board .top{flex-wrap:wrap;gap:4px;margin-bottom:6px}
+  .foes .board .nm{font-size:1rem;width:calc(100% - 22px)}
+  .foes .board .gold{margin-left:0;font-size:.85rem}
+  .foes .board .gold img{width:16px;height:16px}
+  .foes .board .row{flex-direction:column-reverse;align-items:center;gap:6px}
+  .foes .terrs{justify-content:center;min-height:26px}
+  .foes .terrs .t{width:26px}
+  .foes .slot{width:40px}
+  .me .terrs .t{width:44px}
+  .slot{width:46px}
+  .hcard{width:74px}
+  .mid{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .decree-mini{width:170px}
+  .table{padding:12px;border-radius:20px}
+}
+
+/* ---------- Décrets ---------- */
+.dec-sec{transition:background-color .8s}
+.dec-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:30px}
+.dcard{width:min(520px,100%);aspect-ratio:552/394;perspective:1200px;margin:0 auto;cursor:pointer}
+.dcard .c3{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,1.25,.45,1)}
+.dcard.show .c3{transform:rotateY(180deg)}
+.dcard .b,.dcard .fr{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;box-shadow:var(--shadow)}
+.dcard .b{background:url(img/decret-verso.webp) center/cover}
+.dcard .fr{transform:rotateY(180deg);background:url(img/decret-recto.webp) center/cover;overflow:hidden}
+.dcard .fr .blank{position:absolute;inset:13% 11% 17% 11%;background:#efe6cb;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink);padding:10px 16px}
+.dcard .fr h3{font-size:clamp(1.5rem,3.4vw,2.3rem);margin-bottom:8px}
+.dcard .fr p{margin:0;font-weight:800;font-size:clamp(.82rem,1.7vw,1.08rem);line-height:1.35}
+.dcard .src{position:absolute;top:6%;right:5%;background:var(--violet);color:#fff;font-weight:800;font-size:.78rem;padding:3px 10px;border-radius:999px}
+.dec-side .turn{font-family:var(--display);font-size:3.4rem;color:var(--gold);line-height:1}
+.dec-side .turn small{font-size:1.5rem;color:var(--parch3)}
+.dec-btns{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+.hist{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.hist span{background:rgba(244,235,211,.1);border:1px solid rgba(244,235,211,.2);border-radius:999px;padding:3px 10px;font-size:.82rem;font-weight:800;animation:pop .4s}
+@media (max-width:860px){.dec-wrap{grid-template-columns:1fr;text-align:center}.dec-btns,.hist{justify-content:center}}
+
+/* ---------- Avis ---------- */
+.revs{margin-top:40px;overflow:hidden;position:relative}
+.rev-track{display:flex;transition:transform .7s cubic-bezier(.3,.9,.3,1);touch-action:pan-y}
+.rev{flex:0 0 calc(100%/3);padding:10px}
+.rev .in{background:#fffaf0;border:2px solid var(--ink);border-radius:22px;padding:26px 24px 22px;height:100%;box-shadow:6px 6px 0 var(--ink);position:relative;display:flex;flex-direction:column}
+.rev .q{font-family:var(--display);font-size:5rem;line-height:.6;color:var(--violet);height:30px}
+.rev p{margin:0 0 16px;font-size:1.04rem;flex:1}
+.rev .who{display:flex;align-items:center;gap:10px}
+.rev .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.4rem;color:#fff;flex:none}
+.rev .who b{display:block;line-height:1.1}
+.rev .who small{color:#6b5d48;font-weight:700}
+.stars{color:var(--gold-d);letter-spacing:2px;font-size:1rem;margin-bottom:6px}
+.revs-nav{display:flex;justify-content:center;gap:16px;align-items:center;margin-top:20px}
+.revs-nav .arrow{border-color:rgba(22,18,15,.3);color:var(--ink);background:transparent}
+.revs-nav .dots button{background:rgba(22,18,15,.25)}
+.revs-nav .dots button.on{background:var(--violet)}
+@media (max-width:980px){.rev{flex-basis:50%}}
+@media (max-width:640px){.rev{flex-basis:100%}}
+
+/* ---------- Commander ---------- */
+.order{position:relative;overflow:hidden;border-radius:32px;background:radial-gradient(ellipse 60% 80% at 85% 30%, rgba(255,210,31,.16), transparent 60%),linear-gradient(135deg,#3b1f52,#1d1326 65%);box-shadow:var(--shadow);border:1px solid rgba(244,235,211,.08)}
+.o-main{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;padding:clamp(28px,5vw,56px) clamp(24px,5vw,56px) 28px}
+.o-main>*{min-width:0}
+.order .closed{display:inline-flex;align-items:center;gap:8px;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.55);color:#ffb3a8;border-radius:999px;padding:.3em .9em;font-weight:800;font-size:.92rem;margin-bottom:16px}
+.order .closed i{width:9px;height:9px;border-radius:50%;background:#ff5a45;animation:blink 1.2s infinite}
+.order h2{font-size:clamp(2.2rem,4.2vw,3.3rem);color:var(--gold);max-width:18ch}
+.o-lead{color:#e5d9c0;font-size:1.1rem;max-width:46ch;margin:14px 0 22px}
+.o-facts{list-style:none;padding:0;margin:0 0 26px;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:10px 26px}
+.o-facts li{display:flex;flex-direction:column;line-height:1.1}
+.o-facts b{font-family:var(--display);font-size:2rem;color:var(--parch)}
+.o-facts span{font-size:.82rem;font-weight:800;color:var(--violet-l);text-transform:uppercase;letter-spacing:.05em}
+.o-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.o-note{font-size:.9rem;font-weight:700;color:#b9ad93}
+.o-visual{position:relative;height:clamp(300px,32vw,380px)}
+.o-visual img{position:absolute;left:50%;bottom:6%;width:clamp(130px,14vw,185px);border-radius:12px;box-shadow:0 18px 30px rgba(0,0,0,.55);transform-origin:50% 120%;transition:transform .5s cubic-bezier(.2,1.2,.3,1);transform:translateX(calc(-50% + var(--x) * var(--sp))) rotate(calc(var(--r) * 1deg))}
+.o-visual{--sp:44px}
+.order:hover .o-visual{--sp:54px}
+.o-visual img:nth-child(1){--x:-2;--r:-20}
+.o-visual img:nth-child(2){--x:-1;--r:-10}
+.o-visual img:nth-child(3){--x:0;--r:0;z-index:3}
+.o-visual img:nth-child(4){--x:1;--r:10}
+.o-visual img:nth-child(5){--x:2;--r:20}
+.o-visual img:hover{z-index:5}
+.o-thanks{border-top:1px solid rgba(244,235,211,.12);background:rgba(0,0,0,.18);padding:18px clamp(24px,5vw,56px) 22px}
+.o-thanks p{margin:0 0 10px;font-weight:800;color:var(--violet-l)}
+.thanks{display:flex;flex-wrap:wrap;gap:8px}
+.thanks span{background:rgba(244,235,211,.1);border:1px solid rgba(244,235,211,.14);border-radius:999px;padding:.2em .85em;font-weight:800;font-size:.9rem}
+@media (max-width:860px){.o-main{grid-template-columns:1fr;text-align:center}.order h2{margin:0 auto}.o-lead{margin-left:auto;margin-right:auto}.o-facts{grid-template-columns:repeat(4,1fr);justify-content:center}.o-ctas{justify-content:center}.o-visual{order:-1;height:230px;--sp:34px}.order:hover .o-visual{--sp:34px}.o-visual img{width:112px}.order .closed{font-size:.8rem;white-space:nowrap}.o-thanks{text-align:center}.thanks{justify-content:center}}
+@media (max-width:420px){.o-facts{grid-template-columns:repeat(2,1fr)}}
+@keyframes blink{50%{opacity:.25}}
+@media (max-width:520px){.btn{white-space:normal;text-align:center}}
+
+/* ---------- Règles ---------- */
+.rules{max-width:860px;margin:36px auto 0}
+.acc{border:2px solid var(--ink);border-radius:18px;margin-bottom:14px;background:#fffaf0;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+.acc summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:14px;font-family:var(--display);font-size:1.7rem}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .ic{width:40px;height:40px;border-radius:12px;background:var(--violet);color:#fff;display:grid;place-items:center;font-size:1.2rem;flex:none}
+.acc summary::after{content:"+";margin-left:auto;font-size:2rem;transition:transform .3s;color:var(--violet)}
+.acc[open] summary::after{transform:rotate(45deg)}
+.acc .body{padding:0 22px 20px 76px;color:#2d251d}
+.acc .body ol,.acc .body ul{padding-left:20px;margin:0}
+.acc .body li{margin-bottom:8px}
+.acc .body p{margin:0 0 10px}
+.tip{background:rgba(138,95,176,.12);border-left:4px solid var(--violet);padding:10px 14px;border-radius:8px;margin-top:12px;font-weight:700}
+.rtable{width:100%;border-collapse:collapse;font-size:.98rem}
+.rtable th,.rtable td{text-align:left;padding:8px 6px;border-bottom:1px solid rgba(0,0,0,.12);vertical-align:top}
+.rtable th{font-family:var(--display);font-weight:400;font-size:1.15rem}
+@media (max-width:640px){.acc .body{padding:0 16px 18px 16px}.acc summary{font-size:1.4rem}}
+
+/* ---------- Vidéo + Footer ---------- */
+.yt{display:block;max-width:820px;margin:36px auto 0;aspect-ratio:16/9;border-radius:24px;overflow:hidden;position:relative;text-decoration:none;box-shadow:var(--shadow);
+  background:radial-gradient(circle at 50% 45%, #4a2d63, #16120f 75%)}
+.yt img.lg{position:absolute;width:38%;left:50%;top:44%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 20px rgba(255,170,0,.5))}
+.yt .play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;background:var(--gold);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(255,210,31,.6);animation:ring 2s infinite;opacity:.95}
+.yt .play svg{width:38px;margin-left:6px;color:var(--ink)}
+@keyframes ring{70%{box-shadow:0 0 0 26px rgba(255,210,31,0)}100%{box-shadow:0 0 0 0 rgba(255,210,31,0)}}
+.yt span.c{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-family:var(--display);font-size:1.6rem;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.6)}
+footer{padding:50px 0 90px;border-top:1px solid rgba(244,235,211,.1);text-align:center;color:#a99c82}
+footer img{height:70px;margin:0 auto 14px}
+footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:12px 0}
+footer a{color:var(--parch);font-weight:800;text-decoration:none}
+footer a:hover{color:var(--gold)}
+
+/* ---------- Modale vidéo ---------- */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.88);display:none;place-items:center;padding:20px}
+.modal.on{display:grid;animation:pop .3s}
+.modal .box{position:relative;width:min(420px,90vw)}
+.modal video{width:100%;border-radius:18px;box-shadow:var(--shadow);background:#000}
+.modal .x{position:absolute;top:-16px;right:-16px;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);border:0;font-size:1.5rem;font-weight:900}
+
+/* ---------- Son ---------- */
+.sound{position:fixed;right:18px;bottom:18px;z-index:60;width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);background:rgba(22,18,15,.85);color:var(--gold);display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.5);transition:transform .2s}
+.sound:hover{transform:scale(1.08)}
+.sound svg{width:24px;height:24px}
+.sound .eq{display:none;gap:3px;align-items:flex-end;height:20px}
+.sound.on .eq{display:flex}.sound.on .off{display:none}
+.sound .eq i{width:4px;background:var(--gold);border-radius:2px;animation:eq .8s ease-in-out infinite alternate}
+.sound .eq i:nth-child(2){animation-delay:-.3s}.sound .eq i:nth-child(3){animation-delay:-.6s}
+@keyframes eq{from{height:4px}to{height:20px}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:120;width:100%;height:100%}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <a href="#" data-go="accueil" aria-label="PUTSCH, retour en haut"><img class="hdr-logo" src="img/logo.svg" alt="PUTSCH !"></a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="#" data-go="histoire">Le jeu</a>
+      <a href="#" data-go="cartes">Les cartes</a>
+      <a href="#" data-go="essai">Essayer</a>
+      <a href="#" data-go="decrets">Décrets</a>
+      <a href="#" data-go="avis">Avis</a>
+      <a href="#" data-go="regles">Règles</a>
+    </nav>
+    <a class="btn btn-gold" href="#" data-go="commander">Commander</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="accueil">
+  <canvas id="embers" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <img class="hero-logo" src="img/logo.svg" alt="PUTSCH !">
+      <h1>Le jeu de cartes où la stratégie <em>rencontre la trahison</em></h1>
+      <p class="lead">Le despote vacille. Les rebelles sortent de l'ombre. Bluffe, vole, échange… et crie le nom de ta cible avant qu'il ne soit trop tard !</p>
+      <div class="badges">
+        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5 2.6 5 5.8"/></svg>4-5 rebelles</span>
+        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>30 minutes</span>
+        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Dès 10 ans</span>
+      </div>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="#" data-go="essai">▶ Jouer un tour</a>
+        <a class="btn btn-ghost" href="#" data-go="histoire">Découvrir le jeu</a>
+      </div>
+    </div>
+    <div class="fan" id="fan" aria-hidden="true">
+      <div class="fc" data-i="0"><img src="img/coffre.webp" alt=""></div>
+      <div class="fc" data-i="1"><img src="img/cachette.webp" alt=""></div>
+      <div class="fc" data-i="2"><img src="img/putsch.webp" alt=""></div>
+      <div class="fc" data-i="3"><img src="img/brute.webp" alt=""></div>
+      <div class="fc" data-i="4"><img src="img/eclaireur.webp" alt=""></div>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#" data-go="histoire">DÉFILE<i></i></a>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="marq"></div></div>
+
+<!-- ============ HISTOIRE ============ -->
+<section class="paper torn-top" id="histoire">
+  <div class="wrap story">
+    <div>
+      <span class="kicker rv">L'histoire</span>
+      <h2 class="h2 rv d1">Le trône est vacant.<br>Enfin, presque.</h2>
+      <p class="drop rv d2">Dans un royaume lointain, un despote faisait autrefois régner la terreur. Aujourd'hui affaibli, il voit des forces rebelles émerger de l'ombre et se disputer le pouvoir.</p>
+      <p class="rv d3">Incarne l'un·e de ces rebelles et unifie une région sous ta bannière pour conquérir le royaume. Mais attention : dans cette lutte pour le trône, <b>chaque rebelle joue pour soi</b>. L'ami d'hier peut devenir ton pire ennemi au prochain tour.</p>
+      <p class="hint rv d3">👆 Touche les territoires pour les révéler</p>
+    </div>
+    <div class="hexes rv d2" id="hexes">
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire La Vallée"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-vallee.webp" alt="La Vallée"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Côtes"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-cotes.webp" alt="Les Côtes"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Hautes Terres"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-hautes.webp" alt="Les Hautes Terres"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Bas-Fonds"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-basfonds.webp" alt="Les Bas-Fonds"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VICTOIRE ============ -->
+<section id="victoire">
+  <div class="wrap center">
+    <span class="kicker rv">Comment gagner ?</span>
+    <h2 class="h2 rv d1">Deux chemins vers la couronne</h2>
+    <p class="sub rv d2">Les territoires se piochent face cachée : toi seul connais leur couleur. Une fois révélé, un territoire le reste, même s'il change de main. Et pas besoin de les révéler pour gagner !</p>
+    <div class="wins">
+      <div class="win rv" id="win1">
+        <span class="tag">Victoire immédiate</span>
+        <div class="four"><img src="img/terr/cotes-1.webp" alt="Les Côtes"><img src="img/terr/cotes-2.webp" alt="Les Côtes"><img src="img/terr/cotes-3.webp" alt="Les Côtes"><img src="img/terr/cotes-4.webp" alt="Les Côtes"></div>
+        <h3>4 territoires d'une même région</h3>
+        <p>Rassemble-les et la partie s'arrête net. Le royaume est à toi !</p>
+      </div>
+      <div class="win rv d1" id="win2">
+        <span class="tag">Victoire par domination</span>
+        <div class="bars"><div data-h="45"></div><div class="top" data-h="95"></div><div data-h="62"></div><div data-h="30"></div></div>
+        <h3>Le plus de territoires</h3>
+        <p>Personne n'a de région complète après les 2 manches ? Le rebelle qui possède le plus de territoires, toutes régions confondues, l'emporte.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARTES ============ -->
+<section class="cards-sec" id="cartes">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker rv">Ton arsenal</span>
+      <h2 class="h2 rv d1">Les cartes Action</h2>
+      <p class="sub rv d2">Chaque rebelle possède le même jeu de 10 cartes. À chaque tour, tu en joues une, et chaque carte ne sert qu'une fois par manche. Glisse, clique, regarde-les s'animer.</p>
+    </div>
+    <div class="cf-layout">
+      <div>
+        <div class="cf" id="cf" aria-roledescription="carrousel" aria-label="Cartes Action"></div>
+        <div class="cf-nav">
+          <button class="arrow" id="cfPrev" aria-label="Carte précédente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <div class="dots" id="cfDots"></div>
+          <button class="arrow" id="cfNext" aria-label="Carte suivante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+      <div class="info" id="cfInfo" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOUR EN 3 TEMPS ============ -->
+<section class="paper torn-top" id="tour">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker rv">Comment on joue ?</span>
+      <h2 class="h2 rv d1">Un tour, trois temps</h2>
+      <p class="sub rv d2">Tout le monde joue en même temps. Pas de temps mort, pas de pitié.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="num">1</span>
+        <h3>Prépare</h3><p>Chaque rebelle choisit en secret une carte Action et la pose <b>face cachée</b>. Bluffe, anticipe, devine ce que mijotent les autres.</p></div>
+      <div class="step rv d1"><span class="num">2</span>
+        <h3>Décret</h3><p>Le despote n'a pas dit son dernier mot ! Un <b>décret</b> est révélé et change les règles pour tout le monde, le temps d'un tour.</p></div>
+      <div class="step rv d2"><span class="num">3</span>
+        <h3>Révèle</h3><p>3, 2, 1… Tout le monde retourne sa carte en même temps. Tu vises quelqu'un ? <b>Pointe-le ou crie son nom</b>, sinon ton effet tombe à l'eau ! On résout ensuite du plus grand numéro au plus petit.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MINI-JEU ============ -->
+<section class="demo-sec" id="essai">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker rv">À toi de jouer</span>
+      <h2 class="h2 rv d1">Une partie contre 3 ou 4 rebelles</h2>
+      <p class="sub rv d2">Choisis ta carte et, si elle vise quelqu'un, <b>désigne ta cible avant de révéler</b>. Les cartes se résolvent du plus grand numéro au plus petit. Réunis 4 territoires d'une même région en 2 manches de 8 tours maximum !</p>
+    </div>
+    <div class="table rv" id="table">
+      <div class="foes" id="foes"></div>
+      <div class="mid">
+        <div class="midcards">
+          <div class="decree-mini" id="dmini"><div class="c3"><div class="b"></div><div class="fr"><div class="blank"><b id="dmT">—</b><span id="dmE"></span></div></div></div></div>
+          <div class="center" id="center" aria-label="Territoires au centre"></div>
+          <div class="pile" id="pile" title="Pioche de territoires"><div class="stk"><img src="img/t-dos.webp" alt=""><img src="img/t-dos.webp" alt=""><img src="img/t-dos.webp" alt="Pioche de territoires"></div><span class="cnt" id="pileN">0</span><small>Pioche</small></div>
+        </div>
+        <div>
+          <div class="status" id="status">Choisis une carte dans ta main<small>Elle sera posée face cachée.</small></div>
+        </div>
+      </div>
+      <div class="board me" id="meBoard"></div>
+      <div class="zones">
+        <div class="zone"><div class="zlbl">Ta main</div><div class="hand" id="hand"></div></div>
+        <div class="zone disc" id="discZone"><div class="zlbl">Ta défausse <span id="discN"></span></div><div class="discard" id="discard"></div></div>
+      </div>
+      <div class="ctrl">
+        <span class="turnc"><span id="turnc">Tour 1 / 8</span></span>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" id="newGame">Nouvelle partie</button>
+          <button class="btn btn-gold btn-sm" id="go" disabled>Révéler !</button>
+        </div>
+      </div>
+      <div class="log" id="log" aria-live="polite"><ul id="logl"><li class="muted">Le despote vacille… La partie commence. Tu as 2 territoires et 1 pièce d'or.</li></ul></div>
+      <div class="count" id="count" aria-hidden="true"></div>
+      <div class="narr" id="narr"><div class="panel" id="panel" role="dialog" aria-live="polite" aria-label="Résolution des actions"></div></div>
+      <div class="pickbox on" id="pickbox"><div class="pk-in">
+        <h3>Prépare ta partie</h3>
+        <div class="opts">
+          <div class="opt"><span class="ol">1. Nombre de joueurs</span>
+            <div class="seg" role="radiogroup" aria-label="Nombre de joueurs">
+              <button role="radio" data-np="4"><b>4 joueurs</b><small>toi + 3 rebelles · 3 régions</small></button>
+              <button role="radio" data-np="5"><b>5 joueurs</b><small>toi + 4 rebelles · 4 régions</small></button>
+            </div></div>
+          <div class="opt"><span class="ol">2. Décrets du despote</span>
+            <div class="seg" role="radiogroup" aria-label="Décrets">
+              <button role="radio" data-dec="1"><b>📜 Avec décrets</b><small>Jeu d'ambiance</small></button>
+              <button role="radio" data-dec="0"><b>♟️ Sans décret</b><small>Jeu de stratégie</small></button>
+            </div>
+            <p class="legend" id="decLegend"></p></div>
+        </div>
+        <span class="ol">3. Choisis ton rebelle pour lancer la partie</span>
+        <div class="pk-grid" id="pkGrid"></div>
+      </div></div>
+      <div class="endbox" id="endbox"><div class="eb-in" id="ebIn" role="dialog" aria-live="polite"></div></div>
+    </div>
+    <p class="disclaimer center">Version simplifiée pour découvrir l'ambiance : 6 territoires par région (3 régions à 4 joueurs, 4 à 5 joueurs), et les décrets s'appliquent pour de vrai. Le vrai frisson, c'est autour d'une table !</p>
+  </div>
+</section>
+
+<!-- ============ DÉCRETS ============ -->
+<section class="dec-sec" id="decrets">
+  <div class="wrap">
+    <div class="center hide-tm">
+      <span class="kicker rv">Extension gratuite</span>
+      <h2 class="h2 rv d1">Le tireur de décrets</h2>
+      <p class="sub rv d2">De nouveaux décrets imaginés par la communauté PUTSCH. Remplace tes décrets par cet outil : un tirage par tour, sans jamais retomber sur le même.</p>
+    </div>
+    <div class="dec-wrap">
+      <div class="dcard" id="dcard" role="button" tabindex="0" aria-label="Tirer un décret">
+        <div class="c3"><div class="b"></div><div class="fr"><span class="src" id="dSrc"></span><div class="blank"><h3 id="dT"></h3><p id="dE"></p></div></div></div>
+      </div>
+      <div class="dec-side">
+        <div class="turn">Tour <span id="dTurn">0</span><small> / 16</small></div>
+        <div class="dec-btns">
+          <button class="btn btn-gold" id="dDraw">Tirer un décret</button>
+          <button class="btn btn-ghost" id="dReset">Nouvelle partie</button>
+        </div>
+        <div class="hist" id="dHist"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVIS ============ -->
+<section class="paper torn-top" id="avis">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker rv">Ils ont goûté au chaos</span>
+      <h2 class="h2 rv d1">Ce qu'en disent les rebelles</h2>
+    </div>
+    <div class="revs rv d2"><div class="rev-track" id="revTrack"></div></div>
+    <div class="revs-nav">
+      <button class="arrow" id="rvPrev" aria-label="Avis précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="dots" id="rvDots"></div>
+      <button class="arrow" id="rvNext" aria-label="Avis suivant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="center" style="margin-top:30px">
+      <a class="btn btn-violet" href="https://docs.google.com/forms/d/e/1FAIpQLSdV22O-tnlpq2SFyMsFRaOMtcSWzGHBmOQWgxrk61Oy_2oAtw/viewform" target="_blank" rel="noopener">✍️ Donner mon avis</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMMANDER ============ -->
+<section id="commander">
+  <div class="wrap">
+    <div class="order rv">
+      <div class="o-main">
+        <div class="o-copy">
+          <span class="closed"><i></i>Commandes fermées pour l'instant</span>
+          <h2>Réserve ton jeu pour la prochaine édition</h2>
+          <p class="o-lead">La première édition est partie entre de bonnes mains. Inscris-toi sur la liste d'attente : on te prévient dès que la prochaine est disponible.</p>
+          <ul class="o-facts">
+            <li><b>5</b><span>rebelles</span></li>
+            <li><b>50</b><span>cartes Action</span></li>
+            <li><b>24</b><span>territoires</span></li>
+            <li><b>4-5</b><span>joueurs</span></li>
+          </ul>
+          <div class="o-ctas">
+            <a class="btn btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLScZ3CREEXs-LzFPAhI5t2vDWl9cGPxNp37zKpwhCGBnQaaNkw/viewform" target="_blank" rel="noopener">👑 Rejoindre la liste d'attente</a>
+            <span class="o-note">Gratuit et sans engagement</span>
+          </div>
+        </div>
+        <div class="o-visual" aria-hidden="true">
+          <img src="img/cartes/bleu-putsch-31.webp" alt="">
+          <img src="img/cartes/jaune-putsch-31.webp" alt="">
+          <img src="img/cartes/violet-putsch-31.webp" alt="">
+          <img src="img/cartes/rouge-putsch-31.webp" alt="">
+          <img src="img/cartes/vert-putsch-31.webp" alt="">
+        </div>
+      </div>
+      <div class="o-thanks">
+        <p>🙏 Merci aux premiers rebelles qui jouent à PUTSCH</p>
+        <div class="thanks" id="thanks"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RÈGLES ============ -->
+<section class="paper torn-top" id="regles">
+  <div class="wrap">
+    <div class="center">
+      <span class="kicker rv">Le grimoire</span>
+      <h2 class="h2 rv d1">Les règles complètes</h2>
+      <p class="sub rv d2">Tout ce qu'il faut savoir pour conquérir la couronne.</p>
+    </div>
+    <div class="rules">
+      <details class="acc rv" open><summary><span class="ic">⚙️</span>Préparer la partie</summary><div class="body"><ol>
+        <li>Préparez les territoires selon le nombre de joueurs : <b>à 5 joueurs, 4 couleurs</b> ; <b>à 4 joueurs, 3 couleurs</b>.</li>
+        <li>Mélangez les territoires utilisés et placez-les face cachée au centre : c'est la pioche.</li>
+        <li>Distribuez <b>2 territoires</b> à chaque joueur. Chacun les regarde et les garde face cachée.</li>
+        <li>Chaque joueur choisit un rebelle, prend son jeu de cartes Action et <b>1 pièce d'or</b>.</li>
+        <li>Mélangez les décrets et placez-les au centre.</li></ol></div></details>
+      <details class="acc rv"><summary><span class="ic">🔄</span>Déroulé d'un tour</summary><div class="body"><ol>
+        <li><b>Préparation des actions</b> : chaque rebelle choisit une carte Action et la pose face cachée. Chaque carte ne peut être utilisée qu'une fois.</li>
+        <li><b>Révélation du décret</b> : un décret est pioché et s'applique à tous pour ce tour.</li>
+        <li><b>Révélation et résolution</b> : après un décompte, tous les rebelles retournent leur carte en même temps. Si ta carte vise un joueur, montre-le du doigt ou annonce distinctement son nom. <b>Cible annoncée trop tard = effet annulé !</b> Les effets se résolvent par ordre de priorité (chiffre en haut à gauche de la carte), du plus grand au plus petit. Les cartes jouées vont ensuite dans la défausse.</li></ol>
+        <p class="tip">Certaines cartes coûtent de l'or. Si tu ne peux pas payer, ta carte n'a aucun effet.</p></div></details>
+      <details class="acc rv"><summary><span class="ic">🃏</span>Les cartes Action</summary><div class="body">
+        <table class="rtable"><thead><tr><th>Carte</th><th>Ex.</th><th>Coût</th><th>Effet</th></tr></thead><tbody id="rulesCards"></tbody></table></div></details>
+      <details class="acc rv"><summary><span class="ic">⏳</span>Manches et fin de partie</summary><div class="body">
+        <p><b>Manche 1</b> : tant qu'il n'y a pas de vainqueur, les rebelles jouent jusqu'à 8 tours.</p>
+        <p><b>Manche 2</b> : chaque rebelle récupère toutes ses cartes Action, garde ses territoires et son or, et reçoit <b>1 or supplémentaire</b>. Les décrets déjà piochés ne reviennent pas. Encore 8 tours.</p>
+        <p><b>Victoire immédiate</b> : 4 territoires de la même région. <b>Victoire par domination</b> : si personne n'y arrive après les 2 manches, le rebelle qui a le plus de territoires gagne.</p></div></details>
+      <details class="acc rv"><summary><span class="ic">💡</span>Rappels et précisions</summary><div class="body"><ul>
+        <li>Les territoires n'ont pas besoin d'être révélés pour gagner.</li>
+        <li>Un territoire révélé le reste, même s'il change de rebelle.</li>
+        <li>Si une attaque est contrée par une <b>Cachette</b>, l'or est quand même dépensé.</li>
+        <li>Un <b>Putsch</b> joué sans l'or nécessaire ne permet pas de contrer un autre Putsch.</li>
+        <li>Si un territoire révélé est échangé avec la pioche, le rebelle prend le 1er territoire de la pioche et le garde face cachée. L'ancien retourne face cachée dans la pioche, qui est mélangée.</li></ul></div></details>
+    </div>
+    <a class="yt rv" href="https://www.youtube.com/watch?v=Q6-_6WMAzCo" target="_blank" rel="noopener" aria-label="Voir la vidéo de présentation sur YouTube">
+      <img class="lg" src="img/logo.svg" alt="">
+      <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l15 8-15 8z"/></svg></span>
+      <span class="c">Voir la vidéo de présentation</span>
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="img/logo.svg" alt="PUTSCH !">
+    <div class="links">
+      <a href="#" data-go="regles">Règles</a>
+      <a href="#" data-go="decrets">Tireur de décrets</a>
+      <a href="#" data-go="commander">Liste d'attente</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdV22O-tnlpq2SFyMsFRaOMtcSWzGHBmOQWgxrk61Oy_2oAtw/viewform" target="_blank" rel="noopener">Donner mon avis</a>
+    </div>
+    <p>© 2024 PUTSCH. Tous droits réservés. Merci de jouer à PUTSCH !</p>
+  </div>
+</footer>
+
+<button class="sound" id="sound" aria-label="Activer la musique d'ambiance" aria-pressed="false">
+  <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 5M22 9l-5 5"/></svg>
+  <span class="eq"><i></i><i></i><i></i></span>
+</button>
+<audio id="music" src="audio/ambiance.mp3" loop preload="none"></audio>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Vidéo de la carte">
+  <div class="box"><button class="x" id="mx" aria-label="Fermer">×</button><video id="mv" controls playsinline></video></div>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(() => {
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const rnd = n => Math.floor(Math.random()*n);
+const pick = a => a[rnd(a.length)];
+const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]} return a; };
+const sleep = ms => new Promise(r => setTimeout(r, RM ? Math.min(ms,80) : ms));
+
+/* ================= DONNÉES ================= */
+const REPLI_SVG = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 30a18 18 0 1 1 6 14"/><path d="M8 20l6 10 10-6"/></svg>';
+const CARDS = {
+  putsch:   {n:'Putsch !',  img:'img/putsch.webp',   vid:'video/putsch.mp4',   copies:1, cost:'2 or (3 si réutilisé)', costN:2, target:true, prio:100,
+             fx:"Annonce le nom du rebelle visé et <b>échange tous tes territoires avec les siens</b>. Attention : si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous !"},
+  brute:    {n:'Brute',     img:'img/brute.webp',    vid:'video/brute.mp4',    copies:2, cost:'1 or', costN:1, target:true, prio:38,
+             fx:"Annonce le nom du rebelle visé et <b>prends-lui un territoire</b>. S'il a au moins un territoire face cachée, c'est lui qui choisit lequel. Si tout est révélé, c'est toi qui choisis."},
+  eclaireur:{n:'Éclaireur', img:'img/eclaireur.webp',vid:'video/eclaireur.mp4',copies:1, cost:'Gratuit', costN:0, target:true, prio:28,
+             fx:"Annonce le nom du joueur visé, <b>regarde tous ses territoires</b>, puis retournes-en un face visible."},
+  cachette: {n:'Cachette',  img:'img/cachette.webp', vid:'video/cachette.mp4', copies:2, cost:'Gratuit', costN:0, target:false, prio:18,
+             fx:"Planque-toi dans un tonneau : tu es <b>protégé des cartes BRUTE et PUTSCH</b> ce tour-ci."},
+  coffre:   {n:'Coffre',    img:'img/coffre.webp',   vid:'video/coffre.mp4',   copies:2, cost:'Gratuit', costN:0, target:false, prio:8,
+             fx:"Pioche dans le trésor : tu récupères <b>une pièce d'or</b> du royaume !"},
+  discours: {n:'Discours',  img:'img/discours.webp', vid:'video/discours.mp4', copies:1, cost:'Gratuit', costN:0, target:false, prio:3,
+             fx:"Si <b>aucun autre rebelle ne t'a visé</b> à ce tour, pioche un territoire et laisse-le face cachée."},
+  repli:    {n:'Repli',     img:'img/repli.webp', vid:'video/repli.mp4', copies:1, cost:'Gratuit', costN:0, target:false, prio:1,
+             fx:"<b>Remplace une carte Action de ta main</b> par une carte de ta défausse."}
+};
+const ORDER = ['putsch','brute','cachette','coffre','discours','eclaireur','repli'];
+const REG = {
+  vallee:{n:'La Vallée', img:'img/t-vallee.webp', c:'#2e7d32'},
+  cotes:{n:'Les Côtes', img:'img/t-cotes.webp', c:'#1f5aa6'},
+  hautes:{n:'Les Hautes Terres', img:'img/t-hautes.webp', c:'#d4a514'},
+  basfonds:{n:'Les Bas-Fonds', img:'img/t-basfonds.webp', c:'#c0392b'}
+};
+const DECRETS = [
+ ["Mouvement de foule","Avant la révélation, donnez 1 de vos territoires au rebelle situé à votre droite.","Set de base"],
+ ["Bousculade","Avant la révélation, placez un territoire au centre. Tour à tour, récupérez un des territoires restants au moment de la résolution de votre carte.","Set de base"],
+ ["Agressif","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
+ ["Agressif","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
+ ["Coup de pouce","Si vous avez moins de 2 territoires, piochez-en un au moment de la résolution de votre carte.","Extension"],
+ ["Affolement","Prenez la carte Action de votre voisin de droite et prenez-en connaissance avant la révélation.","Set de base"],
+ ["Grosse bourde","CACHETTE ne fonctionne pas à ce tour.","Set de base"],
+ ["Perméable","Si vous avez joué CACHETTE et êtes visé par plusieurs cartes, vous n'êtes immunisé qu'à la première attaque.","Set de base"],
+ ["Ostentatoire","Tout territoire récupéré à ce tour est immédiatement révélé.","Extension"],
+ ["Ostentatoire","Tout territoire récupéré à ce tour est immédiatement révélé.","Extension"],
+ ["En terrain connu","Si ÉCLAIREUR est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.","Set de base"],
+ ["Cartographe","Avant la révélation, les rebelles peuvent regarder un territoire d'un autre rebelle.","Set de base"],
+ ["Voyante","Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.","Set de base"],
+ ["Coalition","COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans une limite de 3 ors.","Communauté · Virgil"],
+ ["Corruption","COFFRE rapporte 2 ors au lieu de 1.","Set de base"],
+ ["Coup bas","Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.","Set de base"],
+ ["Liquidation","BRUTE ne coûte aucun or à ce tour.","Set de base"],
+ ["Stratège","Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.","Set de base"],
+ ["Corvée","Les rebelles ayant au moins un territoire face cachée doivent payer 1 or, sinon il est révélé.","Set de base"],
+ ["Bienfaiteur","Après la révélation, placez un de vos territoires au centre. Le rebelle jouant la carte Action avec le plus petit nombre les redistribue (1 max par rebelle).","Communauté · Pierre"],
+ ["Mécène","Après la révélation, le ou les rebelles avec le moins d'or en gagnent 2 et en donnent 1 à un rebelle de leur choix.","Extension"],
+ ["Embourgeoisé","Si vous êtes visé par BRUTE, vous pouvez payer 1 or à votre agresseur pour garder votre territoire. À la place, il en pioche un et le révèle.","Extension"],
+ ["Opportunité","ÉCLAIREUR révèle deux territoires au lieu d'un.","Extension"],
+ ["Trouble-fête","Après la révélation, le rebelle ayant joué la carte Action avec le plus grand nombre échange 1 territoire entre deux autres rebelles.","Extension"],
+ ["Charité intéressée","Vous pouvez dévoiler un de vos territoires pour en dévoiler un chez un autre rebelle.","Communauté · Marine"],
+ ["Dernier recours","Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre révèle le territoire de son choix : chez un autre rebelle ou dans la pioche.","Communauté · Paul"]
+];
+const AVIS = [
+ ["Jeremy V. N.","","Des règles simples à comprendre. Une super expérience de jeu où la stratégie est la clé. La phase de préparation crée une atmosphère palpitante. La révélation simultanée des cartes et les cris de noms ajoutent une dimension interactive unique. Un jeu où chaque décision compte."],
+ ["Yacine M.","@Yac_infit","Stratégique, j'adore ! Il y a plein de chemins variés pour remporter la partie !"],
+ ["Marine G.","@r0ndn0ir","Amusant dès la première partie, et aucune partie n'est la même, j'adore"],
+ ["Noé P.","","J'ai beaucoup rigolé, avec des beaux retournements de situations ! Le moment où les rebelles dévoilent simultanément leurs cartes est épique. Crier le nom de votre cible ajoute une touche explosive. Les alliances se forment et se brisent, les amis d'hier peuvent devenir les ennemis d'aujourd'hui."],
+ ["Margaux G.","@shinju.mx","Très fun avec des mécaniques tactiques, obligeant les joueurs à anticiper les mouvements de leurs adversaires. Les rebondissements constants grâce aux cartes despotes rendent chaque partie différente."],
+ ["Kévin F.","@linkevofficiel","Les cartes despotes ajoutent une touche de chaos contrôlé, garantissant une belle rejouabilité. Un must-have pour les amateurs de jeux de société stratégiques."]
+];
+const THANKS = ["Andrée","Arnaud","Chloé & Raphaël","Christopher","Elisabeth","Flavie","Jérémy & Léa","Laurent","Virgil"];
+
+const cardFace = (k, cls='') => CARDS[k].img
+  ? `<img src="${CARDS[k].img}" alt="Carte ${CARDS[k].n}" draggable="false">`
+  : `<div class="repli ${cls}"><div class="inner"><span class="flag">?</span>${REPLI_SVG}<span class="ban">REPLI</span></div></div>`;
+
+/* ================= NAVIGATION ================= */
+const hdr = $('#hdr'), nav = $('#nav'), burger = $('#burger');
+addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 40), {passive:true});
+burger.addEventListener('click', () => {
+  const o = !nav.classList.contains('open');
+  nav.classList.toggle('open', o); burger.setAttribute('aria-expanded', o);
+  burger.setAttribute('aria-label', o ? 'Fermer le menu' : 'Ouvrir le menu');
+});
+$$('[data-go]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const t = document.getElementById(a.dataset.go);
+  nav.classList.remove('open'); burger.setAttribute('aria-expanded', false);
+  if (t) window.scrollTo({top: a.dataset.go === 'accueil' ? 0 : t.getBoundingClientRect().top + scrollY - 60, behavior: RM ? 'auto' : 'smooth'});
+}));
+
+/* ================= REVEAL AU SCROLL ================= */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target);
+    if (e.target.id === 'win2') $$('.bars div').forEach(b => b.style.height = b.dataset.h + 'px');
+  }
+}), {threshold:.15});
+$$('.rv').forEach(el => io.observe(el));
+
+/* ================= BRAISES (hero) ================= */
+(function embers(){
+  const c = $('#embers'), x = c.getContext('2d'); let W, H, P = [];
+  const size = () => { const d = Math.min(devicePixelRatio||1, 2); W = c.width = c.offsetWidth*d; H = c.height = c.offsetHeight*d; };
+  size(); addEventListener('resize', size);
+  const N = innerWidth < 700 ? 40 : 80;
+  const mk = (y) => ({x:Math.random()*W, y: y ?? H + Math.random()*H*.3, r:(Math.random()*2.4+0.8)*(devicePixelRatio||1), vy:Math.random()*.9+.35, vx:(Math.random()-.5)*.4, a:Math.random()*.7+.3, h: 25 + rnd(30), w: Math.random()*6.28});
+  for (let i=0;i<N;i++) P.push(mk(Math.random()*H));
+  if (RM) return;
+  let vis = true; new IntersectionObserver(([e]) => vis = e.isIntersecting).observe(c);
+  (function loop(){
+    if (vis) {
+      x.clearRect(0,0,W,H); x.globalCompositeOperation = 'lighter';
+      for (const p of P) {
+        p.y -= p.vy*(devicePixelRatio||1); p.w += .03; p.x += p.vx + Math.sin(p.w)*.35;
+        const life = Math.max(0, p.y/H);
+        x.beginPath(); x.fillStyle = `hsla(${p.h},100%,60%,${p.a*life})`; x.shadowBlur = 12; x.shadowColor = `hsla(${p.h},100%,55%,1)`;
+        x.arc(p.x, p.y, p.r, 0, 6.28); x.fill();
+        if (p.y < -10) Object.assign(p, mk());
+      }
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ================= ÉVENTAIL HERO ================= */
+(function fan(){
+  const cards = $$('#fan .fc'); const ang = [-34,-17,0,17,34], ty = [26,8,0,8,26];
+  const set = (mx=0, my=0) => cards.forEach((c,i) => {
+    c.style.zIndex = i===2 ? 5 : 5 - Math.abs(i-2);
+    c.style.transform = `translate(calc(-50% + ${(i-2)*(innerWidth<860?34:62) + mx*(i-2)*4}px), ${ty[i] + my*6}px) rotate(${ang[i] + mx*2}deg)`;
+  });
+  setTimeout(() => set(), 250);
+  if (!RM && matchMedia('(pointer:fine)').matches) addEventListener('mousemove', e => {
+    if (scrollY > innerHeight) return;
+    set((e.clientX/innerWidth - .5)*2, (e.clientY/innerHeight - .5)*2);
+  });
+  cards.forEach(c => c.addEventListener('click', () => $('[data-go="cartes"]').click()));
+})();
+
+/* ================= MARQUEE ================= */
+const words = ['ANTICIPATION','SIMULTANÉITÉ','GESTION DE RESSOURCES','CONTRÔLE DE TERRITOIRES'];
+const line = words.map(w => `${w}<b>✦</b>`).join('');
+$('#marq').innerHTML = `<span>${line}${line}</span><span>${line}${line}</span>`;
+
+/* ================= HEXAGONES (histoire) ================= */
+$$('#hexes .hex').forEach((h,i) => {
+  const t = () => h.classList.toggle('flip');
+  h.addEventListener('click', t); h.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); t(); }});
+});
+new IntersectionObserver(([e], o) => { if (e.isIntersecting) { $$('#hexes .hex').forEach((h,i) => setTimeout(() => h.classList.add('flip'), 700 + i*350)); o.disconnect(); }}, {threshold:.5}).observe($('#hexes'));
+
+/* ================= CARROUSEL COVERFLOW ================= */
+(function coverflow(){
+  const cf = $('#cf'), dots = $('#cfDots'), info = $('#cfInfo'); let cur = 2;
+  const keys = ORDER;
+  cf.innerHTML = keys.map((k,i) => `<figure class="cf-slide" data-i="${i}"><div class="face">${cardFace(k)}${CARDS[k].vid ? `<video muted loop playsinline preload="none" src="${CARDS[k].vid}"></video>` : ''}</div></figure>`).join('');
+  dots.innerHTML = keys.map((k,i) => `<button aria-label="Carte ${CARDS[k].n}"></button>`).join('');
+  const slides = $$('.cf-slide', cf), dbs = $$('button', dots);
+  function render(){
+    const w = slides[0].offsetWidth, n = keys.length;
+    slides.forEach((s,i) => {
+      let o = i - cur; if (o > n/2) o -= n; if (o < -n/2) o += n;
+      const a = Math.abs(o);
+      s.style.transform = `translate(-50%,-50%) translateX(${o * w * .58}px) translateZ(${-a*120}px) rotateY(${-o*28}deg) scale(${1 - a*.06})`;
+      s.style.zIndex = 20 - a; s.style.opacity = a > 3 ? 0 : 1; s.style.filter = a ? `brightness(${1 - a*.22})` : 'none';
+      s.classList.toggle('active', a===0); s.setAttribute('aria-hidden', a!==0);
+      const v = $('video', s);
+      if (v) { if (a===0 && !RM) { v.play().then(() => v.classList.add('playing')).catch(()=>{}); } else { v.pause(); v.classList.remove('playing'); try{v.currentTime=0}catch(e){} } }
+    });
+    dbs.forEach((d,i) => d.classList.toggle('on', i===cur));
+    const k = keys[cur], c = CARDS[k];
+    info.innerHTML = `<div class="swap"><h3>${c.n}</h3>
+      <div class="meta"><span class="chip v">${c.copies} exemplaire${c.copies>1?'s':''}</span><span class="chip ${c.costN?'gold':''}">${c.costN?'<img src="img/piece.webp" alt="">':''}${c.cost}</span>${c.target?'<span class="chip">🎯 Vise un rebelle</span>':''}</div>
+      <p>${c.fx}</p></div>`;
+  }
+  const go = d => { cur = (cur + d + keys.length) % keys.length; render(); restart(); };
+  $('#cfPrev').onclick = () => go(-1); $('#cfNext').onclick = () => go(1);
+  dbs.forEach((d,i) => d.onclick = () => { cur = i; render(); restart(); });
+  slides.forEach((s,i) => s.addEventListener('click', () => { if (moved) return; if (i!==cur) { cur = i; render(); restart(); } }));
+  let sx = null, moved = false;
+  cf.addEventListener('pointerdown', e => { sx = e.clientX; moved = false; });
+  cf.addEventListener('pointermove', e => { if (sx !== null && Math.abs(e.clientX - sx) > 12) moved = true; });
+  cf.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; sx = null; if (Math.abs(d) > 40) go(d < 0 ? 1 : -1); setTimeout(()=>moved=false, 50); });
+  cf.addEventListener('pointercancel', () => sx = null);
+  cf.tabIndex = 0; cf.addEventListener('keydown', e => { if (e.key==='ArrowLeft') go(-1); if (e.key==='ArrowRight') go(1); });
+  let timer; const restart = () => { clearInterval(timer); if (!RM) timer = setInterval(() => { if (inView && !hover) go(1); }, 6500); };
+  let inView = false, hover = false;
+  new IntersectionObserver(([e]) => inView = e.isIntersecting, {threshold:.4}).observe(cf);
+  cf.addEventListener('mouseenter', () => hover = true); cf.addEventListener('mouseleave', () => hover = false);
+  addEventListener('resize', render); render(); restart();
+})();
+
+/* ================= MODALE VIDÉO ================= */
+const modal = $('#modal'), mv = $('#mv');
+function openVid(src){ mv.src = src; modal.classList.add('on'); mv.muted = false; mv.play().catch(()=>{}); $('#mx').focus(); }
+function closeVid(){ mv.pause(); modal.classList.remove('on'); mv.removeAttribute('src'); mv.load(); }
+$('#mx').onclick = closeVid; modal.addEventListener('click', e => { if (e.target === modal) closeVid(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') { if (modal.classList.contains('on')) closeVid(); } });
+
+/* ================= TABLEAU RÈGLES ================= */
+$('#rulesCards').innerHTML = ORDER.map(k => `<tr><td><b>${CARDS[k].n.toUpperCase()}</b></td><td>${CARDS[k].copies}</td><td>${CARDS[k].cost}</td><td>${CARDS[k].fx}</td></tr>`).join('');
+
+/* ================= AVIS ================= */
+(function reviews(){
+  const tr = $('#revTrack'), dots = $('#rvDots'); const cols = ['#8a5fb0','#1f5aa6','#2e7d32','#c0392b','#d4a514','#f07f1d'];
+  tr.innerHTML = AVIS.map((a,i) => `<div class="rev"><div class="in"><span class="q">“</span><p>${a[2]}</p>
+    <div class="who"><span class="av" style="background:${cols[i%6]}">${a[0][0]}</span><div><b>${a[0]}</b><small>${a[1]||'Rebelle'}</small></div></div></div></div>`).join('');
+  let cur = 0;
+  const per = () => innerWidth <= 640 ? 1 : innerWidth <= 980 ? 2 : 3;
+  const max = () => AVIS.length - per();
+  function render(){
+    cur = Math.max(0, Math.min(cur, max()));
+    tr.style.transform = `translateX(${-cur * 100/per()}%)`;
+    dots.innerHTML = Array.from({length:max()+1}, (_,i) => `<button aria-label="Groupe d'avis ${i+1}" class="${i===cur?'on':''}"></button>`).join('');
+    $$('button', dots).forEach((d,i) => d.onclick = () => { cur = i; render(); });
+  }
+  const go = d => { cur = cur + d > max() ? 0 : cur + d < 0 ? max() : cur + d; render(); };
+  $('#rvPrev').onclick = () => go(-1); $('#rvNext').onclick = () => go(1);
+  let sx = null; tr.addEventListener('pointerdown', e => sx = e.clientX);
+  tr.addEventListener('pointerup', e => { if (sx===null) return; const d = e.clientX - sx; sx = null; if (Math.abs(d) > 40) go(d < 0 ? 1 : -1); });
+  let hover = false; tr.addEventListener('mouseenter', () => hover = true); tr.addEventListener('mouseleave', () => hover = false);
+  if (!RM) setInterval(() => { if (!hover) go(1); }, 5500);
+  addEventListener('resize', render); render();
+})();
+$('#thanks').innerHTML = THANKS.map(n => `<span>${n}</span>`).join('');
+
+/* ================= TIREUR DE DÉCRETS ================= */
+const decSec = $('#decrets');
+const D = {used:new Set(), turn:0, busy:false};
+const dcard = $('#dcard');
+async function drawDecree(){
+  if (D.busy || D.turn >= 16) return;
+  const avail = DECRETS.map((d,i) => i).filter(i => !D.used.has(i));
+  if (!avail.length) return;
+  D.busy = true;
+  dcard.classList.remove('show'); await sleep(dcard.classList.contains('was') ? 650 : 50);
+  const i = pick(avail); D.used.add(i); const [t,e,s] = DECRETS[i];
+  $('#dT').textContent = t; $('#dE').textContent = e; $('#dSrc').textContent = s;
+  D.turn++; $('#dTurn').textContent = D.turn;
+  decSec.style.backgroundColor = `hsl(${rnd(360)},28%,13%)`;
+  dcard.classList.add('show','was');
+  const h = document.createElement('span'); h.textContent = `${D.turn}. ${t}`; $('#dHist').appendChild(h);
+  if (D.turn >= 16) { $('#dDraw').disabled = true; $('#dDraw').textContent = 'Partie terminée'; }
+  await sleep(700); D.busy = false;
+}
+function resetDecree(){ D.used.clear(); D.turn = 0; $('#dTurn').textContent = 0; $('#dHist').innerHTML = ''; dcard.classList.remove('show','was'); decSec.style.backgroundColor = ''; $('#dDraw').disabled = false; $('#dDraw').textContent = 'Tirer un décret'; }
+$('#dDraw').onclick = drawDecree; $('#dReset').onclick = resetDecree;
+dcard.addEventListener('click', drawDecree); dcard.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); drawDecree(); }});
+
+/* ================= SON ================= */
+const snd = $('#sound'), music = $('#music');
+snd.onclick = () => {
+  if (music.paused) { music.volume = .5; music.play().then(() => { snd.classList.add('on'); snd.setAttribute('aria-pressed','true'); snd.setAttribute('aria-label','Couper la musique'); }).catch(()=>{}); }
+  else { music.pause(); snd.classList.remove('on'); snd.setAttribute('aria-pressed','false'); snd.setAttribute('aria-label',"Activer la musique d'ambiance"); }
+};
+
+/* ================= CONFETTIS ================= */
+function confetti(){
+  if (RM) return; const c = $('#confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#ffd21f','#8a5fb0','#f07f1d','#f4ebd3','#c0392b'];
+  const P = Array.from({length:180}, () => ({x:innerWidth/2, y:innerHeight*.45, vx:(Math.random()-.5)*16, vy:-Math.random()*16-4, s:Math.random()*8+5, r:Math.random()*6, vr:(Math.random()-.5)*.4, c:pick(cols)}));
+  let f = 0; (function l(){ x.clearRect(0,0,c.width,c.height);
+    P.forEach(p => { p.vy += .42; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); x.restore(); });
+    if (++f < 200) requestAnimationFrame(l); else x.clearRect(0,0,c.width,c.height); })();
+}
+
+/* ================= MINI-JEU ================= */
+const G = {};
+const REGS_BY_N = {4:['vallee','cotes','hautes'], 5:['vallee','cotes','hautes','basfonds']};
+G.opts = {np:4, dec:true};
+const DECKS = {
+  violet:{rebel:'La Gourou',    label:'Violet', col:'#a77bd0', nums:{brute:[21,30],cachette:[32,41],coffre:[10,11],discours:[20],eclaireur:[42],putsch:[31],repli:[1]}},
+  bleu:  {rebel:'Le Charlatan', label:'Bleu', col:'#4a8ad8', nums:{brute:[25,26],cachette:[36,37],coffre:[6,15], discours:[16],eclaireur:[46],putsch:[31],repli:[5]}},
+  jaune: {rebel:'La Capitaine', label:'Jaune', col:'#d4a20c', nums:{brute:[24,27],cachette:[35,38],coffre:[7,14], discours:[17],eclaireur:[45],putsch:[31],repli:[4]}},
+  rouge: {rebel:'Le Maraudeur', label:'Rouge', col:'#e0503f', nums:{brute:[22,29],cachette:[33,40],coffre:[9,12], discours:[19],eclaireur:[43],putsch:[31],repli:[2]}},
+  vert:  {rebel:'La Crapule',   label:'Vert', col:'#3fa04b', nums:{brute:[23,28],cachette:[34,39],coffre:[8,13], discours:[18],eclaireur:[44],putsch:[31],repli:[3]}}
+};
+let UID = 0;
+const deckOf = d => Object.entries(DECKS[d].nums).flatMap(([k,ns]) => ns.map(n => ({k, n, deck:d, id:++UID, img:`img/cartes/${d}-${k}-${n}.webp`})));
+const cf = c => `<img src="${c.img}" alt="${CARDS[c.k].n} n°${c.n}" draggable="false">`;
+const cn = c => `${CARDS[c.k].n} ${c.n}`;
+const byOrder = (a,b) => ORDER.indexOf(a.k) - ORDER.indexOf(b.k) || b.n - a.n;
+
+function showPicker(){
+  if (!G.players) newGame('violet', true);
+  G.phase = 'pick'; renderAll(); hideNarr(); $('#endbox').classList.remove('on');
+  const syncOpts = () => {
+    $$('.seg [data-np]').forEach(b => { const on = +b.dataset.np === G.opts.np; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    $$('.seg [data-dec]').forEach(b => { const on = (b.dataset.dec === '1') === G.opts.dec; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    $('#decLegend').innerHTML = G.opts.dec
+      ? "📜 <b>Jeu d'ambiance</b> : à chaque tour, un décret du despote bouscule les règles pour tout le monde. Plus de chaos, plus de rires !"
+      : "♟️ <b>Jeu de stratégie</b> : aucun décret, aucun imprévu. Tout se joue sur l'anticipation et le bluff.";
+  };
+  $$('.seg [data-np]').forEach(b => b.onclick = () => { G.opts.np = +b.dataset.np; syncOpts(); });
+  $$('.seg [data-dec]').forEach(b => b.onclick = () => { G.opts.dec = b.dataset.dec === '1'; syncOpts(); });
+  syncOpts();
+  $('#pkGrid').innerHTML = Object.entries(DECKS).map(([d,D]) => `<button class="pk" data-d="${d}" style="--pc:${D.col}"><div class="im"><img src="img/cartes/${d}-putsch-31.webp" alt="${D.rebel}"></div><b>${D.rebel}</b><small><i style="background:${D.col}"></i>${D.label}</small></button>`).join('');
+  $$('#pkGrid .pk').forEach(b => b.onclick = () => { $('#pickbox').classList.remove('on'); newGame(b.dataset.d); });
+  $('#pickbox').classList.add('on');
+  setStatus('Prépare ta partie', 'Choisis le nombre de joueurs, le mode et ton rebelle.');
+  $('#go').disabled = true;
+}
+function newGame(myDeck='violet', silent=false){
+  G.np = G.opts.np; G.dec = G.opts.dec; G.regs = REGS_BY_N[G.np];
+  G.pile = shuffle(G.regs.flatMap(r => [1,2,3,4,5,6].map(v => ({r, v}))));
+  G.turn = 1; G.round = 1; G.phase = 'choose'; G.decrees = shuffle(DEMO_DECREES.slice()); G.lastOrder = null; G.decree = null; G.center = []; G.seq = null;
+  const foes = shuffle(Object.keys(DECKS).filter(d => d !== myDeck)).slice(0, G.np - 1);
+  G.players = [{id:0, name:'Toi', deck:myDeck, human:true}, ...foes.map((d,i) => ({id:i+1, name:DECKS[d].rebel, deck:d}))].map(p => ({...p,
+    col:DECKS[p.deck].col, gold:1, terr:[draw(), draw()], hand:deckOf(p.deck), discard:[], play:null, target:null, show:false}));
+  $('#logl').innerHTML = `<li class="muted">Le despote vacille… Tu incarnes <b style="color:${DECKS[myDeck].col}">${DECKS[myDeck].rebel}</b> face à ${G.players.slice(1).map(nm).join(', ')}. Partie à ${G.np} joueurs (${G.regs.length} régions), ${G.dec ? "<b>avec décrets</b> (jeu d'ambiance)" : '<b>sans décret</b> (jeu de stratégie)'}. Tu as 2 territoires et 1 pièce d'or.</li>`;
+  $('.midcards').classList.toggle('nodec', !G.dec);
+  $('#endbox').classList.remove('on'); $('#dmini').classList.remove('show'); hideNarr(); G.pickRes = null; G.repliBi = null;
+  setStatus('Choisis une carte dans ta main', 'Elle sera posée face cachée.');
+  $('#go').disabled = true; $('#go').textContent = 'Révéler !';
+  renderAll();
+}
+function draw(){ const x = G.pile.pop(); return x ? {r:x.r, v:x.v, rev:false, known:!!x.known, id:Math.random()} : null; }
+const timg = t => `img/terr/${t.r}-${t.v}.webp`;
+const P = i => G.players[i];
+function setStatus(t, s=''){ $('#status').innerHTML = `${t}${s?`<small>${s}</small>`:''}`; }
+function log(html){ const li = document.createElement('li'); li.innerHTML = html; $('#logl').appendChild(li); const l = $('#log'); l.scrollTop = l.scrollHeight; }
+const nm = p => `<b style="color:${p.col}">${p.name}</b>`;
+const S = p => p.human ? `<b style="color:${p.col}">Tu</b>` : nm(p);
+const v = (p,il,tu) => p.human ? tu : il;
+const O = p => p.human ? 'toi' : nm(p);
+const de = p => p.name.startsWith('Le ') ? `du <b style="color:${p.col}">${p.name.slice(3)}</b>` : `de ${nm(p)}`;
+const au = p => p.name.startsWith('Le ') ? `au <b style="color:${p.col}">${p.name.slice(3)}</b>` : `à ${nm(p)}`;
+const lab = (p, N) => { const fem = N==='BRUTE' || N==='CACHETTE'; return p.human ? `${fem?'Ta':'Ton'} ${N}` : `${N==='ÉCLAIREUR' ? "L'" : fem ? 'La ' : 'Le '}${N} ${de(p)}`; };
+const regName = r => `<b style="color:${REG[r].c}">${REG[r].n}</b>`;
+
+function terrHTML(p){
+  return p.terr.map(t => {
+    const known = !p.human && !t.rev && t.known, showFace = p.human || t.rev || known;
+    return `<span class="t ${t.fresh?'new':''} ${known?'known':''}" title="${showFace ? REG[t.r].n + (t.rev?' (révélé)': known ? ' (caché, mais tu le connais)' : ' (caché)') : 'Territoire caché'}"><img src="${showFace ? timg(t) : 'img/t-dos.webp'}" alt="${showFace ? REG[t.r].n : 'Territoire caché'}">${p.human && !t.rev ? '<span class="eye" title="Caché pour les autres">🔒</span>' : ''}${known ? '<span class="seen" title="Tu connais ce territoire">👁</span>' : ''}</span>`;
+  }).join('') || '<span style="font-size:.85rem;color:#9f927a">Aucun territoire</span>';
+}
+function slotHTML(p){
+  return `<div class="slot ${p.play?'':'empty'} ${p.show?'show':''}"><div class="c3"><div class="b"></div><div class="fr">${p.play ? cf(p.play) : ''}</div></div></div>`;
+}
+function boardInner(p){
+  return `<span class="tgt" data-tgt="${p.id}"></span><div class="top"><span class="dot" style="background:${p.col}"></span><span class="nm">${p.name}${p.human ? ` <small class="rb">· ${DECKS[p.deck].rebel}</small>` : ''}</span>
+    <span class="gold"><img src="img/piece.webp" alt="Or">×${p.gold}</span></div>
+    <div class="row"><div class="terrs">${terrHTML(p)}</div>${slotHTML(p)}</div>`;
+}
+function renderAll(){
+  const nf = G.players.length - 1; $('#foes').style.gridTemplateColumns = innerWidth > 760 ? `repeat(${nf},1fr)` : ''; $('#foes').classList.toggle('f4', nf === 4);
+  $('#foes').innerHTML = G.players.slice(1).map(p => `<div class="board" data-id="${p.id}" style="--pc:${p.col}">${boardInner(p)}</div>`).join('');
+  $('#meBoard').innerHTML = boardInner(P(0)); $('#meBoard').dataset.id = 0;
+  G.players.forEach(p => p.terr.forEach(t => t.fresh = false));
+  $('#newGame').disabled = !['choose','end','pick'].includes(G.phase);
+  renderHand(); $('#turnc').textContent = `Manche ${G.round||1} · Tour ${Math.min(G.turn,8)} / 8`;
+  const me = P(0), tgtMode = G.phase === 'choose' && me.play && CARDS[me.play.k].target;
+  $$('#foes .board').forEach(b => {
+    const id = +b.dataset.id, tg = $('.tgt', b);
+    if (tgtMode) b.classList.add(me.target === id ? 'chosen' : 'targetable');
+    if (me.target === id && me.play) { tg.textContent = '🎯 Ta cible'; tg.classList.add('on'); }
+    b.addEventListener('click', () => onFoe(id));
+  });
+  $('#pileN').textContent = G.pile.length;
+  const ce = $('#center'); ce.classList.toggle('on', !!(G.center && G.center.length));
+  ce.innerHTML = (G.center || []).map(t => `<img src="${t.rev || t.known ? timg(t) : 'img/t-dos.webp'}" alt="${t.rev || t.known ? REG[t.r].n : 'Territoire caché'}" title="${t.rev || t.known ? REG[t.r].n : 'Territoire caché'}">`).join('');
+  renderDiscard();
+}
+function renderDiscard(){
+  const me = P(0), d = $('#discard'), pk = G.phase === 'repli-disc';
+  d.innerHTML = me.discard.length
+    ? me.discard.map((c,i) => `<button class="dc ${pk?'pickable':''} ${G.phase==='repli-hand' && G.repliBi===i ? 'sel' : ''}" data-i="${i}" ${pk?'':'disabled'} aria-label="${cn(c)} (défausse)" title="${cn(c)}">${cf(c)}</button>`).join('')
+    : '<span class="disc-empty">Vide : les cartes jouées arrivent ici.</span>';
+  $('#discN').textContent = me.discard.length ? `(${me.discard.length})` : '';
+  $('#discZone').classList.toggle('focus', pk);
+  $$('.dc', d).forEach(b => b.onclick = () => { if (G.phase === 'repli-disc' && G.pickRes) G.pickRes(+b.dataset.i); });
+}
+function onFoe(id){
+  const me = P(0);
+  if (G.phase !== 'choose' || !me.play || !CARDS[me.play.k].target) return;
+  me.target = id; renderAll(); flash(id, 'glow');
+  setStatus(`${cn(me.play)} → ${P(id).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».");
+  $('#go').disabled = false;
+}
+function renderHand(){
+  const me = P(0), can = G.phase === 'choose' || G.phase === 'repli-hand';
+  $('#hand').innerHTML = me.hand.slice().sort(byOrder).map(c =>
+    `<button class="hcard ${me.play && me.play.id===c.id && G.phase==='choose'?'sel':''} ${G.phase==='repli-hand'?'pickable':''}" data-id="${c.id}" ${can ? '' : 'disabled'} aria-label="${CARDS[c.k].n} numéro ${c.n}">${cf(c)}<span class="lbl">${cn(c)}</span></button>`
+  ).join('') || '<span class="disc-empty">Main vide</span>';
+  $$('#hand .hcard').forEach(b => b.onclick = () => {
+    const c = me.hand.find(x => x.id === +b.dataset.id); if (!c) return;
+    if (G.phase === 'repli-hand') { G.pickRes && G.pickRes(c); return; }
+    if (G.phase !== 'choose') return;
+    const T = CARDS[c.k].target;
+    if (!T) me.target = null;
+    me.play = c; renderAll();
+    if (T && me.target == null) {
+      setStatus(`🎯 ${cn(c)} : choisis ta cible`, "Clique sur le rebelle que tu vises. Tu dois désigner une cible avant de révéler.");
+      $('#go').disabled = true;
+    } else if (T) {
+      setStatus(`${cn(c)} → ${P(me.target).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».");
+      $('#go').disabled = false;
+    } else {
+      setStatus(`${cn(c)} posée face cachée`, 'Clique sur « Révéler ! » quand tu es prêt·e.');
+      $('#go').disabled = false;
+    }
+  });
+}
+function aiChoose(p){
+  const w = {putsch: p.gold>=putschCost(p) ? 3 : .3, brute: p.gold>=1 ? 3 : .4, coffre: p.gold<1 ? 4 : 2, cachette:1.6, discours:1.6, eclaireur:1.4, repli: p.discard.length ? .6 : .1};
+  const opts = p.hand; let tot = opts.reduce((s,c) => s + w[c.k], 0), r = Math.random()*tot;
+  p.play = null;
+  for (const c of opts) { r -= w[c.k]; if (r <= 0) { p.play = c; break; } } if (!p.play) p.play = opts[0];
+  p.target = null;
+  if (CARDS[p.play.k].target) {
+    const others = G.players.filter(o => o.id !== p.id);
+    const sc = o => p.play.k==='eclaireur' ? o.terr.filter(t=>!t.rev).length + .5 : o.terr.length + .5;
+    let s = others.reduce((a,o) => a + sc(o), 0), q = Math.random()*s;
+    for (const o of others) { q -= sc(o); if (q <= 0) { p.target = o.id; break; } } if (p.target == null) p.target = others[0].id;
+  }
+}
+function flash(id, cls){ const b = $(`.board[data-id="${id}"]`); if (!b) return; b.classList.remove(cls); void b.offsetWidth; b.classList.add(cls); setTimeout(()=>b.classList.remove(cls), 900); }
+
+$('#go').onclick = async () => {
+  if (G.phase !== 'choose' || !P(0).play) return;
+  if (CARDS[P(0).play.k].target && P(0).target == null) return;
+  G.phase = 'reveal'; $('#go').disabled = true;
+  G.players.forEach(p => { if (!p.human) aiChoose(p); p.hand.splice(p.hand.indexOf(p.play), 1); });
+  renderAll();
+  G.skipNarr = false; G.seq = null; G.decree = null; G.center = [];
+  if (G.dec && G.decrees.length) {
+    setStatus('Le despote promulgue un décret…');
+    G.decree = G.decrees.pop();
+    $('#dmini').classList.remove('show'); await sleep(350);
+    $('#dmT').textContent = G.decree.t; $('#dmE').textContent = G.decree.e; $('#dmini').classList.add('show');
+    log(`📜 Décret du tour : <b>${G.decree.t}</b> : ${G.decree.e}`);
+    await sleep(900);
+    await panelInfo(decVis(), `Décret : ${G.decree.t}`, `${G.decree.e}<br><br>${WHEN[G.decree.w]}`);
+    hideNarr();
+    if (G.decree.w === 'pre') await decreePre();
+  }
+  setStatus('Préparez-vous…');
+  for (const n of ['3','2','1']) { $('#count').innerHTML = `<span>${n}</span>`; await sleep(800); }
+  $('#count').innerHTML = '';
+  G.players.forEach(p => p.show = true); renderAll();
+  log(`🃏 Révélation ! ${G.players.map(p => `${nm(p)} : ${cn(p.play)}${p.target!=null ? ' → ' + P(p.target).name : ''}`).join(' · ')}`);
+  if (G.decree && G.decree.w === 'post') { G.phase = 'resolve'; await decreePost(); }
+  await resolve();
+};
+
+const RULES = {
+  putsch:"Le PUTSCH (n°31) échange tous les territoires des deux rebelles. Il coûte 2 or (3 s'il est réutilisé en 2ᵉ manche). Si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous.",
+  brute:"La BRUTE prend un territoire à sa cible pour 1 or. Si la cible a au moins un territoire face cachée, c'est elle qui choisit lequel donner ; si tout est révélé, c'est l'attaquant qui choisit.",
+  eclaireur:"L'ÉCLAIREUR regarde les territoires de sa cible et en révèle un.",
+  cachette:"La CACHETTE protège des BRUTE et des PUTSCH pendant tout ce tour.",
+  coffre:"Le COFFRE rapporte 1 pièce d'or.",
+  discours:"Le DISCOURS fait piocher un territoire caché… seulement si personne ne t'a visé ce tour-ci.",
+  repli:"Le REPLI te fait reprendre une carte de ta défausse, en échange d'une carte de ta main pas encore jouée."
+};
+function orderHTML(){
+  if (!G.seq || G.phase !== 'resolve') return '';
+  return `<div class="rorder" aria-label="Ordre de résolution, du plus grand numéro au plus petit">${G.seq.map(c => `<span class="${G.cur.includes(c.id)?'cur':G.doneIds.includes(c.id)?'done':''}"><i style="background:${DECKS[c.deck].col}"></i>${cn(c)}</span>`).join('')}</div>`;
+}
+function hideNarr(){ $('#narr').classList.remove('on'); }
+function narrate(card, html, summary=false){
+  if (G.skipNarr) return sleep(250);
+  const panel = $('#panel'), narr = $('#narr');
+  let body;
+  if (summary) {
+    body = `<h4>Révélation !</h4><div class="txt">Voici les cartes jouées ce tour. On les résout une par une, <b>du plus grand numéro au plus petit</b>.</div>
+      <div class="row4" data-n="${G.players.length}" style="--n:${G.players.length}">${G.players.map(p => `<div><div class="pc">${cf(p.play)}</div><span style="color:${p.col}">${p.name}</span><br>${cn(p.play)}${CARDS[p.play.k].target && p.target!=null ? `<em>→ ${P(p.target).name}</em>` : ''}</div>`).join('')}</div>`;
+  } else {
+    body = `<div class="main"><div class="pc">${cf(card)}</div><div><h4>${CARDS[card.k].n} <span class="no">n°${card.n}</span></h4><div class="txt">${html.replace(/^\S+\s/, '')}</div><div class="rule">📖 ${RULES[card.k]}</div></div></div>`;
+  }
+  panel.innerHTML = `${orderHTML()}${body}<div class="foot"><button class="skip" id="nSkip">Tout passer</button><span class="k">Entrée ou → pour continuer</span><button class="btn btn-violet btn-sm" id="nNext">Suivant ▶</button></div>`;
+  panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
+  narr.classList.add('on');
+  setStatus('Résolution des actions', 'Lis chaque action puis clique sur « Suivant ».');
+  const r = panel.getBoundingClientRect();
+  if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  return new Promise(res => {
+    const done = () => { removeEventListener('keydown', key); res(); };
+    const key = e => { if (['Enter','ArrowRight',' '].includes(e.key) && narr.classList.contains('on')) { e.preventDefault(); done(); } };
+    addEventListener('keydown', key);
+    $('#nNext').onclick = done;
+    $('#nSkip').onclick = () => { G.skipNarr = true; hideNarr(); done(); };
+    setTimeout(() => $('#nNext') && $('#nNext').focus({preventScroll:true}), 60);
+  });
+}
+const terrsOf = id => $(`.board[data-id="${id}"] .terrs`);
+async function fly(fromEl, toEl, src){
+  if (!fromEl || !toEl || RM || G.skipNarr) return;
+  const mid = $('.mid'), r0 = mid.getBoundingClientRect();
+  if (r0.top < 60 || r0.bottom > innerHeight - 40) { mid.scrollIntoView({block:'center', behavior:'smooth'}); await sleep(450); }
+  const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect(), w = 60;
+  const f = new Image(); f.src = src; f.className = 'flyer'; f.alt = '';
+  Object.assign(f.style, {left:(a.left + a.width/2 - w/2)+'px', top:(a.top + a.height/2 - w*.45)+'px', width:w+'px'});
+  document.body.appendChild(f); void f.offsetWidth;
+  const dx = (b.left + Math.min(b.width, 140)/2) - (a.left + a.width/2), dy = (b.top + b.height/2) - (a.top + a.height/2);
+  f.style.transform = `translate(${dx}px,${dy}px) rotate(360deg) scale(.85)`;
+  await sleep(950); f.remove();
+}
+function humanPickTerr(card, title, txt, terrs){
+  const panel = $('#panel'), narr = $('#narr');
+  panel.innerHTML = `${orderHTML()}<div class="main"><div class="pc">${cf(card)}</div><div><h4>${title}</h4><div class="txt">${txt}</div></div></div>
+    <div class="scout">${terrs.map((x,i) => `<button data-i="${i}"><img src="${timg(x)}" alt="${REG[x.r].n}">${REG[x.r].n}<em>${x.rev ? 'révélé' : 'face cachée'}</em></button>`).join('')}</div>`;
+  panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
+  narr.classList.add('on');
+  setStatus('💪 Brute : choisis un territoire');
+  const r = panel.getBoundingClientRect();
+  if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  return new Promise(res => $$('.scout button', panel).forEach(b => b.onclick = () => res(terrs[+b.dataset.i])));
+}
+function humanScout(t, card){
+  t.terr.forEach(x => x.known = true);
+  const panel = $('#panel'), narr = $('#narr');
+  panel.innerHTML = `${orderHTML()}<div class="main"><div class="pc">${cf(card)}</div><div><h4>Éclaireur <span class="no">n°${card.n}</span></h4>
+    <div class="txt">Tu regardes en secret tous les territoires de ${nm(t)}. <b>Choisis celui que tu retournes face visible</b> pour tout le monde.</div></div></div>
+    <div class="scout">${t.terr.map((x,i) => `<button data-i="${i}" ${x.rev ? 'disabled' : ''}><img src="${timg(x)}" alt="${REG[x.r].n}">${REG[x.r].n}${x.rev ? '<em>déjà visible</em>' : ''}</button>`).join('')}</div>`;
+  panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
+  narr.classList.add('on');
+  setStatus('🐺 Éclaireur : choisis le territoire à révéler');
+  const r = panel.getBoundingClientRect();
+  if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  return new Promise(res => $$('.scout button:not(:disabled)', panel).forEach(b => b.onclick = () => res(t.terr[+b.dataset.i])));
+}
+async function humanRepli(p){
+  G.phase = 'repli-disc'; renderAll();
+  setStatus('↩️ REPLI : choisis dans ta défausse la carte à récupérer', 'Clique sur une carte de ta défausse (en bas).');
+  const z = $('#discZone').getBoundingClientRect(); if (z.top < 60 || z.bottom > innerHeight) $('#discZone').scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  const bi = await new Promise(r => G.pickRes = r);
+  const back = p.discard[bi];
+  G.phase = 'repli-hand'; G.repliBi = bi; renderAll();
+  setStatus(`↩️ Tu récupères ${cn(back)}`, 'Choisis maintenant la carte de ta main (pas encore jouée) qui part dans la défausse.');
+  const out = await new Promise(r => G.pickRes = r);
+  G.pickRes = null; G.repliBi = null; G.phase = 'resolve';
+  return {out, back, bi};
+}
+
+/* ================= DÉCRETS ACTIFS ================= */
+const DEMO_DECREES = [
+  {k:'foule', t:'Mouvement de foule', e:'Avant la révélation, donnez 1 de vos territoires au rebelle situé à votre droite.', w:'pre'},
+  {k:'bousculade', t:'Bousculade', e:'Avant la révélation, placez un territoire au centre. Tour à tour, récupérez un des territoires restants au moment de la résolution de votre carte.', w:'pre'},
+  {k:'agressif', t:'Agressif', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
+  {k:'agressif', t:'Agressif', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
+  {k:'pouce', t:'Coup de pouce', e:"Si vous avez moins de 2 territoires, piochez-en un au moment de la résolution de votre carte.", w:'res'},
+  {k:'affolement', t:'Affolement', e:'Prenez la carte Action de votre voisin de droite et prenez-en connaissance avant la révélation.', w:'pre'},
+  {k:'bourde', t:'Grosse bourde', e:'CACHETTE ne fonctionne pas à ce tour.', w:'res'},
+  {k:'permeable', t:'Perméable', e:"Si vous avez joué CACHETTE et êtes visé par plusieurs cartes, vous n'êtes immunisé qu'à la 1ʳᵉ attaque.", w:'res'},
+  {k:'ostentatoire', t:'Ostentatoire', e:'Tout territoire récupéré à ce tour est immédiatement révélé.', w:'res'},
+  {k:'ostentatoire', t:'Ostentatoire', e:'Tout territoire récupéré à ce tour est immédiatement révélé.', w:'res'},
+  {k:'terrain', t:'En terrain connu', e:'Si ÉCLAIREUR est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.', w:'pre'},
+  {k:'cartographe', t:'Cartographe', e:"Les rebelles peuvent regarder un territoire d'un autre rebelle.", w:'pre'},
+  {k:'voyante', t:'Voyante', e:'Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.', w:'pre'},
+  {k:'corruption', t:'Corruption', e:'COFFRE rapporte 2 ors au lieu de 1.', w:'res'},
+  {k:'coalition', t:'Coalition', e:'COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans la limite de 3 ors.', w:'res'},
+  {k:'coupbas', t:'Coup bas', e:'Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.', w:'post'},
+  {k:'liquidation', t:'Liquidation', e:'BRUTE ne coûte aucun or à ce tour.', w:'res'},
+  {k:'stratege', t:'Stratège', e:'Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.', w:'res'},
+  {k:'corvee', t:'Corvée', e:'Si vous avez au moins un territoire face cachée, payez 1 or ou le territoire est révélé.', w:'pre'},
+  {k:'mecene', t:'Mécène', e:"Après la révélation, le ou les rebelles avec le moins d'or en gagnent 2 et en donnent 1 à un rebelle de leur choix.", w:'post'}
+];
+const WHEN = {pre:"Il s'applique tout de suite, <b>avant la révélation</b> des cartes.", post:"Il s'appliquera <b>juste après la révélation</b>, avant la résolution.", res:"Il modifie la <b>résolution des cartes</b> de ce tour."};
+const isOn = k => !!(G.dec && G.decree && G.decree.k === k);
+const rightOf = p => P((p.id - 1 + G.players.length) % G.players.length);
+const leftOf = p => P((p.id + 1) % G.players.length);
+const cntR = (p, r) => p.terr.filter(x => x.r === r).length;
+const ownerOf = c => G.players.find(p => p.deck === c.deck);
+const decVis = () => `<div class="dpc"><b>${G.decree.t}</b></div>`;
+const cardVis = c => `<div class="pc">${cf(c)}</div>`;
+function gain(p, t){ t.fresh = true; if (isOn('ostentatoire')) t.rev = true; }
+function aiWorstTerr(p, list){ list = list || p.terr; return list.slice().sort((a,b) => cntR(p,a.r) - cntR(p,b.r) || (b.rev?1:0) - (a.rev?1:0) || Math.random() - .5)[0]; }
+function aiBestTake(p, tiles){ const vis = tiles.filter(x => x.rev); return vis.length ? vis.sort((a,b) => cntR(p,b.r) - cntR(p,a.r))[0] : pick(tiles); }
+function aiTarget(p){
+  const others = G.players.filter(o => o.id !== p.id);
+  const sc = o => p.play.k==='eclaireur' ? o.terr.filter(t=>!t.rev).length + .5 : o.terr.length + .5;
+  let s = others.reduce((a,o) => a + sc(o), 0), q = Math.random()*s;
+  for (const o of others) { q -= sc(o); if (q <= 0) return o.id; } return others[0].id;
+}
+function reshufflePile(){ shuffle(G.pile); G.pile.forEach(x => x.known = false); }
+const terrOpt = (x, face, sub) => ({img: face ? timg(x) : 'img/t-dos.webp', html: face ? REG[x.r].n : 'Face cachée', sub: sub ?? (x.rev ? 'révélé' : face ? 'face cachée' : ''), value: x});
+function showPanel(inner){
+  const panel = $('#panel'), narr = $('#narr');
+  panel.innerHTML = orderHTML() + inner;
+  panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
+  narr.classList.add('on');
+  const r = panel.getBoundingClientRect();
+  if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  return panel;
+}
+const headHTML = (vis, title, txt, rule) => `<div class="main ${vis.includes('dpc') ? 'dm' : ''}"><div>${vis}</div><div><h4>${title}</h4><div class="txt">${txt}</div>${rule ? `<div class="rule">📖 ${rule}</div>` : ''}</div></div>`;
+function panelInfo(vis, title, txt, rule=''){
+  showPanel(headHTML(vis, title, txt, rule) + `<div class="foot"><span></span><span class="k">Entrée ou → pour continuer</span><button class="btn btn-violet btn-sm" id="nNext">Suivant ▶</button></div>`);
+  return new Promise(res => {
+    const done = () => { removeEventListener('keydown', key); res(); };
+    const key = e => { if (['Enter','ArrowRight',' '].includes(e.key) && $('#narr').classList.contains('on')) { e.preventDefault(); done(); } };
+    addEventListener('keydown', key); $('#nNext').onclick = done;
+    setTimeout(() => $('#nNext') && $('#nNext').focus({preventScroll:true}), 60);
+  });
+}
+function panelAsk(vis, title, txt, opts, {kind='list', skip=null, rule=''} = {}){
+  const body = kind === 'terr'
+    ? `<div class="scout">${opts.map((o,i) => `<button data-i="${i}" ${o.disabled?'disabled':''}><img src="${o.img}" alt="">${o.html}${o.sub ? `<em>${o.sub}</em>` : ''}</button>`).join('')}</div>`
+    : `<div class="choices">${opts.map((o,i) => `<button data-i="${i}" ${o.disabled?'disabled':''}>${o.html}${o.sub ? `<small>${o.sub}</small>` : ''}</button>`).join('')}</div>`;
+  const panel = showPanel(headHTML(vis, title, txt, rule) + body + (skip ? `<div class="foot"><span></span><button class="btn btn-line btn-sm" id="aSkip">${skip}</button></div>` : ''));
+  return new Promise(res => {
+    $$('.scout button:not(:disabled), .choices button:not(:disabled)', panel).forEach(b => b.onclick = () => res(opts[+b.dataset.i].value));
+    if (skip) $('#aSkip').onclick = () => res(null);
+  });
+}
+const plOpt = (p, sub, dis) => ({html: nmD(p), sub, value: p, disabled: !!dis});
+async function flyTerr(fromEl, toEl, t){ hideNarr(); await fly(fromEl, toEl, t.rev ? timg(t) : 'img/t-dos.webp'); }
+function bumpPile(){ $('#pile').classList.remove('bump'); void $('#pile').offsetWidth; $('#pile').classList.add('bump'); }
+
+async function decreePre(){
+  const D = G.decree, pl = G.players, me = P(0), dv = decVis();
+  if (D.k === 'foule') {
+    const gifts = [];
+    for (const p of pl) {
+      if (!p.terr.length) continue;
+      const to = rightOf(p);
+      const t = p.human
+        ? await panelAsk(dv, 'Mouvement de foule', `Choisis le territoire que tu donnes à ton voisin de droite, ${nmD(to)}.`, p.terr.map(x => terrOpt(x, true)), {kind:'terr'})
+        : aiWorstTerr(p);
+      gifts.push([p, to, t]);
+    }
+    for (const [a,b,t] of gifts) { await flyTerr(terrsOf(a.id), terrsOf(b.id), t); a.terr.splice(a.terr.indexOf(t),1); if (a.human || b.human) t.known = true; gain(b, t); b.terr.push(t); renderAll(); }
+    const lines = gifts.map(([a,b,t]) => `<li>${nmD(a)} → ${nmD(b)}${(a.human || b.human || t.rev) ? ` : ${regName(t.r)}` : ' <span class="muted">(face cachée)</span>'}</li>`).join('');
+    log(`📜 Mouvement de foule : chacun donne un territoire à son voisin de droite.`);
+    await panelInfo(dv, 'Mouvement de foule', `Chaque rebelle a donné un territoire à son voisin de droite :<ul class="lines">${lines || '<li>personne n\'avait de territoire</li>'}</ul>`);
+  }
+  else if (D.k === 'bousculade') {
+    G.center = [];
+    const placed = [];
+    for (const p of pl) {
+      if (!p.terr.length) continue;
+      const t = p.human
+        ? await panelAsk(dv, 'Bousculade', 'Choisis le territoire que tu poses au centre. Tu pourras en récupérer un (peut-être un autre !) quand ta carte sera résolue.', p.terr.map(x => terrOpt(x, true)), {kind:'terr'})
+        : aiWorstTerr(p);
+      placed.push([p, t]);
+    }
+    for (const [p,t] of placed) { await flyTerr(terrsOf(p.id), $('#center'), t); p.terr.splice(p.terr.indexOf(t),1); if (p.human) t.known = true; t.from = p.id; G.center.push(t); renderAll(); }
+    log(`📜 Bousculade : ${placed.length} territoires sont posés au centre.`);
+    await panelInfo(dv, 'Bousculade', `${placed.length} territoires sont au centre (les révélés restent visibles, les autres restent face cachée). Chaque rebelle en récupérera un <b>au moment où sa carte sera résolue</b>, du plus grand numéro au plus petit.`);
+  }
+  else if (D.k === 'affolement') {
+    const plays = pl.map(p => rightOf(p).play);
+    pl.forEach((p,i) => { p.play = plays[i]; p.target = null; });
+    pl.forEach(p => { if (!p.human && CARDS[p.play.k].target) p.target = aiTarget(p); });
+    renderAll();
+    const c = me.play, from = rightOf(me);
+    if (CARDS[c.k].target) {
+      const t = await panelAsk(cardVis(c), 'Affolement !', `Tu prends la carte de ton voisin de droite, ${nmD(from)} : <b>${cn(c)}</b>. Elle vise un rebelle : <b>désigne ta cible</b>.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.terr.length} terr. · ${o.gold} or`)));
+      me.target = t.id;
+    } else await panelInfo(cardVis(c), 'Affolement !', `Tu prends la carte de ton voisin de droite, ${nmD(from)} : <b>${cn(c)}</b>. C'est elle que tu joues ce tour-ci. Les autres rebelles ont fait pareil.`, RULES[c.k]);
+    log(`📜 Affolement : chaque rebelle joue la carte de son voisin de droite.`);
+    renderAll();
+  }
+  else if (D.k === 'terrain') {
+    const who = pl.filter(p => p.discard.some(c => c.k === 'eclaireur'));
+    const top = G.pile.slice(-2).reverse();
+    if (who.includes(me) && top.length) {
+      top.forEach(x => x.known = true);
+      await panelInfo(dv, 'En terrain connu', `Ton ÉCLAIREUR est dans ta défausse : tu regardes les 2 premiers territoires de la pioche, puis tu les reposes dessus.<div class="scout">${top.map((x,i) => `<button disabled style="opacity:1"><img src="${timg(x)}" alt="">${i ? '2ᵉ' : '1ᵉʳ'} : ${REG[x.r].n}</button>`).join('')}</div>`);
+    }
+    const others = who.filter(p => !p.human);
+    log(`📜 En terrain connu : ${who.length ? who.map(nm).join(', ') + ' regarde(nt) le haut de la pioche.' : "personne n'a d'ÉCLAIREUR en défausse."}`);
+    if (!who.includes(me)) await panelInfo(dv, 'En terrain connu', who.length ? `${others.map(nmD).join(', ')} ${others.length>1?'regardent':'regarde'} en secret les 2 premiers territoires de la pioche. Toi, tu n'as pas d'ÉCLAIREUR dans ta défausse.` : "Personne n'a d'ÉCLAIREUR dans sa défausse : rien ne se passe.");
+  }
+  else if (D.k === 'cartographe') {
+    const cand = pl.filter(o => !o.human && o.terr.some(x => !x.rev && !x.known));
+    const who = await panelAsk(dv, 'Cartographe', "Tu peux regarder un territoire caché d'un autre rebelle. Chez qui veux-tu jeter un œil ?", pl.filter(o => !o.human).map(o => plOpt(o, `${o.terr.filter(x => !x.rev && !x.known).length} inconnu(s)`, !cand.includes(o))), {skip:'Ne pas regarder'});
+    if (who) {
+      const hid = who.terr.filter(x => !x.rev && !x.known);
+      const t = await panelAsk(dv, 'Cartographe', `Choisis le territoire de ${nmD(who)} que tu regardes.`, hid.map(x => terrOpt(x, false)), {kind:'terr'});
+      t.known = true; renderAll();
+      await panelInfo(dv, 'Cartographe', `Tu découvres en secret un territoire de ${nmD(who)} : <b>${regName(t.r)}</b>. Il reste face cachée pour les autres (repère 👁 sur son plateau).<div class="scout"><button disabled style="opacity:1"><img src="${timg(t)}" alt="">${REG[t.r].n}</button></div>`);
+    }
+    log(`📜 Cartographe : chaque rebelle peut regarder un territoire d'un autre.`);
+  }
+  else if (D.k === 'voyante') {
+    G.guesses = {};
+    const left = leftOf(me), rem = remainingTypes(left);
+    G.guesses[me.id] = await panelAsk(dv, 'Voyante', `Devine la carte que joue ton voisin de gauche, ${nmD(left)}. Si tu as raison, tu gagnes 1 or à la fin du tour.<br><span class="muted">Le nombre indique combien de cartes de ce type il peut encore avoir (d'après sa défausse, visible de tous).</span>`, ORDER.map(k => ({html: CARDS[k].n, sub: `${rem[k]} possible${rem[k]>1?'s':''}`, value: k, disabled: !rem[k]})));
+    pl.forEach(p => { if (!p.human) { const r = remainingTypes(leftOf(p)); const mx = Math.max(...Object.values(r)); G.guesses[p.id] = pick(ORDER.filter(k => r[k] === mx)); } });
+    log(`📜 Voyante : chacun prédit la carte de son voisin de gauche.`);
+    await panelInfo(dv, 'Voyante', `Tu prédis <b>${CARDS[G.guesses[me.id]].n}</b> pour ${nmD(left)}. Les autres rebelles ont fait leur prédiction en secret. Verdict à la fin du tour !`);
+  }
+  else if (D.k === 'corvee') {
+    const lines = [];
+    for (const p of pl) {
+      const hid = p.terr.filter(x => !x.rev); if (!hid.length) continue;
+      let ch;
+      if (p.human) {
+        ch = await panelAsk(dv, 'Corvée', "Tu as au moins un territoire face cachée : <b>paie 1 or</b>, ou <b>révèle</b> un de tes territoires cachés.", [{img:'img/piece.webp', html:'Payer 1 or', sub: p.gold < 1 ? "pas assez d'or" : `il te reste ${p.gold} or`, value:'pay', disabled: p.gold < 1}, ...hid.map(x => terrOpt(x, true, 'le révéler'))], {kind:'terr'});
+      } else ch = p.gold >= 2 ? 'pay' : aiWorstTerr(p, hid);
+      if (ch === 'pay') { p.gold -= 1; lines.push(`<li>${nmD(p)} paie 1 or</li>`); }
+      else { ch.rev = true; ch.fresh = true; lines.push(`<li>${nmD(p)} révèle ${regName(ch.r)}</li>`); }
+      renderAll();
+    }
+    log(`📜 Corvée : ${lines.length} rebelle(s) concerné(s).`);
+    await panelInfo(dv, 'Corvée', lines.length ? `Les rebelles qui avaient un territoire caché ont payé ou révélé :<ul class="lines">${lines.join('')}</ul>` : "Personne n'a de territoire caché : rien ne se passe.");
+  }
+  hideNarr();
+}
+function remainingTypes(p){
+  const r = {}; ORDER.forEach(k => r[k] = (DECKS[p.deck].nums[k] || []).length);
+  p.discard.forEach(c => { if (c.deck === p.deck) r[c.k]--; });
+  if (G.round === 2) ORDER.forEach(k => r[k] = (DECKS[p.deck].nums[k] || []).length - p.discard.filter(c => c.k === k).length);
+  return r;
+}
+async function decreePost(){
+  const D = G.decree, pl = G.players, dv = decVis();
+  if (D.k === 'coupbas') {
+    const lo = pl.slice().sort((a,b) => a.play.n - b.play.n)[0];
+    const vict = pl.filter(o => o !== lo && o.gold > 0);
+    if (!vict.length) { await panelInfo(dv, 'Coup bas', `${nmD(lo)} a joué le plus petit numéro (${cn(lo.play)})… mais personne d'autre n'a d'or à voler !`); }
+    else {
+      let v;
+      if (lo.human) v = await panelAsk(dv, 'Coup bas', `Tu as joué le plus petit numéro (${cn(lo.play)}) : <b>vole 1 or</b> au rebelle de ton choix.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.gold} or`, o.gold < 1)));
+      else { const mx = Math.max(...vict.map(o => o.gold)); v = pick(vict.filter(o => o.gold === mx)); }
+      v.gold -= 1; lo.gold += 1; renderAll(); flash(v.id, 'hit');
+      log(`📜 Coup bas : ${lo.human ? `Tu voles 1 or ${au(v)}` : v.human ? `${nm(lo)} te vole 1 or` : `${nm(lo)} vole 1 or ${au(v)}`}.`);
+      await panelInfo(dv, 'Coup bas', `${nmD(lo)} a joué le plus petit numéro (${cn(lo.play)}) et <b>vole 1 or</b> à ${nmD(v)}.`);
+    }
+  }
+  else if (D.k === 'mecene') {
+    const mn = Math.min(...pl.map(p => p.gold)), poor = pl.filter(p => p.gold === mn), lines = [];
+    for (const p of poor) {
+      p.gold += 2; renderAll();
+      let r;
+      if (p.human) r = await panelAsk(dv, 'Mécène', `Tu fais partie des rebelles les plus pauvres : <b>tu gagnes 2 or</b>… et tu dois en donner 1 à un rebelle de ton choix.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.terr.length} terr. · ${o.gold} or`)));
+      else r = pl.filter(o => o !== p).sort((a,b) => a.terr.length - b.terr.length || a.gold - b.gold)[0];
+      p.gold -= 1; r.gold += 1; renderAll();
+      lines.push(`<li>${nmD(p)} gagne 2 or et en donne 1 à ${nmD(r)}</li>`);
+    }
+    log(`📜 Mécène : ${poor.map(nm).join(', ')} ${poor.length > 1 ? 'reçoivent 2 or et en redonnent' : 'reçoit 2 or et en redonne'} 1.`);
+    await panelInfo(dv, 'Mécène', `Les rebelles qui avaient le moins d'or (${mn}) :<ul class="lines">${lines.join('')}</ul>`);
+  }
+  hideNarr();
+}
+async function poucePick(p, c){
+  if (!isOn('pouce') || p.terr.length >= 2 || !G.pile.length) return;
+  const t = draw(); bumpPile(); $('#pileN').textContent = G.pile.length;
+  await flyTerr($('#pile .stk'), terrsOf(p.id), {rev:false});
+  gain(p, t); p.terr.push(t); renderAll();
+  log(`📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires et ${v(p,'pioche','pioches')} un territoire${p.human || t.rev ? ` (${regName(t.r)})` : ''}.`);
+  await narrate(c, `📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires, ${v(p,'il pioche','tu pioches')} donc un territoire${p.human || t.rev ? ` : ${regName(t.r)}` : ' (face cachée)'}.`);
+}
+async function bousPick(p, c){
+  if (!isOn('bousculade') || !G.center.length) return;
+  let t;
+  if (p.human) { hideNarr(); t = await panelAsk(cardVis(c), 'Bousculade', 'Au moment de résoudre ta carte, tu récupères <b>un des territoires du centre</b>.', G.center.map(x => terrOpt(x, x.rev || x.known)), {kind:'terr'}); }
+  else { const sc = x => (x.rev || x.from === p.id) ? cntR(p, x.r) + 1 : 1.2; t = G.center.slice().sort((a,b) => sc(b) - sc(a))[0]; }
+  G.center.splice(G.center.indexOf(t), 1);
+  await flyTerr($('#center'), terrsOf(p.id), t);
+  if (p.human) t.known = true; gain(p, t); delete t.from; p.terr.push(t);
+  log(`📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` (${regName(t.r)})` : ''}.`); renderAll();
+  await narrate(c, `📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` : ${regName(t.r)}` : ''}.`);
+}
+async function stratege(p, c){
+  if (!isOn('stratege') || p.gold < 1 || !p.terr.length || !G.pile.length) return;
+  let t;
+  if (p.human) { hideNarr(); t = await panelAsk(cardVis(c), 'Stratège', `Tu peux <b>payer 1 or</b> (il t'en reste ${p.gold}) pour échanger un de tes territoires avec le premier de la pioche.`, p.terr.map(x => terrOpt(x, true)), {kind:'terr', skip:'Ne rien échanger'}); }
+  else { const w = aiWorstTerr(p), mx = Math.max(...p.terr.map(x => cntR(p, x.r))); t = (p.gold >= 2 && p.terr.length >= 2 && cntR(p, w.r) < mx) ? w : null; }
+  if (!t) return;
+  const n = draw(); p.gold -= 1;
+  p.terr.splice(p.terr.indexOf(t), 1); G.pile.push({r:t.r, v:t.v}); reshufflePile();
+  bumpPile(); await flyTerr($('#pile .stk'), terrsOf(p.id), {rev:false});
+  gain(p, n); p.terr.push(n); renderAll();
+  log(`📜 Stratège : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire avec la pioche.`);
+  await narrate(c, `📜 Stratège : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire${p.human ? ` (${regName(t.r)})` : t.rev ? ` (${regName(t.r)}, révélé)` : ''} contre le premier de la pioche${p.human || n.rev ? ` : ${regName(n.r)}` : ''}.`);
+}
+
+async function resolve(){
+  G.phase = 'resolve';
+  const pl = G.players;
+  pl.forEach(p => { p.cachette = p.play.k === 'cachette'; p.targetedBy = []; });
+  pl.forEach(p => { if (CARDS[p.play.k].target && p.target != null) P(p.target).targetedBy.push(p.id); });
+  const seq = pl.slice().sort((a,b) => b.play.n - a.play.n);
+  G.seq = seq.map(p => p.play); G.cur = []; G.doneIds = []; G.skipNarr = false;
+  const blocks = t => { if (!t.cachette || isOn('bourde')) return false; if (isOn('permeable')) { if (t.cachUsed) return false; t.cachUsed = true; } return true; };
+  pl.forEach(p => p.cachUsed = false);
+  await narrate(null, null, true);
+  const step = async (html, ids, cls, card) => { log(html); renderAll(); (ids||[]).forEach(i => flash(i, cls||'glow')); await narrate(card, html); };
+  let putschDone = false;
+
+  for (const p of seq) {
+    const c = p.play;
+    G.cur = c.k === 'putsch' ? seq.filter(q => q.play.k === 'putsch').map(q => q.play.id) : [c.id];
+    await poucePick(p, c);
+    await bousPick(p, c);
+    if (c.k === 'putsch' && putschDone) { await stratege(p, c); continue; }
+    if (c.k === 'putsch') {
+      putschDone = true;
+      const pts = seq.filter(q => q.play.k === 'putsch'); G.cur = pts.map(q => q.play.id);
+      const valid = [];
+      for (const q of pts) {
+        if (q.gold < putschCost(q)) { await step(`👑 ${S(q)} ${v(q,'tente','tentes')} un PUTSCH sans assez d'or (${putschCost(q)} or nécessaires)… sans effet.`, [q.id], 'glow', q.play); continue; }
+        valid.push(q);
+      }
+      if (valid.length > 1) await step(`👑💥 Plusieurs PUTSCH en même temps (${valid.map(O).join(', ')}) : <b>ils s'annulent tous !</b>`, valid.map(q=>q.id), 'hit', c);
+      else if (valid.length === 1) {
+        const q = valid[0], t = P(q.target); q.gold -= putschCost(q);
+        if (blocks(t)) await step(`👑 ${lab(q,'PUTSCH')} contre ${O(t)} est bloqué par la CACHETTE ! L'or est perdu.`, [t.id], 'glow', q.play);
+        else { [q.terr, t.terr] = [t.terr, q.terr]; if (isOn('ostentatoire')) [...q.terr, ...t.terr].forEach(x => x.rev = true); if (q.human) t.terr.forEach(x => x.known = true); if (t.human) q.terr.forEach(x => x.known = true); q.terr.forEach(x=>x.fresh=true); t.terr.forEach(x=>x.fresh=true);
+          await step(`👑🔥 PUTSCH ! ${S(q)} ${v(q,'échange','échanges')} <b>tous ses territoires</b> avec ${O(t)} !`.replace(q.human ? 'tous ses' : '§', 'tous tes'), [q.id, t.id], 'hit', q.play); }
+      }
+      await stratege(p, c);
+      G.doneIds.push(...G.cur); continue;
+    }
+    if (c.k === 'brute') {
+      const t = P(p.target);
+      const bc = isOn('liquidation') ? 0 : 1;
+      if (p.gold < bc) await step(`💪 ${lab(p,'BRUTE')} n'est pas payée (pas d'or) : sans effet.`, [p.id], 'glow', c);
+      else {
+        p.gold -= bc;
+        if (blocks(t)) await step(`💪 ${lab(p,'BRUTE')} contre ${O(t)} est bloquée par la CACHETTE ! (l'or est dépensé)`, [t.id], 'glow', c);
+        else if (!t.terr.length) await step(`💪 ${lab(p,'BRUTE')} ne trouve rien à prendre chez ${O(t)}.`, [t.id], 'glow', c);
+        else {
+          const victimChooses = !isOn('agressif') && t.terr.some(x => !x.rev); let take;
+          const cnt = r => p.terr.filter(x=>x.r===r).length;
+          if (victimChooses) {
+            if (t.human) { hideNarr(); take = await humanPickTerr(c, 'Brute : tu dois céder un territoire', `${lab(p,'BRUTE')} te vise ! Comme tu as au moins un territoire face cachée, <b>c'est toi qui choisis</b> celui que tu donnes ${au(p)}.`, t.terr); hideNarr(); }
+            else take = pick(t.terr);
+          } else {
+            if (p.human) { hideNarr(); take = await panelAsk(cardVis(c), 'Brute : choisis ton butin', isOn('agressif') ? `Décret <b>Agressif</b> : c'est toi qui choisis le territoire que tu prends à ${nmD(t)}, même ses territoires cachés (à l'aveugle).` : `Tous les territoires de ${nmD(t)} sont révélés : <b>c'est toi qui choisis</b> celui que tu prends.`, t.terr.map(x => terrOpt(x, x.rev || x.known)), {kind:'terr'}); hideNarr(); }
+            else take = isOn('agressif') ? aiBestTake(p, t.terr) : t.terr.slice().sort((a,b) => cnt(b.r)-cnt(a.r))[0];
+          }
+          hideNarr(); await fly(terrsOf(t.id), terrsOf(p.id), take.rev ? timg(take) : 'img/t-dos.webp');
+          t.terr.splice(t.terr.indexOf(take),1); gain(p, take); if (t.human || p.human) take.known = true; p.terr.push(take);
+          const showReg = take.rev || p.human || t.human;
+          const who = victimChooses
+            ? (t.human ? 'tu as choisi lequel donner' : `${nm(t)} a choisi lequel donner`)
+            : isOn('agressif') ? (p.human ? 'décret Agressif, tu as choisi' : "décret Agressif, l'attaquant a choisi") : (p.human ? 'tout était révélé, tu as choisi' : "tout était révélé, l'attaquant a choisi");
+          await step(`💪 ${lab(p,'BRUTE')} <b>${t.human ? 'te prend un territoire' : 'prend un territoire'}</b>${t.human ? '' : ' ' + au(t)}${showReg ? ` : ${regName(take.r)}` : ''} <span class="muted">(${who})</span>.`, [t.id], 'hit', c);
+        }
+      }
+    } else if (c.k === 'eclaireur') {
+      const t = P(p.target), hid = t.terr.filter(x => !x.rev);
+      if (!hid.length) await step(`🐺 ${lab(p,'ÉCLAIREUR')} ${t.human ? "t'observe" : 'observe ' + nm(t)}… tout est déjà révélé.`, [t.id], 'glow', c);
+      else { let x;
+        if (p.human) { hideNarr(); x = await humanScout(t, c); hideNarr(); } else x = pick(hid);
+        x.rev = true; x.fresh = true;
+        await step(`🐺 ${lab(p,'ÉCLAIREUR')} ${t.human ? "t'espionne" : 'espionne ' + nm(t)} et <b>révèle</b> ${regName(x.r)} !`, [t.id], 'glow', c); }
+    } else if (c.k === 'cachette') {
+      const att = p.targetedBy.filter(i => ['brute','putsch'].includes(P(i).play.k));
+      if (isOn('bourde')) await step(`🛢️ GROSSE BOURDE : ${lab(p,'CACHETTE')} ne fonctionne pas ce tour-ci, le tonneau est percé !`, [p.id], 'glow', c);
+      else if (isOn('permeable') && att.length > 1) await step(`🛢️ ${S(p)} ${v(p,'se planque','te planques')} dans un tonneau… mais il est <b>perméable</b> : seule la 1ʳᵉ attaque sera bloquée.`, [p.id], 'glow', c);
+      else await step(`🛢️ ${S(p)} ${v(p,'se planque','te planques')} dans un tonneau : ${att.length ? `bien vu, ${att.map(i => nm(P(i))).join(' et ')} ${att.length>1?'comptaient':'comptait'} ${v(p,"l'attaquer","t'attaquer")} !` : `aucune BRUTE ni aucun PUTSCH ne ${v(p,"l'atteindra","t'atteindra")} ce tour-ci.`}`, [p.id], 'glow', c);
+    } else if (c.k === 'coffre') {
+      const amt = isOn('corruption') ? 2 : isOn('coalition') ? Math.min(3, pl.filter(q => q.play.k === 'coffre').length) : 1;
+      p.gold += amt; await step(`💰 ${S(p)} ${v(p,'pioche','pioches')} dans le COFFRE : +${amt} or${isOn('corruption') ? ' (Corruption)' : isOn('coalition') ? ` (Coalition : ${pl.filter(q => q.play.k === 'coffre').length} COFFRE joué(s))` : ''}.`, [p.id], 'glow', c);
+    } else if (c.k === 'discours') {
+      if (p.targetedBy.length) await step(`📣 ${lab(p,'DISCOURS')} est interrompu : quelqu'un ${v(p,"l'a","t'a")} visé !`, [p.id], 'glow', c);
+      else {
+        const t = draw();
+        if (!t) await step(`📣 ${S(p)} ${v(p,'fait','fais')} un DISCOURS… mais la pioche est vide.`, [], 'glow', c);
+        else {
+          hideNarr(); $('#pile').classList.remove('bump'); void $('#pile').offsetWidth; $('#pile').classList.add('bump');
+          $('#pileN').textContent = G.pile.length;
+          await fly($('#pile .stk'), terrsOf(p.id), 'img/t-dos.webp');
+          gain(p, t); p.terr.push(t);
+          await step(`📣 ${S(p)} ${v(p,'galvanise','galvanises')} les foules et <b>${v(p,'pioche','pioches')} un territoire</b>${p.human ? ` : ${regName(t.r)} !` : ' (face cachée).'}`, [p.id], 'glow', c);
+        }
+      }
+    } else if (c.k === 'repli') {
+      if (!p.discard.length || !p.hand.length) await step(`↩️ ${S(p)} ${v(p,'fait','fais')} un REPLI… mais rien à échanger.`, [p.id], 'glow', c);
+      else {
+        let out, back, bi;
+        if (p.human) { hideNarr(); ({out, back, bi} = await humanRepli(p)); }
+        else { out = pick(p.hand); bi = rnd(p.discard.length); back = p.discard[bi]; }
+        p.hand.splice(p.hand.indexOf(out),1); p.discard.splice(bi,1); p.hand.push(back); p.discard.push(out);
+        await step(`↩️ ${S(p)} ${v(p,'fait','fais')} un REPLI${p.human ? ` : ${cn(out)} part en défausse, ${cn(back)} revient en main.` : '.'}`, [p.id], 'glow', c);
+      }
+    }
+    await stratege(p, c);
+    G.doneIds.push(c.id);
+  }
+  hideNarr();
+  if (isOn('voyante') && G.guesses) {
+    const lines = pl.map(p => { const L = leftOf(p), ok = L.play.k === G.guesses[p.id]; if (ok) p.gold += 1; return `<li>${nmD(p)} prédit ${CARDS[G.guesses[p.id]].n} pour ${nmD(L)} (${cn(L.play)}) : ${ok ? '<b>bien vu, +1 or</b>' : 'raté'}</li>`; });
+    renderAll(); { const w = pl.filter(p => leftOf(p).play.k === G.guesses[p.id]); log(`📜 Voyante : ${w.length ? w.map(nm).join(', ') + (w.length > 1 ? ' gagnent' : ' gagne') + ' 1 or.' : "personne n'a vu juste."}`); }
+    G.seq = null; await panelInfo(decVis(), 'Voyante : verdict', `<ul class="lines">${lines.join('')}</ul>`); hideNarr();
+  }
+  if (G.center && G.center.length) { G.center.forEach(t => G.pile.push({r:t.r, v:t.v})); reshufflePile(); G.center = []; }
+  G.lastOrder = seq.map(p => p.id);
+  pl.forEach(p => { const o = ownerOf(p.play) || p; if (p.play.k === 'putsch' && G.round === 1) o.putschUsed = true; o.discard.push(p.play); p.play = null; p.target = null; p.show = false; });
+  G.decree = null;
+  const winners = pl.filter(p => Object.keys(REG).some(r => p.terr.filter(x => x.r===r).length >= 4));
+  if (winners.length) return endGame(winners, 'region');
+  G.turn++;
+  if (G.turn > 8) {
+    if (G.round === 1) return roundBreak();
+    const mx = Math.max(...pl.map(p => p.terr.length));
+    return endGame(pl.filter(p => p.terr.length === mx), 'domination');
+  }
+  G.phase = 'choose'; renderAll();
+  setStatus(`Manche ${G.round} · Tour ${G.turn} : choisis ta prochaine carte`, `Il te reste ${P(0).hand.length} cartes en main.`);
+  $('#go').disabled = true;
+}
+function putschCost(p){ return G.round === 2 && p.putschUsed ? 3 : 2; }
+const nmD = p => `<b class="p"><i class="dotc" style="background:${p.col}"></i>${p.human ? 'Toi' : p.name}</b>`;
+function standings(hide=false){
+  const rows = G.players.slice().sort((a,b) => b.terr.length - a.terr.length || b.gold - a.gold);
+  return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'me':''}"><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${REG[t.r].n}" style="background:${REG[t.r].c}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
+}
+function showBox(cls, html, btnLabel){
+  $('#ebIn').className = 'eb-in ' + cls;
+  $('#ebIn').innerHTML = html + `<div class="foot"><button class="btn btn-violet btn-sm" id="ebBtn">${btnLabel}</button></div>`;
+  $('#endbox').classList.add('on');
+  const r = $('#ebIn').getBoundingClientRect();
+  if (r.height > innerHeight - 90) window.scrollTo({top: scrollY + r.top - 72, behavior: RM ? 'auto' : 'smooth'});
+  else if (r.top < 70 || r.bottom > innerHeight - 10) $('#ebIn').scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
+  setTimeout(() => $('#ebBtn') && $('#ebBtn').focus({preventScroll:true}), 80);
+  return new Promise(res => $('#ebBtn').onclick = () => { $('#endbox').classList.remove('on'); res(); });
+}
+async function roundBreak(){
+  G.phase = 'break'; renderAll();
+  setStatus('Fin de la 1ʳᵉ manche');
+  log(`🔔 <b>Fin de la 1ʳᵉ manche</b> : aucun rebelle n'a réuni 4 territoires d'une même région.`);
+  await showBox('', `<div class="kick">🔔 Fin de la 1ʳᵉ manche</div><div class="head"><div class="emb">⏳</div><div><h3>Le trône est toujours vacant</h3>
+    <div class="txt">Après 8 tours, aucun rebelle n'a réuni 4 territoires d'une même région.</div></div></div>${standings(true)}
+    <div class="next"><b>Les rebelles jouent une 2ᵉ et dernière manche :</b><ul>
+      <li>tous les rebelles <b>récupèrent toutes leurs cartes Action</b> ;</li>
+      <li>ils <b>gardent leurs territoires et leur or</b> ;</li>
+      <li>chacun reçoit <b>1 pièce d'or supplémentaire</b>${G.dec ? ' ;' : '.'}</li>
+      ${G.dec ? '<li>les décrets déjà piochés <b>ne peuvent pas être rejoués</b>.</li>' : ''}</ul>
+      <p>Si après 8 nouveaux tours personne n'a 4 territoires d'une même région, le rebelle qui possède le plus de territoires, toutes régions confondues, remporte la partie !</p></div>`, '⚔️ Commencer la 2ᵉ manche');
+  G.round = 2; G.turn = 1;
+  G.players.forEach(p => { p.hand = p.hand.concat(p.discard).sort(byOrder); p.discard = []; p.gold += 1; });
+  log(`⚔️ <b>La 2ᵉ manche commence !</b> Chacun récupère ses 10 cartes Action et reçoit 1 or.`);
+  G.phase = 'choose'; renderAll();
+  setStatus('Manche 2 · Tour 1 : choisis ta carte', "Tu as récupéré toutes tes cartes. Attention : un PUTSCH réutilisé coûte 3 or.");
+  $('#go').disabled = true;
+}
+async function endGame(ws, how){
+  G.phase = 'end'; renderAll();
+  const me = P(0), iWin = ws.includes(me), others = ws.filter(p => !p.human);
+  const regOf = p => Object.keys(REG).find(k => p.terr.filter(x => x.r===k).length >= 4);
+  const why = how === 'region'
+    ? (p => `${p.human ? 'Tu as réuni' : `${nmD(p)} a réuni`} 4 territoires de ${regName(regOf(p))} : victoire immédiate !`)
+    : (p => `Fin de la 2ᵉ manche : victoire par domination avec ${p.terr.length} territoires, toutes régions confondues.`);
+  let cls, kick, title, txt, btn;
+  if (iWin && !others.length) {
+    cls = 'win'; kick = '👑 Victoire'; title = 'La couronne est à toi !';
+    txt = `Bravo ${DECKS[me.deck].rebel} ! ${why(me)} Le royaume plie le genou devant toi.`; btn = '🔁 Rejouer';
+  } else if (iWin) {
+    cls = 'win'; kick = '🤝 Victoire partagée'; title = 'Égalité au sommet !';
+    txt = `Tu partages le trône avec ${others.map(nmD).join(' et ')}. ${why(me)}`; btn = '🔁 Rejouer';
+  } else {
+    cls = 'lose'; kick = '💀 Défaite'; title = "Le trône t'échappe…";
+    txt = `${ws.map(nmD).join(' et ')} ${ws.length>1?"s'emparent":"s'empare"} du royaume. ${why(ws[0])} Ce n'est que partie remise !`; btn = '⚔️ Prendre ma revanche';
+  }
+  log(`${iWin ? '👑' : '💀'} <b>Fin de la partie</b> : ${iWin ? (others.length ? 'victoire partagée' : 'tu gagnes !') : `${ws.map(nm).join(' et ')} ${ws.length>1?'gagnent':'gagne'}.`}`);
+  setStatus('Partie terminée');
+  if (iWin) confetti();
+  const emb = cls === 'lose' ? '💀' : others.length ? '🤝' : '👑';
+  await showBox(cls, `<div class="kick">${kick}</div><div class="head"><div class="emb">${emb}</div><div><h3>${title}</h3><div class="txt">${txt}</div></div></div>${standings()}`, btn);
+  showPicker();
+}
+$('#newGame').onclick = showPicker;
+addEventListener('resize', () => { if (G.players) { const nf = G.players.length - 1; $('#foes').style.gridTemplateColumns = innerWidth > 760 ? `repeat(${nf},1fr)` : ''; } });
+showPicker();
+})();
+</script>
+</body>
+</html>
