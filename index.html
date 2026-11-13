@@ -359,6 +359,9 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
 .next li{margin:1px 0}
 .next p{margin:6px 0 0}
 .eb-in .foot{display:flex;justify-content:flex-end;margin-top:12px}
+.eb-x{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:#fffaf0;color:var(--ink);font-size:1.4rem;font-weight:900;line-height:1;display:grid;place-items:center;box-shadow:2px 2px 0 var(--ink);transition:transform .15s}
+.eb-x:hover{transform:scale(1.08) rotate(90deg)}
+.srule{display:block;margin-top:10px;font-family:var(--body);font-size:.92rem;font-weight:700;line-height:1.4;color:var(--parch);background:rgba(255,210,31,.12);border-left:3px solid var(--gold);padding:7px 11px;border-radius:6px;animation:pop .35s;max-width:60ch}
 @media (max-width:640px){.eb-in{position:relative;top:auto;margin:14px auto;padding:14px}.eb-in .head{grid-template-columns:56px 1fr;gap:12px}.eb-in .head .emb{width:56px;height:56px;font-size:1.7rem}.stand{font-size:.84rem}.stand .reg{display:none}}
 .midcards{display:flex;gap:18px;align-items:center}
 .pile{position:relative;width:76px;flex:none;text-align:center}
@@ -991,7 +994,7 @@ const AVIS = [
  ["Margaux G.","@shinju.mx","Très fun avec des mécaniques tactiques, obligeant les joueurs à anticiper les mouvements de leurs adversaires. Les rebondissements constants grâce aux cartes despotes rendent chaque partie différente."],
  ["Kévin F.","@linkevofficiel","Les cartes despotes ajoutent une touche de chaos contrôlé, garantissant une belle rejouabilité. Un must-have pour les amateurs de jeux de société stratégiques."]
 ];
-const THANKS = ["Andrée","Arnaud","Chloé & Raphaël","Christopher","Elisabeth","Flavie","Jérémy & Léa","Laurent","Virgil"];
+const THANKS = ["Andrée","Arnaud","Chloé & Raphaël","Christopher","Elisabeth","Flavie","Jérémy & Léa","Laurent","Paul","Virgil","Yacine"];
 
 const cardFace = (k, cls='') => CARDS[k].img
   ? `<img src="${CARDS[k].img}" alt="Carte ${CARDS[k].n}" draggable="false">`
@@ -1240,7 +1243,7 @@ function newGame(myDeck='violet', silent=false){
 function draw(){ const x = G.pile.pop(); return x ? {r:x.r, v:x.v, rev:false, known:!!x.known, id:Math.random()} : null; }
 const timg = t => `img/terr/${t.r}-${t.v}.webp`;
 const P = i => G.players[i];
-function setStatus(t, s=''){ $('#status').innerHTML = `${t}${s?`<small>${s}</small>`:''}`; }
+function setStatus(t, s='', rule=''){ $('#status').innerHTML = `${t}${s?`<small>${s}</small>`:''}${rule ? `<span class="srule">📖 ${rule}</span>` : ''}`; }
 function log(html){ const li = document.createElement('li'); li.innerHTML = html; $('#logl').appendChild(li); const l = $('#log'); l.scrollTop = l.scrollHeight; }
 const nm = p => `<b style="color:${p.col}">${p.name}</b>`;
 const S = p => p.human ? `<b style="color:${p.col}">Tu</b>` : nm(p);
@@ -1297,13 +1300,13 @@ function onFoe(id){
   const me = P(0);
   if (G.phase !== 'choose' || !me.play || !CARDS[me.play.k].target) return;
   me.target = id; renderAll(); flash(id, 'glow');
-  setStatus(`${cn(me.play)} → ${P(id).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».");
+  setStatus(`${cn(me.play)} → ${P(id).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».", RULES[me.play.k]);
   $('#go').disabled = false;
 }
 function renderHand(){
   const me = P(0), can = G.phase === 'choose' || G.phase === 'repli-hand';
   $('#hand').innerHTML = me.hand.slice().sort(byOrder).map(c =>
-    `<button class="hcard ${me.play && me.play.id===c.id && G.phase==='choose'?'sel':''} ${G.phase==='repli-hand'?'pickable':''}" data-id="${c.id}" ${can ? '' : 'disabled'} aria-label="${CARDS[c.k].n} numéro ${c.n}">${cf(c)}<span class="lbl">${cn(c)}</span></button>`
+    `<button class="hcard ${me.play && me.play.id===c.id && G.phase==='choose'?'sel':''} ${G.phase==='repli-hand'?'pickable':''}" data-id="${c.id}" ${can ? '' : 'disabled'} aria-label="${CARDS[c.k].n} numéro ${c.n}" title="${cn(c)} : ${RULES[c.k]}">${cf(c)}<span class="lbl">${cn(c)}</span></button>`
   ).join('') || '<span class="disc-empty">Main vide</span>';
   $$('#hand .hcard').forEach(b => b.onclick = () => {
     const c = me.hand.find(x => x.id === +b.dataset.id); if (!c) return;
@@ -1313,13 +1316,13 @@ function renderHand(){
     if (!T) me.target = null;
     me.play = c; renderAll();
     if (T && me.target == null) {
-      setStatus(`🎯 ${cn(c)} : choisis ta cible`, "Clique sur le rebelle que tu vises. Tu dois désigner une cible avant de révéler.");
+      setStatus(`🎯 ${cn(c)} : choisis ta cible`, "Clique sur le rebelle que tu vises. Tu dois désigner une cible avant de révéler.", RULES[c.k]);
       $('#go').disabled = true;
     } else if (T) {
-      setStatus(`${cn(c)} → ${P(me.target).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».");
+      setStatus(`${cn(c)} → ${P(me.target).name}`, "Cible désignée. Tu peux encore changer d'avis, puis clique sur « Révéler ! ».", RULES[c.k]);
       $('#go').disabled = false;
     } else {
-      setStatus(`${cn(c)} posée face cachée`, 'Clique sur « Révéler ! » quand tu es prêt·e.');
+      setStatus(`${cn(c)} posée face cachée`, 'Clique sur « Révéler ! » quand tu es prêt·e.', RULES[c.k]);
       $('#go').disabled = false;
     }
   });
@@ -1388,7 +1391,7 @@ function narrate(card, html, summary=false){
     body = `<h4>Révélation !</h4><div class="txt">Voici les cartes jouées ce tour. On les résout une par une, <b>du plus grand numéro au plus petit</b>.</div>
       <div class="row4" data-n="${G.players.length}" style="--n:${G.players.length}">${G.players.map(p => `<div><div class="pc">${cf(p.play)}</div><span style="color:${p.col}">${p.name}</span><br>${cn(p.play)}${CARDS[p.play.k].target && p.target!=null ? `<em>→ ${P(p.target).name}</em>` : ''}</div>`).join('')}</div>`;
   } else {
-    body = `<div class="main"><div class="pc">${cf(card)}</div><div><h4>${CARDS[card.k].n} <span class="no">n°${card.n}</span></h4><div class="txt">${html.replace(/^\S+\s/, '')}</div><div class="rule">📖 ${RULES[card.k]}</div></div></div>`;
+    body = `<div class="main"><div class="pc">${cf(card)}</div><div><h4>${CARDS[card.k].n} <span class="no">n°${card.n}</span></h4><div class="txt">${html.replace(/^\S+\s/, '')}</div></div></div>`;
   }
   panel.innerHTML = `${orderHTML()}${body}<div class="foot"><button class="skip" id="nSkip">Tout passer</button><span class="k">Entrée ou → pour continuer</span><button class="btn btn-violet btn-sm" id="nNext">Suivant ▶</button></div>`;
   panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
@@ -1765,7 +1768,7 @@ async function resolve(){
       const att = p.targetedBy.filter(i => ['brute','putsch'].includes(P(i).play.k));
       if (isOn('bourde')) await step(`🛢️ GROSSE BOURDE : ${lab(p,'CACHETTE')} ne fonctionne pas ce tour-ci, le tonneau est percé !`, [p.id], 'glow', c);
       else if (isOn('permeable') && att.length > 1) await step(`🛢️ ${S(p)} ${v(p,'se planque','te planques')} dans un tonneau… mais il est <b>perméable</b> : seule la 1ʳᵉ attaque sera bloquée.`, [p.id], 'glow', c);
-      else await step(`🛢️ ${S(p)} ${v(p,'se planque','te planques')} dans un tonneau : ${att.length ? `bien vu, ${att.map(i => nm(P(i))).join(' et ')} ${att.length>1?'comptaient':'comptait'} ${v(p,"l'attaquer","t'attaquer")} !` : `aucune BRUTE ni aucun PUTSCH ne ${v(p,"l'atteindra","t'atteindra")} ce tour-ci.`}`, [p.id], 'glow', c);
+      else await step(`🛢️ ${S(p)} ${v(p,'se planque','te planques')} dans un tonneau : ${att.length ? `bien vu, ${(() => { const ps = att.map(P), hum = ps.some(q => q.human), ais = ps.filter(q => !q.human).map(nm); if (ps.length === 1) return hum ? 'tu comptais' : `${ais[0]} comptait`; return hum ? `${ais.join(', ')} et toi comptiez` : `${ais.join(' et ')} comptaient`; })()} ${v(p,"l'attaquer","t'attaquer")} !` : `aucune BRUTE ni aucun PUTSCH ne ${v(p,"l'atteindra","t'atteindra")} ce tour-ci.`}`, [p.id], 'glow', c);
     } else if (c.k === 'coffre') {
       const amt = isOn('corruption') ? 2 : isOn('coalition') ? Math.min(3, pl.filter(q => q.play.k === 'coffre').length) : 1;
       p.gold += amt; await step(`💰 ${S(p)} ${v(p,'pioche','pioches')} dans le COFFRE : +${amt} or${isOn('corruption') ? ' (Corruption)' : isOn('coalition') ? ` (Coalition : ${pl.filter(q => q.play.k === 'coffre').length} COFFRE joué(s))` : ''}.`, [p.id], 'glow', c);
@@ -1823,15 +1826,18 @@ function standings(hide=false){
   const rows = G.players.slice().sort((a,b) => b.terr.length - a.terr.length || b.gold - a.gold);
   return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'me':''}"><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${REG[t.r].n}" style="background:${REG[t.r].c}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
 }
-function showBox(cls, html, btnLabel){
+function showBox(cls, html, btnLabel, closable=false){
   $('#ebIn').className = 'eb-in ' + cls;
-  $('#ebIn').innerHTML = html + `<div class="foot"><button class="btn btn-violet btn-sm" id="ebBtn">${btnLabel}</button></div>`;
+  $('#ebIn').innerHTML = (closable ? `<button class="eb-x" id="ebX" aria-label="Fermer">×</button>` : '') + html + `<div class="foot"><button class="btn btn-violet btn-sm" id="ebBtn">${btnLabel}</button></div>`;
   $('#endbox').classList.add('on');
   const r = $('#ebIn').getBoundingClientRect();
   if (r.height > innerHeight - 90) window.scrollTo({top: scrollY + r.top - 72, behavior: RM ? 'auto' : 'smooth'});
   else if (r.top < 70 || r.bottom > innerHeight - 10) $('#ebIn').scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
   setTimeout(() => $('#ebBtn') && $('#ebBtn').focus({preventScroll:true}), 80);
-  return new Promise(res => $('#ebBtn').onclick = () => { $('#endbox').classList.remove('on'); res(); });
+  return new Promise(res => {
+    $('#ebBtn').onclick = () => { $('#endbox').classList.remove('on'); res('btn'); };
+    if (closable) $('#ebX').onclick = () => { $('#endbox').classList.remove('on'); res('close'); };
+  });
 }
 async function roundBreak(){
   G.phase = 'break'; renderAll();
@@ -1874,7 +1880,8 @@ async function endGame(ws, how){
   setStatus('Partie terminée');
   if (iWin) confetti();
   const emb = cls === 'lose' ? '💀' : others.length ? '🤝' : '👑';
-  await showBox(cls, `<div class="kick">${kick}</div><div class="head"><div class="emb">${emb}</div><div><h3>${title}</h3><div class="txt">${txt}</div></div></div>${standings()}`, btn);
+  const r = await showBox(cls, `<div class="kick">${kick}</div><div class="head"><div class="emb">${emb}</div><div><h3>${title}</h3><div class="txt">${txt}</div></div></div>${standings()}`, btn, true);
+  if (r === 'close') { setStatus('Partie terminée', 'Clique sur « Nouvelle partie » pour rejouer.'); return; }
   showPicker();
 }
 $('#newGame').onclick = showPicker;
