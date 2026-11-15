@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PUTSCH ! Le jeu de cartes où la stratégie rencontre la trahison</title>
+<link rel="icon" type="image/svg+xml" href="img/logo.svg">
 <meta name="description" content="PUTSCH ! Jeu d'ambiance de bluff et de trahison pour 4 à 5 rebelles, 30 minutes, dès 10 ans.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,8 +172,7 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
 .hex img.f{transform:rotateY(180deg)}
 .hex:nth-child(1){left:2%;top:4%;animation:bob 6s ease-in-out infinite}
 .hex:nth-child(2){right:2%;top:0;animation:bob 6s ease-in-out -1.5s infinite}
-.hex:nth-child(3){left:12%;bottom:2%;animation:bob 6s ease-in-out -3s infinite}
-.hex:nth-child(4){right:6%;bottom:8%;animation:bob 6s ease-in-out -4.5s infinite}
+.hex:nth-child(3){left:28%;bottom:2%;animation:bob 6s ease-in-out -3s infinite}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -12px}}
 .hint{font-size:.95rem;color:#6b5d48;font-weight:700;margin-top:14px;display:flex;gap:8px;align-items:center}
 @media (max-width:860px){.story{grid-template-columns:1fr}.hexes{height:330px;max-width:420px;margin:0 auto;width:100%}}
@@ -696,14 +696,13 @@ footer a:hover{color:var(--gold)}
       <span class="kicker rv">L'histoire</span>
       <h2 class="h2 rv d1">Le trône est vacant.<br>Enfin, presque.</h2>
       <p class="drop rv d2">Dans un royaume lointain, un despote faisait autrefois régner la terreur. Aujourd'hui affaibli, il voit des forces rebelles émerger de l'ombre et se disputer le pouvoir.</p>
-      <p class="rv d3">Incarne l'un·e de ces rebelles et unifie une région sous ta bannière pour conquérir le royaume. Mais attention : dans cette lutte pour le trône, <b>chaque rebelle joue pour soi</b>. L'ami d'hier peut devenir ton pire ennemi au prochain tour.</p>
+      <p class="rv d3">Incarne l'un·e de ces rebelles et unifie une région sous ta bannière pour conquérir le royaume. Mais attention : dans cette lutte pour le trône, <b>chaque rebelle joue pour soi</b>.</p>
       <p class="hint rv d3">👆 Touche les territoires pour les révéler</p>
     </div>
     <div class="hexes rv d2" id="hexes">
-      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire La Vallée"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-vallee.webp" alt="La Vallée"></div></div>
-      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Côtes"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-cotes.webp" alt="Les Côtes"></div></div>
-      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Hautes Terres"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-hautes.webp" alt="Les Hautes Terres"></div></div>
-      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Bas-Fonds"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/t-basfonds.webp" alt="Les Bas-Fonds"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire La Vallée"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/terr/vallee-4.webp" alt="La Vallée"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Côtes"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/terr/cotes-6.webp" alt="Les Côtes"></div></div>
+      <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Hautes Terres"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/terr/hautes-4.webp" alt="Les Hautes Terres"></div></div>
     </div>
   </div>
 </section>
@@ -713,11 +712,11 @@ footer a:hover{color:var(--gold)}
   <div class="wrap center">
     <span class="kicker rv">Comment gagner ?</span>
     <h2 class="h2 rv d1">Deux chemins vers la couronne</h2>
-    <p class="sub rv d2">Les territoires se piochent face cachée : toi seul connais leur couleur. Une fois révélé, un territoire le reste, même s'il change de main. Et pas besoin de les révéler pour gagner !</p>
+    <p class="sub rv d2">Les territoires se piochent face cachée : toi seul connais leur couleur. Une fois révélé, un territoire le reste, même s'il change de main. Et pas besoin de les révéler pour gagner ! Ouvre l'œil : quelques territoires, plus rares, appartiennent à <b>deux régions à la fois</b> et comptent pour l'une comme pour l'autre.</p>
     <div class="wins">
       <div class="win rv" id="win1">
         <span class="tag">Victoire immédiate</span>
-        <div class="four"><img src="img/terr/cotes-1.webp" alt="Les Côtes"><img src="img/terr/cotes-2.webp" alt="Les Côtes"><img src="img/terr/cotes-3.webp" alt="Les Côtes"><img src="img/terr/cotes-4.webp" alt="Les Côtes"></div>
+        <div class="four"><img src="img/terr/cotes-6.webp" alt="Les Côtes"><img src="img/terr/cotes-6.webp" alt="Les Côtes"><img src="img/terr/cotes-6.webp" alt="Les Côtes"><img src="img/terr/cotes-hautes.webp" alt="Territoire double : Les Côtes et Les Hautes Terres" title="Territoire double : il compte pour Les Côtes comme pour Les Hautes Terres"></div>
         <h3>4 territoires d'une même région</h3>
         <p>Rassemble-les et la partie s'arrête net. Le royaume est à toi !</p>
       </div>
@@ -813,7 +812,7 @@ footer a:hover{color:var(--gold)}
           <div class="opt"><span class="ol">1. Nombre de joueurs</span>
             <div class="seg" role="radiogroup" aria-label="Nombre de joueurs">
               <button role="radio" data-np="4"><b>4 joueurs</b><small>toi + 3 rebelles · 3 régions</small></button>
-              <button role="radio" data-np="5"><b>5 joueurs</b><small>toi + 4 rebelles · 4 régions</small></button>
+              <button role="radio" data-np="5"><b>5 joueurs</b><small>toi + 4 rebelles · 3 régions</small></button>
             </div></div>
           <div class="opt"><span class="ol">2. Décrets du despote</span>
             <div class="seg" role="radiogroup" aria-label="Décrets">
@@ -827,7 +826,7 @@ footer a:hover{color:var(--gold)}
       </div></div>
       <div class="endbox" id="endbox"><div class="eb-in" id="ebIn" role="dialog" aria-live="polite"></div></div>
     </div>
-    <p class="disclaimer center">Version simplifiée pour découvrir l'ambiance : 6 territoires par région (3 régions à 4 joueurs, 4 à 5 joueurs), et les décrets s'appliquent pour de vrai. Le vrai frisson, c'est autour d'une table !</p>
+    <p class="disclaimer center">Version simplifiée pour découvrir l'ambiance : 3 régions de 5 territoires, plus 3 territoires rares à double région, à 4 comme à 5 joueurs, et les décrets s'appliquent pour de vrai. Le vrai frisson, c'est autour d'une table !</p>
   </div>
 </section>
 
@@ -886,7 +885,7 @@ footer a:hover{color:var(--gold)}
           <ul class="o-facts">
             <li><b>5</b><span>rebelles</span></li>
             <li><b>50</b><span>cartes Action</span></li>
-            <li><b>24</b><span>territoires</span></li>
+            <li><b>18</b><span>territoires</span></li>
             <li><b>4-5</b><span>joueurs</span></li>
           </ul>
           <div class="o-ctas">
@@ -920,8 +919,8 @@ footer a:hover{color:var(--gold)}
     </div>
     <div class="rules">
       <details class="acc rv" open><summary><span class="ic">⚙️</span>Préparer la partie</summary><div class="body"><ol>
-        <li>Préparez les territoires selon le nombre de joueurs : <b>à 5 joueurs, 4 couleurs</b> ; <b>à 4 joueurs, 3 couleurs</b>.</li>
-        <li>Mélangez les territoires utilisés et placez-les face cachée au centre : c'est la pioche.</li>
+        <li>Utilisez les <b>18 territoires</b>, à 4 comme à 5 joueurs : <b>3 régions de 5 territoires</b>, plus <b>3 territoires doubles</b> qui comptent pour deux régions à la fois.</li>
+        <li>Mélangez les territoires et placez-les face cachée au centre : c'est la pioche.</li>
         <li>Distribuez <b>2 territoires</b> à chaque joueur. Chacun les regarde et les garde face cachée.</li>
         <li>Chaque joueur choisit un rebelle, prend son jeu de cartes Action et <b>1 pièce d'or</b>.</li>
         <li>Mélangez les décrets et placez-les au centre.</li></ol></div></details>
@@ -935,7 +934,7 @@ footer a:hover{color:var(--gold)}
       <details class="acc rv"><summary><span class="ic">⏳</span>Manches et fin de partie</summary><div class="body">
         <p><b>Manche 1</b> : tant qu'il n'y a pas de vainqueur, les rebelles jouent jusqu'à 8 tours.</p>
         <p><b>Manche 2</b> : chaque rebelle récupère toutes ses cartes Action, garde ses territoires et son or, et reçoit <b>1 or supplémentaire</b>. Les décrets déjà piochés ne reviennent pas. Encore 8 tours.</p>
-        <p><b>Victoire immédiate</b> : 4 territoires de la même région. <b>Victoire par domination</b> : si personne n'y arrive après les 2 manches, le rebelle qui a le plus de territoires gagne.</p></div></details>
+        <p><b>Victoire immédiate</b> : 4 territoires de la même région (un territoire double compte pour ses deux régions). <b>Victoire par domination</b> : si personne n'y arrive après les 2 manches, le rebelle qui a le plus de territoires gagne.</p></div></details>
       <details class="acc rv"><summary><span class="ic">💡</span>Rappels et précisions</summary><div class="body"><ul>
         <li>Les territoires n'ont pas besoin d'être révélés pour gagner.</li>
         <li>Un territoire révélé le reste, même s'il change de rebelle.</li>
@@ -993,7 +992,7 @@ const CARDS = {
              fx:"Annonce le nom du rebelle visé et <b>échange tous tes territoires avec les siens</b>. Attention : si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous !"},
   brute:    {n:'Brute',     img:'img/brute.webp',    vid:'video/brute.mp4',    copies:2, cost:'1 or', costN:1, target:true, prio:38,
              fx:"Annonce le nom du rebelle visé et <b>prends-lui un territoire</b>. S'il a au moins un territoire face cachée, c'est lui qui choisit lequel. Si tout est révélé, c'est toi qui choisis."},
-  eclaireur:{n:'Éclaireur', img:'img/eclaireur.webp',vid:'video/eclaireur.mp4',copies:1, cost:'Gratuit', costN:0, target:true, prio:28,
+  eclaireur:{n:'Traque', img:'img/eclaireur.webp',vid:'video/eclaireur.mp4',copies:1, cost:'Gratuit', costN:0, target:true, prio:28,
              fx:"Annonce le nom du joueur visé, <b>regarde tous ses territoires</b>, puis retournes-en un face visible."},
   cachette: {n:'Cachette',  img:'img/cachette.webp', vid:'video/cachette.mp4', copies:2, cost:'Gratuit', costN:0, target:false, prio:18,
              fx:"Planque-toi dans un tonneau : tu es <b>protégé des cartes BRUTE et PUTSCH</b> ce tour-ci."},
@@ -1006,38 +1005,38 @@ const CARDS = {
 };
 const ORDER = ['putsch','brute','cachette','coffre','discours','eclaireur','repli'];
 const REG = {
-  vallee:{n:'La Vallée', img:'img/t-vallee.webp', c:'#2e7d32'},
-  cotes:{n:'Les Côtes', img:'img/t-cotes.webp', c:'#1f5aa6'},
-  hautes:{n:'Les Hautes Terres', img:'img/t-hautes.webp', c:'#d4a514'},
+  vallee:{n:'La Vallée', img:'img/terr/vallee-4.webp', c:'#2e7d32'},
+  cotes:{n:'Les Côtes', img:'img/terr/cotes-6.webp', c:'#1f5aa6'},
+  hautes:{n:'Les Hautes Terres', img:'img/terr/hautes-4.webp', c:'#d4a514'},
   basfonds:{n:'Les Bas-Fonds', img:'img/t-basfonds.webp', c:'#c0392b'}
 };
 const DECRETS = [
  ["Mouvement de foule","Avant la révélation, donnez 1 de vos territoires au rebelle situé à votre droite.","Set de base"],
  ["Bousculade","Avant la révélation, placez un territoire au centre. Tour à tour, récupérez un des territoires restants au moment de la résolution de votre carte.","Set de base"],
- ["Agressif","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
- ["Agressif","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
- ["Coup de pouce","Si vous avez moins de 2 territoires, piochez-en un au moment de la résolution de votre carte.","Extension"],
+ ["Perquisition","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
+ ["Perquisition","Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.","Set de base"],
+ ["Coup de pouce","Après la résolution de votre carte, si vous avez moins de 2 territoires, piochez-en un.","Extension"],
  ["Affolement","Prenez la carte Action de votre voisin de droite et prenez-en connaissance avant la révélation.","Set de base"],
  ["Grosse bourde","CACHETTE ne fonctionne pas à ce tour.","Set de base"],
  ["Perméable","Si vous avez joué CACHETTE et êtes visé par plusieurs cartes, vous n'êtes immunisé qu'à la première attaque.","Set de base"],
  ["Ostentatoire","Tout territoire récupéré à ce tour est immédiatement révélé.","Extension"],
  ["Ostentatoire","Tout territoire récupéré à ce tour est immédiatement révélé.","Extension"],
- ["En terrain connu","Si ÉCLAIREUR est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.","Set de base"],
+ ["En terrain connu","Si TRAQUE est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.","Set de base"],
  ["Cartographe","Avant la révélation, les rebelles peuvent regarder un territoire d'un autre rebelle.","Set de base"],
  ["Voyante","Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.","Set de base"],
  ["Coalition","COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans une limite de 3 ors.","Communauté · Virgil"],
  ["Corruption","COFFRE rapporte 2 ors au lieu de 1.","Set de base"],
  ["Coup bas","Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.","Set de base"],
  ["Liquidation","BRUTE ne coûte aucun or à ce tour.","Set de base"],
- ["Stratège","Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.","Set de base"],
+ ["Marché noir","Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.","Set de base"],
  ["Corvée","Les rebelles ayant au moins un territoire face cachée doivent payer 1 or, sinon il est révélé.","Set de base"],
  ["Bienfaiteur","Après la révélation, placez un de vos territoires au centre. Le rebelle jouant la carte Action avec le plus petit nombre les redistribue (1 max par rebelle).","Communauté · Pierre"],
  ["Mécène","Après la révélation, le ou les rebelles avec le moins d'or en gagnent 2 et en donnent 1 à un rebelle de leur choix.","Extension"],
- ["Embourgeoisé","Si vous êtes visé par BRUTE, vous pouvez payer 1 or à votre agresseur pour garder votre territoire. À la place, il en pioche un et le révèle.","Extension"],
- ["Opportunité","ÉCLAIREUR révèle deux territoires au lieu d'un.","Extension"],
+ ["Longue-vue","TRAQUE révèle deux territoires au lieu d'un.","Extension"],
+ ["Marché aux terres","À la résolution de votre carte, vous pouvez payer 1 or pour piocher un territoire.","Extension"],
+ ["Immunité parlementaire","DISCOURS fonctionne même si vous êtes ciblé par une attaque.","Extension"],
  ["Trouble-fête","Après la révélation, le rebelle ayant joué la carte Action avec le plus grand nombre échange 1 territoire entre deux autres rebelles.","Extension"],
  ["Charité intéressée","Vous pouvez dévoiler un de vos territoires pour en dévoiler un chez un autre rebelle.","Communauté · Marine"],
- ["Dernier recours","Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre révèle le territoire de son choix : chez un autre rebelle ou dans la pioche.","Communauté · Paul"]
 ];
 const AVIS = [
  ["Jeremy V. N.","","Des règles simples à comprendre. Une super expérience de jeu où la stratégie est la clé. La phase de préparation crée une atmosphère palpitante. La révélation simultanée des cartes et les cris de noms ajoutent une dimension interactive unique. Un jeu où chaque décision compte."],
@@ -1241,7 +1240,7 @@ function confetti(){
 
 /* ================= MINI-JEU ================= */
 const G = {};
-const REGS_BY_N = {4:['vallee','cotes','hautes'], 5:['vallee','cotes','hautes','basfonds']};
+const REGS_BY_N = {4:['vallee','cotes','hautes'], 5:['vallee','cotes','hautes']};
 G.opts = {np:4, dec:true};
 const DECKS = {
   violet:{rebel:'La Gourou',    label:'Violet', col:'#a77bd0', nums:{brute:[21,30],cachette:[32,41],coffre:[10,11],discours:[20],eclaireur:[42],putsch:[31],repli:[1]}},
@@ -1277,22 +1276,25 @@ function showPicker(){
 }
 function newGame(myDeck='violet', silent=false){
   G.np = G.opts.np; G.dec = G.opts.dec; G.regs = REGS_BY_N[G.np];
-  G.pile = shuffle(G.regs.flatMap(r => [1,2,3,4,5,6].map(v => ({r, v}))));
+  G.pile = shuffle(G.regs.flatMap(r => [1,2,3,4,5].map(v => ({r, v}))).concat(DUALS.filter(([a,b]) => G.regs.includes(a) && G.regs.includes(b)).map(([r, r2]) => ({r, r2, v:'d'}))));
   G.turn = 1; G.round = 1; G.phase = 'choose'; G.decrees = shuffle(DEMO_DECREES.slice()); G.lastOrder = null; G.decree = null; G.center = []; G.seq = null;
   const foes = shuffle(Object.keys(DECKS).filter(d => d !== myDeck)).slice(0, G.np - 1);
   G.players = [{id:0, name:'Toi', deck:myDeck, human:true}, ...foes.map((d,i) => ({id:i+1, name:DECKS[d].rebel, deck:d}))].map(p => ({...p,
     col:DECKS[p.deck].col, gold:1, terr:[draw(), draw()], hand:deckOf(p.deck), discard:[], play:null, target:null, show:false}));
-  $('#logl').innerHTML = `<li class="muted">Le despote vacille… Tu incarnes <b style="color:${DECKS[myDeck].col}">${DECKS[myDeck].rebel}</b> face à ${G.players.slice(1).map(nm).join(', ')}. Partie à ${G.np} joueurs (${G.regs.length} régions), ${G.dec ? "<b>avec décrets</b> (jeu d'ambiance)" : '<b>sans décret</b> (jeu de stratégie)'}. Tu as 2 territoires et 1 pièce d'or.</li>`;
+  $('#logl').innerHTML = `<li class="muted">Le despote vacille… Tu incarnes <b style="color:${DECKS[myDeck].col}">${DECKS[myDeck].rebel}</b> face à ${G.players.slice(1).map(nm).join(', ')}. Partie à ${G.np} joueurs (${G.regs.length} régions et 3 territoires doubles), ${G.dec ? "<b>avec décrets</b> (jeu d'ambiance)" : '<b>sans décret</b> (jeu de stratégie)'}. Tu as 2 territoires et 1 pièce d'or.</li>`;
   $('.midcards').classList.toggle('nodec', !G.dec);
   $('#endbox').classList.remove('on'); $('#dmini').classList.remove('show'); hideNarr(); G.pickRes = null; G.repliBi = null;
   setStatus('Choisis une carte dans ta main', 'Elle sera posée face cachée.');
   $('#go').disabled = true; $('#go').textContent = 'Révéler !';
   renderAll();
 }
-function draw(){ const x = G.pile.pop(); return x ? {r:x.r, v:x.v, rev:false, known:!!x.known, id:Math.random()} : null; }
-const timg = t => `img/terr/${t.r}-${t.v}.webp`;
+function draw(){ const x = G.pile.pop(); return x ? {r:x.r, r2:x.r2, v:x.v, rev:false, known:!!x.known, id:Math.random()} : null; }
+const TIMG = {vallee:'vallee-4', cotes:'cotes-6', hautes:'hautes-4'};
+const timg = t => t.r2 ? `img/terr/${t.r}-${t.r2}.webp` : `img/terr/${TIMG[t.r] || `${t.r}-${t.v}`}.webp`;
 const P = i => G.players[i];
-function setStatus(t, s='', rule=''){ $('#status').innerHTML = `${t}${s?`<small>${s}</small>`:''}${rule ? `<span class="srule">📖 ${rule}</span>` : ''}`; }
+function setStatus(t, s='', rule=''){
+  const D = (G.phase === 'choose' && G.players && G.players[0].peek) ? nextDec() : null;
+  $('#status').innerHTML = `${t}${s?`<small>${s}</small>`:''}${rule ? `<span class="srule">📖 ${rule}</span>` : ''}${D ? `<span class="srule">👁 Prochain décret (vu grâce à ton PUTSCH) : <b>${D.t}</b> : ${D.e}</span>` : ''}`; }
 function log(html){ const li = document.createElement('li'); li.innerHTML = html; $('#logl').appendChild(li); const l = $('#log'); l.scrollTop = l.scrollHeight; }
 const nm = p => `<b style="color:${p.col}">${p.name}</b>`;
 const S = p => p.human ? `<b style="color:${p.col}">Tu</b>` : nm(p);
@@ -1300,13 +1302,18 @@ const v = (p,il,tu) => p.human ? tu : il;
 const O = p => p.human ? 'toi' : nm(p);
 const de = p => p.name.startsWith('Le ') ? `du <b style="color:${p.col}">${p.name.slice(3)}</b>` : `de ${nm(p)}`;
 const au = p => p.name.startsWith('Le ') ? `au <b style="color:${p.col}">${p.name.slice(3)}</b>` : `à ${nm(p)}`;
-const lab = (p, N) => { const fem = N==='BRUTE' || N==='CACHETTE'; return p.human ? `${fem?'Ta':'Ton'} ${N}` : `${N==='ÉCLAIREUR' ? "L'" : fem ? 'La ' : 'Le '}${N} ${de(p)}`; };
+const lab = (p, N) => { const fem = N==='BRUTE' || N==='CACHETTE' || N==='TRAQUE'; return p.human ? `${fem?'Ta':'Ton'} ${N}` : `${fem ? 'La ' : 'Le '}${N} ${de(p)}`; };
 const regName = r => `<b style="color:${REG[r].c}">${REG[r].n}</b>`;
+const hasR = (x, r) => x.r === r || x.r2 === r;
+const tN = t => t.r2 ? `${REG[t.r].n} + ${REG[t.r2].n}` : REG[t.r].n;
+const tReg = t => t.r2 ? `${regName(t.r)} + ${regName(t.r2)}` : regName(t.r);
+const tBg = t => t.r2 ? `linear-gradient(90deg, ${REG[t.r].c} 50%, ${REG[t.r2].c} 50%)` : REG[t.r].c;
+const DUALS = [['cotes','hautes'], ['cotes','vallee'], ['vallee','hautes']];
 
 function terrHTML(p){
   return p.terr.map(t => {
     const known = !p.human && !t.rev && t.known, showFace = p.human || t.rev || known;
-    return `<span class="t ${t.fresh?'new':''} ${known?'known':''}" title="${showFace ? REG[t.r].n + (t.rev?' (révélé)': known ? ' (caché, mais tu le connais)' : ' (caché)') : 'Territoire caché'}"><img src="${showFace ? timg(t) : 'img/t-dos.webp'}" alt="${showFace ? REG[t.r].n : 'Territoire caché'}">${p.human && !t.rev ? '<span class="eye" title="Caché pour les autres">🔒</span>' : ''}${known ? '<span class="seen" title="Tu connais ce territoire">👁</span>' : ''}</span>`;
+    return `<span class="t ${t.fresh?'new':''} ${known?'known':''}" title="${showFace ? tN(t) + (t.rev?' (révélé)': known ? ' (caché, mais tu le connais)' : ' (caché)') : 'Territoire caché'}"><img src="${showFace ? timg(t) : 'img/t-dos.webp'}" alt="${showFace ? tN(t) : 'Territoire caché'}">${p.human && !t.rev ? '<span class="eye" title="Caché pour les autres">🔒</span>' : ''}${known ? '<span class="seen" title="Tu connais ce territoire">👁</span>' : ''}</span>`;
   }).join('') || '<span style="font-size:.85rem;color:#9f927a">Aucun territoire</span>';
 }
 function slotHTML(p){
@@ -1334,7 +1341,7 @@ function renderAll(){
   });
   $('#pileN').textContent = G.pile.length;
   const ce = $('#center'); ce.classList.toggle('on', !!(G.center && G.center.length));
-  ce.innerHTML = (G.center || []).map(t => `<img src="${t.rev || t.known ? timg(t) : 'img/t-dos.webp'}" alt="${t.rev || t.known ? REG[t.r].n : 'Territoire caché'}" title="${t.rev || t.known ? REG[t.r].n : 'Territoire caché'}">`).join('');
+  ce.innerHTML = (G.center || []).map(t => `<img src="${t.rev || t.known ? timg(t) : 'img/t-dos.webp'}" alt="${t.rev || t.known ? tN(t) : 'Territoire caché'}" title="${t.rev || t.known ? tN(t) : 'Territoire caché'}">`).join('');
   renderDiscard();
 }
 function renderDiscard(){
@@ -1379,6 +1386,8 @@ function renderHand(){
 }
 function aiChoose(p){
   const w = {putsch: p.gold>=putschCost(p) ? 3 : .3, brute: p.gold>=1 ? 3 : .4, coffre: p.gold<1 ? 4 : 2, cachette:1.6, discours:1.6, eclaireur:1.4, repli: p.discard.length ? .6 : .1};
+  const nd = p.peek ? nextDec() : null;
+  if (nd) { const m = {corruption:{coffre:3}, coalition:{coffre:2}, liquidation:{brute:3}, agressif:{brute:2}, bourde:{cachette:.1, brute:1.6, putsch:1.6}, permeable:{cachette:.5}, pastouche:{discours:2.5}, ostentatoire:{discours:.7}, coupbas:{repli:2, coffre:1.3}, mecene:{coffre:.5}, stratege:{coffre:1.4}, marche:{coffre:1.4}, opportunite:{eclaireur:1.8}, troublefete:{eclaireur:1.5}, corvee:{coffre: p.gold < 1 ? 2 : 1}}[nd.k] || {}; Object.entries(m).forEach(([k, f]) => w[k] *= f); }
   const opts = p.hand; let tot = opts.reduce((s,c) => s + w[c.k], 0), r = Math.random()*tot;
   p.play = null;
   for (const c of opts) { r -= w[c.k]; if (r <= 0) { p.play = c; break; } } if (!p.play) p.play = opts[0];
@@ -1420,9 +1429,9 @@ $('#go').onclick = async () => {
 };
 
 const RULES = {
-  putsch:"Le PUTSCH (n°31) échange tous les territoires des deux rebelles. Il coûte 2 or (3 s'il est réutilisé en 2ᵉ manche). Si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous.",
+  putsch:"Le PUTSCH (n°31) échange tous les territoires des deux rebelles. Il coûte 2 or (3 s'il est réutilisé en 2ᵉ manche). Si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous. Avec décrets, celui qui a joué PUTSCH regarde en secret le décret du tour suivant avant de choisir sa carte.",
   brute:"La BRUTE prend un territoire à sa cible pour 1 or. Si la cible a au moins un territoire face cachée, c'est elle qui choisit lequel donner ; si tout est révélé, c'est l'attaquant qui choisit.",
-  eclaireur:"L'ÉCLAIREUR regarde les territoires de sa cible et en révèle un.",
+  eclaireur:"La TRAQUE permet de regarder tous les territoires de sa cible et d'en révéler un.",
   cachette:"La CACHETTE protège des BRUTE et des PUTSCH pendant tout ce tour.",
   coffre:"Le COFFRE rapporte 1 pièce d'or.",
   discours:"Le DISCOURS fait piocher un territoire caché… seulement si personne ne t'a visé ce tour-ci.",
@@ -1474,7 +1483,7 @@ async function fly(fromEl, toEl, src){
 function humanPickTerr(card, title, txt, terrs){
   const panel = $('#panel'), narr = $('#narr');
   panel.innerHTML = `${orderHTML()}<div class="main"><div class="pc">${cf(card)}</div><div><h4>${title}</h4><div class="txt">${txt}</div></div></div>
-    <div class="scout">${terrs.map((x,i) => `<button data-i="${i}"><img src="${timg(x)}" alt="${REG[x.r].n}">${REG[x.r].n}<em>${x.rev ? 'révélé' : 'face cachée'}</em></button>`).join('')}</div>`;
+    <div class="scout">${terrs.map((x,i) => `<button data-i="${i}"><img src="${timg(x)}" alt="${tN(x)}">${tN(x)}<em>${x.rev ? 'révélé' : 'face cachée'}</em></button>`).join('')}</div>`;
   panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
   narr.classList.add('on');
   setStatus('💪 Brute : choisis un territoire');
@@ -1482,15 +1491,15 @@ function humanPickTerr(card, title, txt, terrs){
   if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
   return new Promise(res => $$('.scout button', panel).forEach(b => b.onclick = () => res(terrs[+b.dataset.i])));
 }
-function humanScout(t, card){
+function humanScout(t, card, txt){
   t.terr.forEach(x => x.known = true);
   const panel = $('#panel'), narr = $('#narr');
-  panel.innerHTML = `${orderHTML()}<div class="main"><div class="pc">${cf(card)}</div><div><h4>Éclaireur <span class="no">n°${card.n}</span></h4>
-    <div class="txt">Tu regardes en secret tous les territoires de ${nm(t)}. <b>Choisis celui que tu retournes face visible</b> pour tout le monde.</div></div></div>
-    <div class="scout">${t.terr.map((x,i) => `<button data-i="${i}" ${x.rev ? 'disabled' : ''}><img src="${timg(x)}" alt="${REG[x.r].n}">${REG[x.r].n}${x.rev ? '<em>déjà visible</em>' : ''}</button>`).join('')}</div>`;
+  panel.innerHTML = `${orderHTML()}<div class="main"><div class="pc">${cf(card)}</div><div><h4>Traque <span class="no">n°${card.n}</span></h4>
+    <div class="txt">${txt || `Tu regardes en secret tous les territoires de ${nm(t)}. <b>Choisis celui que tu retournes face visible</b> pour tout le monde.`}</div></div></div>
+    <div class="scout">${t.terr.map((x,i) => `<button data-i="${i}" ${x.rev ? 'disabled' : ''}><img src="${timg(x)}" alt="${tN(x)}">${tN(x)}${x.rev ? '<em>déjà visible</em>' : ''}</button>`).join('')}</div>`;
   panel.classList.remove('anim'); void panel.offsetWidth; panel.classList.add('anim');
   narr.classList.add('on');
-  setStatus('🐺 Éclaireur : choisis le territoire à révéler');
+  setStatus('🐺 Traque : choisis le territoire à révéler');
   const r = panel.getBoundingClientRect();
   if (r.top < 70 || r.bottom > innerHeight - 10) panel.scrollIntoView({block:'center', behavior: RM ? 'auto' : 'smooth'});
   return new Promise(res => $$('.scout button:not(:disabled)', panel).forEach(b => b.onclick = () => res(t.terr[+b.dataset.i])));
@@ -1512,36 +1521,41 @@ async function humanRepli(p){
 const DEMO_DECREES = [
   {k:'foule', t:'Mouvement de foule', e:'Avant la révélation, donnez 1 de vos territoires au rebelle situé à votre droite.', w:'pre'},
   {k:'bousculade', t:'Bousculade', e:'Avant la révélation, placez un territoire au centre. Tour à tour, récupérez un des territoires restants au moment de la résolution de votre carte.', w:'pre'},
-  {k:'agressif', t:'Agressif', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
-  {k:'agressif', t:'Agressif', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
-  {k:'pouce', t:'Coup de pouce', e:"Si vous avez moins de 2 territoires, piochez-en un au moment de la résolution de votre carte.", w:'res'},
+  {k:'agressif', t:'Perquisition', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
+  {k:'agressif', t:'Perquisition', e:'Si vous avez joué BRUTE, choisissez le territoire volé même si votre cible possède des territoires non révélés.', w:'res'},
+  {k:'pouce', t:'Coup de pouce', e:"Après la résolution de votre carte, si vous avez moins de 2 territoires, piochez-en un.", w:'res'},
   {k:'affolement', t:'Affolement', e:'Prenez la carte Action de votre voisin de droite et prenez-en connaissance avant la révélation.', w:'pre'},
   {k:'bourde', t:'Grosse bourde', e:'CACHETTE ne fonctionne pas à ce tour.', w:'res'},
   {k:'permeable', t:'Perméable', e:"Si vous avez joué CACHETTE et êtes visé par plusieurs cartes, vous n'êtes immunisé qu'à la 1ʳᵉ attaque.", w:'res'},
   {k:'ostentatoire', t:'Ostentatoire', e:'Tout territoire récupéré à ce tour est immédiatement révélé.', w:'res'},
   {k:'ostentatoire', t:'Ostentatoire', e:'Tout territoire récupéré à ce tour est immédiatement révélé.', w:'res'},
-  {k:'terrain', t:'En terrain connu', e:'Si ÉCLAIREUR est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.', w:'pre'},
+  {k:'terrain', t:'En terrain connu', e:'Si TRAQUE est dans votre défausse, regardez les 2 premiers territoires de la pioche et reposez-les dessus.', w:'pre'},
   {k:'cartographe', t:'Cartographe', e:"Les rebelles peuvent regarder un territoire d'un autre rebelle.", w:'pre'},
   {k:'voyante', t:'Voyante', e:'Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.', w:'pre'},
   {k:'corruption', t:'Corruption', e:'COFFRE rapporte 2 ors au lieu de 1.', w:'res'},
   {k:'coalition', t:'Coalition', e:'COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans la limite de 3 ors.', w:'res'},
   {k:'coupbas', t:'Coup bas', e:'Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.', w:'post'},
   {k:'liquidation', t:'Liquidation', e:'BRUTE ne coûte aucun or à ce tour.', w:'res'},
-  {k:'stratege', t:'Stratège', e:'Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.', w:'res'},
+  {k:'stratege', t:'Marché noir', e:'Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.', w:'res'},
   {k:'corvee', t:'Corvée', e:'Si vous avez au moins un territoire face cachée, payez 1 or ou le territoire est révélé.', w:'pre'},
+  {k:'troublefete', t:'Trouble-fête', e:'Après la révélation, le rebelle ayant joué la carte Action avec le plus grand nombre échange 1 territoire entre deux autres rebelles.', w:'post'},
+  {k:'opportunite', t:'Longue-vue', e:"TRAQUE révèle deux territoires au lieu d'un.", w:'res'},
+  {k:'marche', t:'Marché aux terres', e:'À la résolution de votre carte, vous pouvez payer 1 or pour piocher un territoire.', w:'res'},
+  {k:'pastouche', t:'Immunité parlementaire', e:'DISCOURS fonctionne même si vous êtes ciblé par une attaque.', w:'res'},
   {k:'mecene', t:'Mécène', e:"Après la révélation, le ou les rebelles avec le moins d'or en gagnent 2 et en donnent 1 à un rebelle de leur choix.", w:'post'}
 ];
 const WHEN = {pre:"Il s'applique tout de suite, <b>avant la révélation</b> des cartes.", post:"Il s'appliquera <b>juste après la révélation</b>, avant la résolution.", res:"Il modifie la <b>résolution des cartes</b> de ce tour."};
 const isOn = k => !!(G.dec && G.decree && G.decree.k === k);
 const rightOf = p => P((p.id - 1 + G.players.length) % G.players.length);
 const leftOf = p => P((p.id + 1) % G.players.length);
-const cntR = (p, r) => p.terr.filter(x => x.r === r).length;
+const cntR = (p, r) => p.terr.filter(x => hasR(x, r)).length;
+const cntT = (p, x) => Math.max(cntR(p, x.r), x.r2 ? cntR(p, x.r2) : 0);
 const ownerOf = c => G.players.find(p => p.deck === c.deck);
 const decVis = () => `<div class="dpc"><b>${G.decree.t}</b></div>`;
 const cardVis = c => `<div class="pc">${cf(c)}</div>`;
 function gain(p, t){ t.fresh = true; if (isOn('ostentatoire')) t.rev = true; }
-function aiWorstTerr(p, list){ list = list || p.terr; return list.slice().sort((a,b) => cntR(p,a.r) - cntR(p,b.r) || (b.rev?1:0) - (a.rev?1:0) || Math.random() - .5)[0]; }
-function aiBestTake(p, tiles){ const vis = tiles.filter(x => x.rev); return vis.length ? vis.sort((a,b) => cntR(p,b.r) - cntR(p,a.r))[0] : pick(tiles); }
+function aiWorstTerr(p, list){ list = list || p.terr; return list.slice().sort((a,b) => cntT(p, a) - cntT(p, b) || (b.rev?1:0) - (a.rev?1:0) || Math.random() - .5)[0]; }
+function aiBestTake(p, tiles){ const vis = tiles.filter(x => x.rev); return vis.length ? vis.sort((a,b) => cntT(p, b) - cntT(p, a))[0] : pick(tiles); }
 function aiTarget(p){
   const others = G.players.filter(o => o.id !== p.id);
   const sc = o => p.play.k==='eclaireur' ? o.terr.filter(t=>!t.rev).length + .5 : o.terr.length + .5;
@@ -1549,7 +1563,7 @@ function aiTarget(p){
   for (const o of others) { q -= sc(o); if (q <= 0) return o.id; } return others[0].id;
 }
 function reshufflePile(){ shuffle(G.pile); G.pile.forEach(x => x.known = false); }
-const terrOpt = (x, face, sub) => ({img: face ? timg(x) : 'img/t-dos.webp', html: face ? REG[x.r].n : 'Face cachée', sub: sub ?? (x.rev ? 'révélé' : face ? 'face cachée' : ''), value: x});
+const terrOpt = (x, face, sub) => ({img: face ? timg(x) : 'img/t-dos.webp', html: face ? tN(x) : 'Face cachée', sub: sub ?? (x.rev ? 'révélé' : face ? 'face cachée' : ''), value: x});
 function showPanel(inner){
   const panel = $('#panel'), narr = $('#narr');
   panel.innerHTML = orderHTML() + inner;
@@ -1596,7 +1610,7 @@ async function decreePre(){
       gifts.push([p, to, t]);
     }
     for (const [a,b,t] of gifts) { await flyTerr(terrsOf(a.id), terrsOf(b.id), t); a.terr.splice(a.terr.indexOf(t),1); if (a.human || b.human) t.known = true; gain(b, t); b.terr.push(t); renderAll(); }
-    const lines = gifts.map(([a,b,t]) => `<li>${nmD(a)} → ${nmD(b)}${(a.human || b.human || t.rev) ? ` : ${regName(t.r)}` : ' <span class="muted">(face cachée)</span>'}</li>`).join('');
+    const lines = gifts.map(([a,b,t]) => `<li>${nmD(a)} → ${nmD(b)}${(a.human || b.human || t.rev) ? ` : ${tReg(t)}` : ' <span class="muted">(face cachée)</span>'}</li>`).join('');
     log(`📜 Mouvement de foule : chacun donne un territoire à son voisin de droite.`);
     await panelInfo(dv, 'Mouvement de foule', `Chaque rebelle a donné un territoire à son voisin de droite :<ul class="lines">${lines || '<li>personne n\'avait de territoire</li>'}</ul>`);
   }
@@ -1632,11 +1646,11 @@ async function decreePre(){
     const top = G.pile.slice(-2).reverse();
     if (who.includes(me) && top.length) {
       top.forEach(x => x.known = true);
-      await panelInfo(dv, 'En terrain connu', `Ton ÉCLAIREUR est dans ta défausse : tu regardes les 2 premiers territoires de la pioche, puis tu les reposes dessus.<div class="scout">${top.map((x,i) => `<button disabled style="opacity:1"><img src="${timg(x)}" alt="">${i ? '2ᵉ' : '1ᵉʳ'} : ${REG[x.r].n}</button>`).join('')}</div>`);
+      await panelInfo(dv, 'En terrain connu', `Ta TRAQUE est dans ta défausse : tu regardes les 2 premiers territoires de la pioche, puis tu les reposes dessus.<div class="scout">${top.map((x,i) => `<button disabled style="opacity:1"><img src="${timg(x)}" alt="">${i ? '2ᵉ' : '1ᵉʳ'} : ${tN(x)}</button>`).join('')}</div>`);
     }
     const others = who.filter(p => !p.human);
-    log(`📜 En terrain connu : ${who.length ? who.map(nm).join(', ') + ' regarde(nt) le haut de la pioche.' : "personne n'a d'ÉCLAIREUR en défausse."}`);
-    if (!who.includes(me)) await panelInfo(dv, 'En terrain connu', who.length ? `${others.map(nmD).join(', ')} ${others.length>1?'regardent':'regarde'} en secret les 2 premiers territoires de la pioche. Toi, tu n'as pas d'ÉCLAIREUR dans ta défausse.` : "Personne n'a d'ÉCLAIREUR dans sa défausse : rien ne se passe.");
+    log(`📜 En terrain connu : ${who.length ? who.map(nm).join(', ') + ' regarde(nt) le haut de la pioche.' : "personne n'a de TRAQUE en défausse."}`);
+    if (!who.includes(me)) await panelInfo(dv, 'En terrain connu', who.length ? `${others.map(nmD).join(', ')} ${others.length>1?'regardent':'regarde'} en secret les 2 premiers territoires de la pioche. Toi, tu n'as pas de TRAQUE dans ta défausse.` : "Personne n'a de TRAQUE dans sa défausse : rien ne se passe.");
   }
   else if (D.k === 'cartographe') {
     const cand = pl.filter(o => !o.human && o.terr.some(x => !x.rev && !x.known));
@@ -1645,7 +1659,7 @@ async function decreePre(){
       const hid = who.terr.filter(x => !x.rev && !x.known);
       const t = await panelAsk(dv, 'Cartographe', `Choisis le territoire de ${nmD(who)} que tu regardes.`, hid.map(x => terrOpt(x, false)), {kind:'terr'});
       t.known = true; renderAll();
-      await panelInfo(dv, 'Cartographe', `Tu découvres en secret un territoire de ${nmD(who)} : <b>${regName(t.r)}</b>. Il reste face cachée pour les autres (repère 👁 sur son plateau).<div class="scout"><button disabled style="opacity:1"><img src="${timg(t)}" alt="">${REG[t.r].n}</button></div>`);
+      await panelInfo(dv, 'Cartographe', `Tu découvres en secret un territoire de ${nmD(who)} : <b>${tReg(t)}</b>. Il reste face cachée pour les autres (repère 👁 sur son plateau).<div class="scout"><button disabled style="opacity:1"><img src="${timg(t)}" alt="">${tN(t)}</button></div>`);
     }
     log(`📜 Cartographe : chaque rebelle peut regarder un territoire d'un autre.`);
   }
@@ -1666,7 +1680,7 @@ async function decreePre(){
         ch = await panelAsk(dv, 'Corvée', "Tu as au moins un territoire face cachée : <b>paie 1 or</b>, ou <b>révèle</b> un de tes territoires cachés.", [{img:'img/piece.webp', html:'Payer 1 or', sub: p.gold < 1 ? "pas assez d'or" : `il te reste ${p.gold} or`, value:'pay', disabled: p.gold < 1}, ...hid.map(x => terrOpt(x, true, 'le révéler'))], {kind:'terr'});
       } else ch = p.gold >= 2 ? 'pay' : aiWorstTerr(p, hid);
       if (ch === 'pay') { p.gold -= 1; lines.push(`<li>${nmD(p)} paie 1 or</li>`); }
-      else { ch.rev = true; ch.fresh = true; lines.push(`<li>${nmD(p)} révèle ${regName(ch.r)}</li>`); }
+      else { ch.rev = true; ch.fresh = true; lines.push(`<li>${nmD(p)} révèle ${tReg(ch)}</li>`); }
       renderAll();
     }
     log(`📜 Corvée : ${lines.length} rebelle(s) concerné(s).`);
@@ -1685,14 +1699,42 @@ async function decreePost(){
   if (D.k === 'coupbas') {
     const lo = pl.slice().sort((a,b) => a.play.n - b.play.n)[0];
     const vict = pl.filter(o => o !== lo && o.gold > 0);
-    if (!vict.length) { await panelInfo(dv, 'Coup bas', `${nmD(lo)} a joué le plus petit numéro (${cn(lo.play)})… mais personne d'autre n'a d'or à voler !`); }
+    if (!vict.length) { await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)})… mais personne d'autre n'a d'or à voler !`); }
     else {
       let v;
       if (lo.human) v = await panelAsk(dv, 'Coup bas', `Tu as joué le plus petit numéro (${cn(lo.play)}) : <b>vole 1 or</b> au rebelle de ton choix.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.gold} or`, o.gold < 1)));
       else { const mx = Math.max(...vict.map(o => o.gold)); v = pick(vict.filter(o => o.gold === mx)); }
       v.gold -= 1; lo.gold += 1; renderAll(); flash(v.id, 'hit');
       log(`📜 Coup bas : ${lo.human ? `Tu voles 1 or ${au(v)}` : v.human ? `${nm(lo)} te vole 1 or` : `${nm(lo)} vole 1 or ${au(v)}`}.`);
-      await panelInfo(dv, 'Coup bas', `${nmD(lo)} a joué le plus petit numéro (${cn(lo.play)}) et <b>vole 1 or</b> à ${nmD(v)}.`);
+      await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)}) et <b>${lo.human ? 'voles' : 'vole'} 1 or</b> à ${nmD(v)}.`);
+    }
+  }
+  else if (D.k === 'troublefete') {
+    const hi = pl.slice().sort((a,b) => b.play.n - a.play.n)[0];
+    const cand = pl.filter(o => o !== hi && o.terr.length);
+    if (cand.length < 2) await panelInfo(dv, 'Trouble-fête', `${hi.human ? 'Tu as joué' : `${nmD(hi)} a joué`} le plus grand numéro (${cn(hi.play)})… mais il n'y a pas deux autres rebelles avec des territoires à échanger.`);
+    else {
+      const face = x => x.rev || x.known;
+      let a, b, ta, tb;
+      if (hi.human) {
+        const others = pl.filter(o => o !== hi);
+        a = await panelAsk(dv, 'Trouble-fête', `Tu as joué le plus grand numéro (${cn(hi.play)}) : <b>échange 1 territoire entre deux autres rebelles</b>. Choisis le premier rebelle.`, others.map(o => plOpt(o, `${o.terr.length} terr.`, !o.terr.length)));
+        b = await panelAsk(dv, 'Trouble-fête', `Avec qui ${nmD(a)} échange-t-il un territoire ?`, others.filter(o => o !== a).map(o => plOpt(o, `${o.terr.length} terr.`, !o.terr.length)));
+        ta = await panelAsk(dv, 'Trouble-fête', `Choisis le territoire de ${nmD(a)} qui part chez ${nmD(b)}.`, a.terr.map(x => terrOpt(x, face(x))), {kind:'terr'});
+        tb = await panelAsk(dv, 'Trouble-fête', `Choisis le territoire de ${nmD(b)} qui part chez ${nmD(a)}.`, b.terr.map(x => terrOpt(x, face(x))), {kind:'terr'});
+      } else {
+        const best = o => Math.max(0, ...o.terr.filter(x => x.rev).map(x => o.terr.filter(y => y.rev && hasR(y, x.r)).length));
+        a = cand.slice().sort((x,y) => best(y) - best(x) || y.terr.length - x.terr.length || Math.random() - .5)[0];
+        b = pick(cand.filter(o => o !== a));
+        const top = a.terr.filter(x => x.rev).sort((x,y) => cntT(a, y) - cntT(a, x))[0];
+        ta = top || pick(a.terr); tb = pick(b.terr);
+      }
+      a.terr.splice(a.terr.indexOf(ta),1); b.terr.splice(b.terr.indexOf(tb),1);
+      if (a.human) ta.known = true; if (b.human) tb.known = true;
+      ta.fresh = tb.fresh = true; b.terr.push(ta); a.terr.push(tb); renderAll(); flash(a.id, 'hit'); flash(b.id, 'hit');
+      const sh = (t, o1, o2) => (o1.human || o2.human || face(t)) ? tReg(t) : '<span class="muted">face cachée</span>';
+      log(`📜 Trouble-fête : ${hi.human ? 'Tu échanges' : `${nm(hi)} échange`} un territoire entre ${a.human ? 'toi' : nm(a)} et ${b.human ? 'toi' : nm(b)}.`);
+      await panelInfo(dv, 'Trouble-fête', `${hi.human ? 'Tu as joué' : `${nmD(hi)} a joué`} le plus grand numéro (${cn(hi.play)}) et ${hi.human ? 'fais' : 'fait'} échanger un territoire :<ul class="lines"><li>${nmD(a)} → ${nmD(b)} : ${sh(ta, a, b)}</li><li>${nmD(b)} → ${nmD(a)} : ${sh(tb, a, b)}</li></ul>`);
     }
   }
   else if (D.k === 'mecene') {
@@ -1715,32 +1757,46 @@ async function poucePick(p, c){
   const t = draw(); bumpPile(); $('#pileN').textContent = G.pile.length;
   await flyTerr($('#pile .stk'), terrsOf(p.id), {rev:false});
   gain(p, t); p.terr.push(t); renderAll();
-  log(`📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires et ${v(p,'pioche','pioches')} un territoire${p.human || t.rev ? ` (${regName(t.r)})` : ''}.`);
-  await narrate(c, `📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires, ${v(p,'il pioche','tu pioches')} donc un territoire${p.human || t.rev ? ` : ${regName(t.r)}` : ' (face cachée)'}.`);
+  log(`📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires après ${p.human ? 'ta' : 'sa'} carte et ${v(p,'pioche','pioches')} un territoire${p.human || t.rev ? ` (${tReg(t)})` : ''}.`);
+  await narrate(c, `📜 Coup de pouce : ${S(p)} ${v(p,'a','as')} moins de 2 territoires après ${p.human ? 'ta' : 'sa'} carte, ${v(p,'il pioche','tu pioches')} donc un territoire${p.human || t.rev ? ` : ${tReg(t)}` : ' (face cachée)'}.`);
 }
 async function bousPick(p, c){
   if (!isOn('bousculade') || !G.center.length) return;
   let t;
   if (p.human) { hideNarr(); t = await panelAsk(cardVis(c), 'Bousculade', 'Au moment de résoudre ta carte, tu récupères <b>un des territoires du centre</b>.', G.center.map(x => terrOpt(x, x.rev || x.known)), {kind:'terr'}); }
-  else { const sc = x => (x.rev || x.from === p.id) ? cntR(p, x.r) + 1 : 1.2; t = G.center.slice().sort((a,b) => sc(b) - sc(a))[0]; }
+  else { const sc = x => (x.rev || x.from === p.id) ? cntT(p, x) + 1 : 1.2; t = G.center.slice().sort((a,b) => sc(b) - sc(a))[0]; }
   G.center.splice(G.center.indexOf(t), 1);
   await flyTerr($('#center'), terrsOf(p.id), t);
   if (p.human) t.known = true; gain(p, t); delete t.from; p.terr.push(t);
-  log(`📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` (${regName(t.r)})` : ''}.`); renderAll();
-  await narrate(c, `📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` : ${regName(t.r)}` : ''}.`);
+  log(`📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` (${tReg(t)})` : ''}.`); renderAll();
+  await narrate(c, `📜 Bousculade : ${S(p)} ${v(p,'récupère','récupères')} un territoire au centre${p.human || t.rev ? ` : ${tReg(t)}` : ''}.`);
+}
+async function marche(p, c){
+  if (!isOn('marche') || p.gold < 1 || !G.pile.length) return;
+  let buy;
+  if (p.human) { hideNarr(); buy = await panelAsk(cardVis(c), 'Marché aux terres', `Ta carte est résolue : tu peux <b>payer 1 or</b> (il t'en reste ${p.gold}) pour piocher un territoire.`, [{html:'💰 Payer 1 or et piocher', sub:'le territoire arrive face cachée', value:true}], {skip:'Ne rien acheter'}); }
+  else { const best = Math.max(0, ...p.terr.map(x => cntT(p, x))); buy = p.gold >= 2 || best >= 3; }
+  if (!buy) return;
+  const t = draw(); p.gold -= 1; bumpPile(); $('#pileN').textContent = G.pile.length;
+  await flyTerr($('#pile .stk'), terrsOf(p.id), {rev:false});
+  gain(p, t); p.terr.push(t); renderAll();
+  log(`📜 Marché aux terres : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'pioche','pioches')} un territoire${p.human ? ` (${tReg(t)})` : ''}.`);
+  await narrate(c, `📜 Marché aux terres : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'pioche','pioches')} un territoire${p.human ? ` : ${tReg(t)}` : ' (face cachée)'}.`);
 }
 async function stratege(p, c){
+  await poucePick(p, c);
+  await marche(p, c);
   if (!isOn('stratege') || p.gold < 1 || !p.terr.length || !G.pile.length) return;
   let t;
-  if (p.human) { hideNarr(); t = await panelAsk(cardVis(c), 'Stratège', `Tu peux <b>payer 1 or</b> (il t'en reste ${p.gold}) pour échanger un de tes territoires avec le premier de la pioche.`, p.terr.map(x => terrOpt(x, true)), {kind:'terr', skip:'Ne rien échanger'}); }
-  else { const w = aiWorstTerr(p), mx = Math.max(...p.terr.map(x => cntR(p, x.r))); t = (p.gold >= 2 && p.terr.length >= 2 && cntR(p, w.r) < mx) ? w : null; }
+  if (p.human) { hideNarr(); t = await panelAsk(cardVis(c), 'Marché noir', `Tu peux <b>payer 1 or</b> (il t'en reste ${p.gold}) pour échanger un de tes territoires avec le premier de la pioche.`, p.terr.map(x => terrOpt(x, true)), {kind:'terr', skip:'Ne rien échanger'}); }
+  else { const w = aiWorstTerr(p), mx = Math.max(...p.terr.map(x => cntT(p, x))); t = (p.gold >= 2 && p.terr.length >= 2 && cntT(p, w) < mx) ? w : null; }
   if (!t) return;
   const n = draw(); p.gold -= 1;
-  p.terr.splice(p.terr.indexOf(t), 1); G.pile.push({r:t.r, v:t.v}); reshufflePile();
+  p.terr.splice(p.terr.indexOf(t), 1); G.pile.push({r:t.r, r2:t.r2, v:t.v}); reshufflePile();
   bumpPile(); await flyTerr($('#pile .stk'), terrsOf(p.id), {rev:false});
   gain(p, n); p.terr.push(n); renderAll();
-  log(`📜 Stratège : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire avec la pioche.`);
-  await narrate(c, `📜 Stratège : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire${p.human ? ` (${regName(t.r)})` : t.rev ? ` (${regName(t.r)}, révélé)` : ''} contre le premier de la pioche${p.human || n.rev ? ` : ${regName(n.r)}` : ''}.`);
+  log(`📜 Marché noir : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire avec la pioche.`);
+  await narrate(c, `📜 Marché noir : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire${p.human ? ` (${tReg(t)})` : t.rev ? ` (${tReg(t)}, révélé)` : ''} contre le premier de la pioche${p.human || n.rev ? ` : ${tReg(n)}` : ''}.`);
 }
 
 async function resolve(){
@@ -1759,7 +1815,6 @@ async function resolve(){
   for (const p of seq) {
     const c = p.play;
     G.cur = c.k === 'putsch' ? seq.filter(q => q.play.k === 'putsch').map(q => q.play.id) : [c.id];
-    await poucePick(p, c);
     await bousPick(p, c);
     if (c.k === 'putsch' && putschDone) { await stratege(p, c); continue; }
     if (c.k === 'putsch') {
@@ -1790,30 +1845,34 @@ async function resolve(){
         else if (!t.terr.length) await step(`💪 ${lab(p,'BRUTE')} ne trouve rien à prendre chez ${O(t)}.`, [t.id], 'glow', c);
         else {
           const victimChooses = !isOn('agressif') && t.terr.some(x => !x.rev); let take;
-          const cnt = r => p.terr.filter(x=>x.r===r).length;
+          const cnt = r => p.terr.filter(x => hasR(x, r)).length; const sc = x => Math.max(cnt(x.r), x.r2 ? cnt(x.r2) : 0);
           if (victimChooses) {
             if (t.human) { hideNarr(); take = await humanPickTerr(c, 'Brute : tu dois céder un territoire', `${lab(p,'BRUTE')} te vise ! Comme tu as au moins un territoire face cachée, <b>c'est toi qui choisis</b> celui que tu donnes ${au(p)}.`, t.terr); hideNarr(); }
             else take = pick(t.terr);
           } else {
-            if (p.human) { hideNarr(); take = await panelAsk(cardVis(c), 'Brute : choisis ton butin', isOn('agressif') ? `Décret <b>Agressif</b> : c'est toi qui choisis le territoire que tu prends à ${nmD(t)}, même ses territoires cachés (à l'aveugle).` : `Tous les territoires de ${nmD(t)} sont révélés : <b>c'est toi qui choisis</b> celui que tu prends.`, t.terr.map(x => terrOpt(x, x.rev || x.known)), {kind:'terr'}); hideNarr(); }
-            else take = isOn('agressif') ? aiBestTake(p, t.terr) : t.terr.slice().sort((a,b) => cnt(b.r)-cnt(a.r))[0];
+            if (p.human) { hideNarr(); take = await panelAsk(cardVis(c), 'Brute : choisis ton butin', isOn('agressif') ? `Décret <b>Perquisition</b> : c'est toi qui choisis le territoire que tu prends à ${nmD(t)}, même ses territoires cachés (à l'aveugle).` : `Tous les territoires de ${nmD(t)} sont révélés : <b>c'est toi qui choisis</b> celui que tu prends.`, t.terr.map(x => terrOpt(x, x.rev || x.known)), {kind:'terr'}); hideNarr(); }
+            else take = isOn('agressif') ? aiBestTake(p, t.terr) : t.terr.slice().sort((a,b) => sc(b)-sc(a))[0];
           }
           hideNarr(); await fly(terrsOf(t.id), terrsOf(p.id), take.rev ? timg(take) : 'img/t-dos.webp');
           t.terr.splice(t.terr.indexOf(take),1); gain(p, take); if (t.human || p.human) take.known = true; p.terr.push(take);
           const showReg = take.rev || p.human || t.human;
           const who = victimChooses
             ? (t.human ? 'tu as choisi lequel donner' : `${nm(t)} a choisi lequel donner`)
-            : isOn('agressif') ? (p.human ? 'décret Agressif, tu as choisi' : "décret Agressif, l'attaquant a choisi") : (p.human ? 'tout était révélé, tu as choisi' : "tout était révélé, l'attaquant a choisi");
-          await step(`💪 ${lab(p,'BRUTE')} <b>${t.human ? 'te prend un territoire' : 'prend un territoire'}</b>${t.human ? '' : ' ' + au(t)}${showReg ? ` : ${regName(take.r)}` : ''} <span class="muted">(${who})</span>.`, [t.id], 'hit', c);
+            : isOn('agressif') ? (p.human ? 'décret Perquisition, tu as choisi' : "décret Perquisition, l'attaquant a choisi") : (p.human ? 'tout était révélé, tu as choisi' : "tout était révélé, l'attaquant a choisi");
+          await step(`💪 ${lab(p,'BRUTE')} <b>${t.human ? 'te prend un territoire' : 'prend un territoire'}</b>${t.human ? '' : ' ' + au(t)}${showReg ? ` : ${tReg(take)}` : ''} <span class="muted">(${who})</span>.`, [t.id], 'hit', c);
         }
       }
     } else if (c.k === 'eclaireur') {
       const t = P(p.target), hid = t.terr.filter(x => !x.rev);
-      if (!hid.length) await step(`🐺 ${lab(p,'ÉCLAIREUR')} ${t.human ? "t'observe" : 'observe ' + nm(t)}… tout est déjà révélé.`, [t.id], 'glow', c);
-      else { let x;
+      if (!hid.length) await step(`🐺 ${lab(p,'TRAQUE')} ${t.human ? "t'observe" : 'observe ' + nm(t)}… tout est déjà révélé.`, [t.id], 'glow', c);
+      else { let x, y = null;
         if (p.human) { hideNarr(); x = await humanScout(t, c); hideNarr(); } else x = pick(hid);
         x.rev = true; x.fresh = true;
-        await step(`🐺 ${lab(p,'ÉCLAIREUR')} ${t.human ? "t'espionne" : 'espionne ' + nm(t)} et <b>révèle</b> ${regName(x.r)} !`, [t.id], 'glow', c); }
+        if (isOn('opportunite') && t.terr.some(z => !z.rev)) {
+          if (p.human) { hideNarr(); y = await humanScout(t, c, `Décret <b>Longue-vue</b> : tu révèles un <b>2ᵉ territoire</b> de ${nm(t)}. Lequel ?`); hideNarr(); } else y = pick(t.terr.filter(z => !z.rev));
+          y.rev = true; y.fresh = true;
+        }
+        await step(`🐺 ${lab(p,'TRAQUE')} ${t.human ? "t'espionne" : 'espionne ' + nm(t)} et <b>révèle</b> ${tReg(x)}${y ? ` puis ${tReg(y)} <span class="muted">(Longue-vue)</span>` : ''} !`, [t.id], 'glow', c); }
     } else if (c.k === 'cachette') {
       const att = p.targetedBy.filter(i => ['brute','putsch'].includes(P(i).play.k));
       if (isOn('bourde')) await step(`🛢️ GROSSE BOURDE : ${lab(p,'CACHETTE')} ne fonctionne pas ce tour-ci, le tonneau est percé !`, [p.id], 'glow', c);
@@ -1823,7 +1882,7 @@ async function resolve(){
       const amt = isOn('corruption') ? 2 : isOn('coalition') ? Math.min(3, pl.filter(q => q.play.k === 'coffre').length) : 1;
       p.gold += amt; await step(`💰 ${S(p)} ${v(p,'pioche','pioches')} dans le COFFRE : +${amt} or${isOn('corruption') ? ' (Corruption)' : isOn('coalition') ? ` (Coalition : ${pl.filter(q => q.play.k === 'coffre').length} COFFRE joué(s))` : ''}.`, [p.id], 'glow', c);
     } else if (c.k === 'discours') {
-      if (p.targetedBy.length) await step(`📣 ${lab(p,'DISCOURS')} est interrompu : quelqu'un ${v(p,"l'a","t'a")} visé !`, [p.id], 'glow', c);
+      if (p.targetedBy.length && !isOn('pastouche')) await step(`📣 ${lab(p,'DISCOURS')} est interrompu : quelqu'un ${v(p,"l'a","t'a")} visé !`, [p.id], 'glow', c);
       else {
         const t = draw();
         if (!t) await step(`📣 ${S(p)} ${v(p,'fait','fais')} un DISCOURS… mais la pioche est vide.`, [], 'glow', c);
@@ -1832,7 +1891,7 @@ async function resolve(){
           $('#pileN').textContent = G.pile.length;
           await fly($('#pile .stk'), terrsOf(p.id), 'img/t-dos.webp');
           gain(p, t); p.terr.push(t);
-          await step(`📣 ${S(p)} ${v(p,'galvanise','galvanises')} les foules et <b>${v(p,'pioche','pioches')} un territoire</b>${p.human ? ` : ${regName(t.r)} !` : ' (face cachée).'}`, [p.id], 'glow', c);
+          await step(`📣 ${S(p)} ${v(p,'galvanise','galvanises')} les foules et <b>${v(p,'pioche','pioches')} un territoire</b>${p.human ? ` : ${tReg(t)} !` : ' (face cachée).'}${p.targetedBy.length ? ` <span class="muted">(Immunité parlementaire : même ${v(p,'visé','visé·e')}, le discours porte)</span>` : ''}`, [p.id], 'glow', c);
         }
       }
     } else if (c.k === 'repli') {
@@ -1854,11 +1913,12 @@ async function resolve(){
     renderAll(); { const w = pl.filter(p => leftOf(p).play.k === G.guesses[p.id]); log(`📜 Voyante : ${w.length ? w.map(nm).join(', ') + (w.length > 1 ? ' gagnent' : ' gagne') + ' 1 or.' : "personne n'a vu juste."}`); }
     G.seq = null; await panelInfo(decVis(), 'Voyante : verdict', `<ul class="lines">${lines.join('')}</ul>`); hideNarr();
   }
-  if (G.center && G.center.length) { G.center.forEach(t => G.pile.push({r:t.r, v:t.v})); reshufflePile(); G.center = []; }
+  if (G.center && G.center.length) { G.center.forEach(t => G.pile.push({r:t.r, r2:t.r2, v:t.v})); reshufflePile(); G.center = []; }
   G.lastOrder = seq.map(p => p.id);
+  pl.forEach(p => p.peek = !!(G.dec && p.play.k === 'putsch'));
   pl.forEach(p => { const o = ownerOf(p.play) || p; if (p.play.k === 'putsch' && G.round === 1) o.putschUsed = true; o.discard.push(p.play); p.play = null; p.target = null; p.show = false; });
   G.decree = null;
-  const winners = pl.filter(p => Object.keys(REG).some(r => p.terr.filter(x => x.r===r).length >= 4));
+  const winners = pl.filter(p => Object.keys(REG).some(r => p.terr.filter(x => hasR(x, r)).length >= 4));
   if (winners.length) return endGame(winners, 'region');
   G.turn++;
   if (G.turn > 8) {
@@ -1869,12 +1929,24 @@ async function resolve(){
   G.phase = 'choose'; renderAll();
   setStatus(`Manche ${G.round} · Tour ${G.turn} : choisis ta prochaine carte`, `Il te reste ${P(0).hand.length} cartes en main.`);
   $('#go').disabled = true;
+  await peekShow();
+}
+const nextDec = () => (G.dec && G.decrees && G.decrees.length) ? G.decrees.at(-1) : null;
+async function peekShow(){
+  const D = nextDec(); if (!D) return;
+  const ais = G.players.filter(p => !p.human && p.peek);
+  if (ais.length) log(`👁 ${ais.map(nm).join(', ')} ${ais.length > 1 ? 'ont' : 'a'} joué PUTSCH : ${ais.length > 1 ? 'ils regardent' : 'regarde'} en secret le prochain décret.`);
+  if (!P(0).peek) return;
+  log(`👁 Tu as joué PUTSCH : tu regardes en secret le prochain décret, <b>${D.t}</b>.`);
+  await panelInfo(`<div class="dpc"><b>${D.t}</b></div>`, '👑 Un coup d\'avance', `Tu as joué PUTSCH : tu regardes <b>en secret</b> le décret du prochain tour avant de choisir ta carte.<br><br><b>${D.t}</b> : ${D.e}<br><br>${WHEN[D.w]}`);
+  hideNarr();
+  setStatus(`Manche ${G.round} · Tour ${G.turn} : choisis ta prochaine carte`, `Il te reste ${P(0).hand.length} cartes en main.`);
 }
 function putschCost(p){ return G.round === 2 && p.putschUsed ? 3 : 2; }
 const nmD = p => `<b class="p"><i class="dotc" style="background:${p.col}"></i>${p.human ? 'Toi' : p.name}</b>`;
 function standings(hide=false){
   const rows = G.players.slice().sort((a,b) => b.terr.length - a.terr.length || b.gold - a.gold);
-  return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'me':''}"><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${REG[t.r].n}" style="background:${REG[t.r].c}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
+  return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'me':''}"><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${tN(t)}" style="background:${tBg(t)}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
 }
 function showBox(cls, html, btnLabel, closable=false){
   $('#ebIn').className = 'eb-in ' + cls;
@@ -1907,11 +1979,12 @@ async function roundBreak(){
   G.phase = 'choose'; renderAll();
   setStatus('Manche 2 · Tour 1 : choisis ta carte', "Tu as récupéré toutes tes cartes. Attention : un PUTSCH réutilisé coûte 3 or.");
   $('#go').disabled = true;
+  await peekShow();
 }
 async function endGame(ws, how){
   G.phase = 'end'; renderAll();
   const me = P(0), iWin = ws.includes(me), others = ws.filter(p => !p.human);
-  const regOf = p => Object.keys(REG).find(k => p.terr.filter(x => x.r===k).length >= 4);
+  const regOf = p => Object.keys(REG).find(k => p.terr.filter(x => hasR(x, k)).length >= 4);
   const why = how === 'region'
     ? (p => `${p.human ? 'Tu as réuni' : `${nmD(p)} a réuni`} 4 territoires de ${regName(regOf(p))} : victoire immédiate !`)
     : (p => `Fin de la 2ᵉ manche : victoire par domination avec ${p.terr.length} territoires, toutes régions confondues.`);
