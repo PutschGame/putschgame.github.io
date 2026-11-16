@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PUTSCH ! Le jeu de cartes où la stratégie rencontre la trahison</title>
+<title>PUTSCH ! Le jeu de cartes pour les rebelles en quête de royaume</title>
 <link rel="icon" type="image/svg+xml" href="img/logo.svg">
 <meta name="description" content="PUTSCH ! Jeu d'ambiance de bluff et de trahison pour 4 à 5 rebelles, 30 minutes, dès 10 ans.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -605,6 +605,9 @@ footer img{height:70px;margin:0 auto 14px}
 footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:12px 0}
 footer a{color:var(--parch);font-weight:800;text-decoration:none}
 footer a:hover{color:var(--gold)}
+footer .credits{color:var(--parch);margin:18px 0 6px;font-size:.95rem}
+footer .credits b{color:var(--gold)}
+footer .credits span{white-space:nowrap}
 
 /* ---------- Modale vidéo ---------- */
 .modal{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.88);display:none;place-items:center;padding:20px}
@@ -656,7 +659,7 @@ footer a:hover{color:var(--gold)}
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <img class="hero-logo" src="img/logo.svg" alt="PUTSCH !">
-      <h1>Le jeu de cartes où la stratégie <em>rencontre la trahison</em></h1>
+      <h1>Le jeu de cartes pour les rebelles <em>en quête de royaume</em></h1>
       <p class="lead">Entre amis ou en famille, chacun incarne un rebelle prêt à renverser le despote. Bluffe, vole, échange… et crie le nom de ta cible avant qu'il ne soit trop tard !</p>
       <div class="badges">
         <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5 2.6 5 5.8"/></svg>4-5 rebelles</span>
@@ -682,9 +685,9 @@ footer a:hover{color:var(--gold)}
 
 <div class="mechs" aria-label="Les ingrédients de PUTSCH">
   <div class="wrap">
-    <div class="mech rv"><span class="mi">🔮</span><div><b>Anticipation</b><span>Devine la carte de tes rivaux avant qu'ils ne devinent la tienne.</span></div></div>
+    <div class="mech rv"><span class="mi">🔮</span><div><b>Anticipation</b><span>Prévois les cartes de tes rivaux et contre-les en jouant les bonnes actions.</span></div></div>
     <div class="mech rv d1"><span class="mi">⏱️</span><div><b>Simultanéité</b><span>Tout le monde révèle en même temps. 3, 2, 1… surprise !</span></div></div>
-    <div class="mech rv d2"><span class="mi">💰</span><div><b>Gestion de ressources</b><span>Ton or est compté : une Brute coûte 1 or, un Putsch 2.</span></div></div>
+    <div class="mech rv d2"><span class="mi">💰</span><div><b>Gestion de ressources</b><span>Ton or est compté : amasses-en assez pour enrôler des Brutes ou lancer un Putsch.</span></div></div>
     <div class="mech rv d3"><span class="mi">🗺️</span><div><b>Contrôle de territoires</b><span>Enquête sur les terres de tes rivaux et dérobe celles qui complètent ta région.</span></div></div>
   </div>
 </div>
@@ -697,8 +700,7 @@ footer a:hover{color:var(--gold)}
       <h2 class="h2 rv d1">Le trône est vacant.<br>Enfin, presque.</h2>
       <p class="drop rv d2">Dans un royaume lointain, un despote faisait autrefois régner la terreur. Aujourd'hui affaibli, il voit des forces rebelles émerger de l'ombre et se disputer le pouvoir.</p>
       <p class="rv d3">Incarne l'un·e de ces rebelles et unifie une région sous ta bannière pour conquérir le royaume. Mais attention : dans cette lutte pour le trône, <b>chaque rebelle joue pour soi</b>.</p>
-      <p class="hint rv d3">👆 Touche les territoires pour les révéler</p>
-    </div>
+          </div>
     <div class="hexes rv d2" id="hexes">
       <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire La Vallée"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/terr/vallee-4.webp" alt="La Vallée"></div></div>
       <div class="hex" tabindex="0" role="button" aria-label="Révéler le territoire Les Côtes"><div class="in3d"><img src="img/t-dos.webp" alt=""><img class="f" src="img/terr/cotes-6.webp" alt="Les Côtes"></div></div>
@@ -736,7 +738,7 @@ footer a:hover{color:var(--gold)}
     <div class="center">
       <span class="kicker rv">Ton arsenal</span>
       <h2 class="h2 rv d1">Les cartes Action</h2>
-      <p class="sub rv d2">Chaque rebelle possède le même jeu de 10 cartes. À chaque tour, tu en joues une, et chaque carte ne sert qu'une fois par manche. Glisse, clique, regarde-les s'animer.</p>
+      <p class="sub rv d2">Chaque rebelle possède le même jeu de 10 cartes. À chaque tour, tu en joues une, et chaque carte ne sert qu'une fois par manche.</p>
     </div>
     <div class="cf-layout">
       <div>
@@ -826,7 +828,7 @@ footer a:hover{color:var(--gold)}
       </div></div>
       <div class="endbox" id="endbox"><div class="eb-in" id="ebIn" role="dialog" aria-live="polite"></div></div>
     </div>
-    <p class="disclaimer center">Version simplifiée pour découvrir l'ambiance : 3 régions de 5 territoires, plus 3 territoires rares à double région, à 4 comme à 5 joueurs, et les décrets s'appliquent pour de vrai. Le vrai frisson, c'est autour d'une table !</p>
+    <p class="disclaimer center">Version simplifiée pour découvrir l'ambiance : 3 régions de 5 territoires, plus 3 territoires rares à double région, à 4 comme à 5 joueurs.</p>
   </div>
 </section>
 
@@ -960,6 +962,7 @@ footer a:hover{color:var(--gold)}
       <a href="#" data-go="commander">Liste d'attente</a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSdV22O-tnlpq2SFyMsFRaOMtcSWzGHBmOQWgxrk61Oy_2oAtw/viewform" target="_blank" rel="noopener">Donner mon avis</a>
     </div>
+    <p class="credits"><span>Illustrateur : <b>Arnaud Claisse</b></span> · <span>Game designer : <b>Sylvain Russeil</b></span></p>
     <p>© 2024 PUTSCH. Tous droits réservés. Merci de jouer à PUTSCH !</p>
   </div>
 </footer>
@@ -1418,6 +1421,7 @@ $('#go').onclick = async () => {
     await panelInfo(decVis(), `Décret : ${G.decree.t}`, `${G.decree.e}<br><br>${WHEN[G.decree.w]}`);
     hideNarr();
     if (G.decree.w === 'pre') await decreePre();
+    if (regionWinners().length) return resolve();
   }
   setStatus('Préparez-vous…');
   for (const n of ['3','2','1']) { $('#count').innerHTML = `<span>${n}</span>`; await sleep(800); }
@@ -1799,6 +1803,7 @@ async function stratege(p, c){
   await narrate(c, `📜 Marché noir : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'échange','échanges')} un territoire${p.human ? ` (${tReg(t)})` : t.rev ? ` (${tReg(t)}, révélé)` : ''} contre le premier de la pioche${p.human || n.rev ? ` : ${tReg(n)}` : ''}.`);
 }
 
+const regionWinners = () => G.players.filter(p => Object.keys(REG).some(r => cntR(p, r) >= 4));
 async function resolve(){
   G.phase = 'resolve';
   const pl = G.players;
@@ -1811,8 +1816,11 @@ async function resolve(){
   await narrate(null, null, true);
   const step = async (html, ids, cls, card) => { log(html); renderAll(); (ids||[]).forEach(i => flash(i, cls||'glow')); await narrate(card, html); };
   let putschDone = false;
+  let won = regionWinners().length > 0;
+  const stopNow = () => { const ws = regionWinners(); log(`🏁 ${ws.map(p => p.human ? 'Tu réunis' : `${nm(p)} réunit`).join(' et ')} 4 territoires d'une même région : <b>la partie s'arrête immédiatement</b>, les cartes restantes ne sont pas jouées.`); };
+  if (won) stopNow();
 
-  for (const p of seq) {
+  for (const p of won ? [] : seq) {
     const c = p.play;
     G.cur = c.k === 'putsch' ? seq.filter(q => q.play.k === 'putsch').map(q => q.play.id) : [c.id];
     await bousPick(p, c);
@@ -1906,9 +1914,10 @@ async function resolve(){
     }
     await stratege(p, c);
     G.doneIds.push(c.id);
+    if (regionWinners().length) { won = true; stopNow(); break; }
   }
   hideNarr();
-  if (isOn('voyante') && G.guesses) {
+  if (!won && isOn('voyante') && G.guesses) {
     const lines = pl.map(p => { const L = leftOf(p), ok = L.play.k === G.guesses[p.id]; if (ok) p.gold += 1; return `<li>${nmD(p)} prédit ${CARDS[G.guesses[p.id]].n} pour ${nmD(L)} (${cn(L.play)}) : ${ok ? '<b>bien vu, +1 or</b>' : 'raté'}</li>`; });
     renderAll(); { const w = pl.filter(p => leftOf(p).play.k === G.guesses[p.id]); log(`📜 Voyante : ${w.length ? w.map(nm).join(', ') + (w.length > 1 ? ' gagnent' : ' gagne') + ' 1 or.' : "personne n'a vu juste."}`); }
     G.seq = null; await panelInfo(decVis(), 'Voyante : verdict', `<ul class="lines">${lines.join('')}</ul>`); hideNarr();
