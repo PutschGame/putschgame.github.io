@@ -261,6 +261,9 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
 .board .nm{font-family:var(--display);font-size:1.35rem;line-height:1}
 .board .gold{margin-left:auto;display:flex;align-items:center;gap:4px;font-weight:900}
 .board .gold img{width:22px;height:22px}
+.pz-used{position:relative;display:inline-block;margin-left:10px;flex:none;cursor:help}
+.pz-used img{width:22px;height:30px;border-radius:3px;filter:grayscale(1) brightness(.7);transform:rotate(-8deg);box-shadow:0 1px 4px rgba(0,0,0,.6);display:block}
+.pz-used b{position:absolute;right:-8px;bottom:-4px;background:var(--gold);color:var(--ink);font-size:.68rem;font-weight:900;line-height:1.35;border-radius:999px;padding:0 4px;border:1.5px solid rgba(0,0,0,.4)}
 .board .row{display:flex;gap:10px;align-items:center}
 .terrs{display:flex;flex-wrap:wrap;gap:3px;flex:1;min-height:40px;align-content:flex-start}
 .terrs .t{width:42px;aspect-ratio:338/300;position:relative;transition:transform .4s}
@@ -374,7 +377,10 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
 .dotc{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:0;border:1px solid rgba(0,0,0,.35)}
 .stand{width:100%;border-collapse:collapse;margin:4px 0 12px;font-size:.94rem}
 .stand td{padding:6px 8px;border-bottom:1px dashed rgba(22,18,15,.18)}
-.stand tr.me td{background:rgba(138,95,176,.13);font-weight:800}
+.stand tr.mine td{background:color-mix(in srgb, var(--pc, #8a5fb0) 20%, #fffaf0);color:#1f1a15;font-weight:800}
+.stand tr.mine td:first-child{box-shadow:inset 4px 0 0 var(--pc, #8a5fb0)}
+.stand tr.mine small{color:#5a4d3c}
+.stand tr.mine td.n{color:#1f1a15}
 .stand td:first-child{width:26px;font-family:var(--display);font-size:1.2rem;color:#8a7b62}
 .stand tr:first-child td:first-child{color:var(--gold-d)}
 .stand td.n{text-align:right;white-space:nowrap;color:#4a3f33}
@@ -490,6 +496,8 @@ section{position:relative;padding:clamp(70px,10vw,120px) 0}
   .foes .board .nm{font-size:1rem;width:calc(100% - 22px)}
   .foes .board .gold{margin-left:0;font-size:.85rem}
   .foes .board .gold img{width:16px;height:16px}
+  .foes .pz-used{margin-left:6px}
+  .foes .pz-used img{width:16px;height:22px}
   .foes .board .row{flex-direction:column-reverse;align-items:center;gap:6px}
   .foes .terrs{justify-content:center;min-height:26px}
   .foes .terrs .t{width:26px}
@@ -1029,7 +1037,7 @@ const DECRETS = [
  ["Voyante","Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.","Set de base"],
  ["Coalition","COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans une limite de 3 ors.","Communauté · Virgil"],
  ["Corruption","COFFRE rapporte 2 ors au lieu de 1.","Set de base"],
- ["Coup bas","Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.","Set de base"],
+ ["Coup bas","À la résolution de sa carte, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.","Set de base"],
  ["Liquidation","BRUTE ne coûte aucun or à ce tour.","Set de base"],
  ["Marché noir","Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.","Set de base"],
  ["Corvée","Les rebelles ayant au moins un territoire face cachée doivent payer 1 or, sinon il est révélé.","Set de base"],
@@ -1322,9 +1330,15 @@ function terrHTML(p){
 function slotHTML(p){
   return `<div class="slot ${p.play?'':'empty'} ${p.show?'show':''}"><div class="c3"><div class="b"></div><div class="fr">${p.play ? cf(p.play) : ''}</div></div></div>`;
 }
+function putschMark(p){
+  const c = ownPutsch(p); if (!c) return '';
+  const n = c.used ? 3 : 2, who = p.human ? 'Ton PUTSCH' : `Le PUTSCH ${p.name.startsWith('Le ') ? 'du ' + p.name.slice(3) : 'de ' + p.name}`;
+  const t = c.used ? `${who} a déjà été joué : il coûte désormais 3 or.` : `${who} n'a pas encore été joué : il coûte 2 or.`;
+  return `<span class="pz-used" title="${t}" aria-label="${t}"><img src="img/cartes/${p.deck}-putsch-31.webp" alt=""><b>${n}</b></span>`;
+}
 function boardInner(p){
   return `<span class="tgt" data-tgt="${p.id}"></span><div class="top"><span class="dot" style="background:${p.col}"></span><span class="nm">${p.name}${p.human ? ` <small class="rb">· ${DECKS[p.deck].rebel}</small>` : ''}</span>
-    <span class="gold"><img src="img/piece.webp" alt="Or">×${p.gold}</span></div>
+    <span class="gold"><img src="img/piece.webp" alt="Or">×${p.gold}</span>${putschMark(p)}</div>
     <div class="row"><div class="terrs">${terrHTML(p)}</div>${slotHTML(p)}</div>`;
 }
 function renderAll(){
@@ -1433,7 +1447,7 @@ $('#go').onclick = async () => {
 };
 
 const RULES = {
-  putsch:"Le PUTSCH (n°31) échange tous les territoires des deux rebelles. Il coûte 2 or (3 s'il est réutilisé en 2ᵉ manche). Si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous. Avec décrets, celui qui a joué PUTSCH regarde en secret le décret du tour suivant avant de choisir sa carte.",
+  putsch:"Le PUTSCH (n°31) échange tous les territoires des deux rebelles. Il coûte 2 or, puis 3 or si cette carte a déjà été jouée (après un Repli, en 2ᵉ manche…). Si plusieurs PUTSCH sont joués au même tour, ils s'annulent tous. Avec décrets, celui qui a joué PUTSCH regarde en secret le décret du tour suivant avant de choisir sa carte.",
   brute:"La BRUTE prend un territoire à sa cible pour 1 or. Si la cible a au moins un territoire face cachée, c'est elle qui choisit lequel donner ; si tout est révélé, c'est l'attaquant qui choisit.",
   eclaireur:"La TRAQUE permet de regarder tous les territoires de sa cible et d'en révéler un.",
   cachette:"La CACHETTE protège des BRUTE et des PUTSCH pendant tout ce tour.",
@@ -1538,13 +1552,12 @@ const DEMO_DECREES = [
   {k:'voyante', t:'Voyante', e:'Prévoyez la carte jouée par votre voisin de gauche. Si vous avez raison à la fin du tour, récupérez 1 or.', w:'pre'},
   {k:'corruption', t:'Corruption', e:'COFFRE rapporte 2 ors au lieu de 1.', w:'res'},
   {k:'coalition', t:'Coalition', e:'COFFRE rapporte 1 or par carte COFFRE jouée ce tour, dans la limite de 3 ors.', w:'res'},
-  {k:'coupbas', t:'Coup bas', e:'Après la révélation, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.', w:'post'},
+  {k:'coupbas', t:'Coup bas', e:'À la résolution de sa carte, le rebelle ayant joué la carte Action avec le plus petit nombre vole 1 or à un autre rebelle.', w:'res'},
   {k:'liquidation', t:'Liquidation', e:'BRUTE ne coûte aucun or à ce tour.', w:'res'},
   {k:'stratege', t:'Marché noir', e:'Vous pouvez payer 1 or pour échanger un de vos territoires avec un de la pioche à la résolution de votre carte.', w:'res'},
   {k:'corvee', t:'Corvée', e:'Si vous avez au moins un territoire face cachée, payez 1 or ou le territoire est révélé.', w:'pre'},
   {k:'troublefete', t:'Trouble-fête', e:'Après la révélation, le rebelle ayant joué la carte Action avec le plus grand nombre échange 1 territoire entre deux autres rebelles.', w:'post'},
   {k:'opportunite', t:'Longue-vue', e:"TRAQUE révèle deux territoires au lieu d'un.", w:'res'},
-  {k:'marche', t:'Marché aux terres', e:'À la résolution de votre carte, vous pouvez payer 1 or pour piocher un territoire.', w:'res'},
   {k:'pastouche', t:'Immunité parlementaire', e:'DISCOURS fonctionne même si vous êtes ciblé par une attaque.', w:'res'},
   {k:'mecene', t:'Mécène', e:"Après la révélation, le ou les rebelles avec le moins d'or en gagnent 2 et en donnent 1 à un rebelle de leur choix.", w:'post'}
 ];
@@ -1700,20 +1713,7 @@ function remainingTypes(p){
 }
 async function decreePost(){
   const D = G.decree, pl = G.players, dv = decVis();
-  if (D.k === 'coupbas') {
-    const lo = pl.slice().sort((a,b) => a.play.n - b.play.n)[0];
-    const vict = pl.filter(o => o !== lo && o.gold > 0);
-    if (!vict.length) { await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)})… mais personne d'autre n'a d'or à voler !`); }
-    else {
-      let v;
-      if (lo.human) v = await panelAsk(dv, 'Coup bas', `Tu as joué le plus petit numéro (${cn(lo.play)}) : <b>vole 1 or</b> au rebelle de ton choix.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.gold} or`, o.gold < 1)));
-      else { const mx = Math.max(...vict.map(o => o.gold)); v = pick(vict.filter(o => o.gold === mx)); }
-      v.gold -= 1; lo.gold += 1; renderAll(); flash(v.id, 'hit');
-      log(`📜 Coup bas : ${lo.human ? `Tu voles 1 or ${au(v)}` : v.human ? `${nm(lo)} te vole 1 or` : `${nm(lo)} vole 1 or ${au(v)}`}.`);
-      await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)}) et <b>${lo.human ? 'voles' : 'vole'} 1 or</b> à ${nmD(v)}.`);
-    }
-  }
-  else if (D.k === 'troublefete') {
+  if (D.k === 'troublefete') {
     const hi = pl.slice().sort((a,b) => b.play.n - a.play.n)[0];
     const cand = pl.filter(o => o !== hi && o.terr.length);
     if (cand.length < 2) await panelInfo(dv, 'Trouble-fête', `${hi.human ? 'Tu as joué' : `${nmD(hi)} a joué`} le plus grand numéro (${cn(hi.play)})… mais il n'y a pas deux autres rebelles avec des territoires à échanger.`);
@@ -1787,7 +1787,22 @@ async function marche(p, c){
   log(`📜 Marché aux terres : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'pioche','pioches')} un territoire${p.human ? ` (${tReg(t)})` : ''}.`);
   await narrate(c, `📜 Marché aux terres : ${S(p)} ${v(p,'paie','paies')} 1 or et ${v(p,'pioche','pioches')} un territoire${p.human ? ` : ${tReg(t)}` : ' (face cachée)'}.`);
 }
+async function coupBas(lo, c){
+  if (!isOn('coupbas') || lo.id !== G.lowId) return;
+  const pl = G.players, dv = cardVis(c); hideNarr();
+    const vict = pl.filter(o => o !== lo && o.gold > 0);
+    if (!vict.length) { await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)})… mais personne d'autre n'a d'or à voler !`); }
+    else {
+      let v;
+      if (lo.human) v = await panelAsk(dv, 'Coup bas', `Tu as joué le plus petit numéro (${cn(lo.play)}) : <b>vole 1 or</b> au rebelle de ton choix.`, pl.filter(o => !o.human).map(o => plOpt(o, `${o.gold} or`, o.gold < 1)));
+      else { const mx = Math.max(...vict.map(o => o.gold)); v = pick(vict.filter(o => o.gold === mx)); }
+      v.gold -= 1; lo.gold += 1; renderAll(); flash(v.id, 'hit');
+      log(`📜 Coup bas : ${lo.human ? `Tu voles 1 or ${au(v)}` : v.human ? `${nm(lo)} te vole 1 or` : `${nm(lo)} vole 1 or ${au(v)}`}.`);
+      await panelInfo(dv, 'Coup bas', `${lo.human ? 'Tu as joué' : `${nmD(lo)} a joué`} le plus petit numéro (${cn(lo.play)}) et <b>${lo.human ? 'voles' : 'vole'} 1 or</b> à ${nmD(v)}.`);
+    }
+  }
 async function stratege(p, c){
+  await coupBas(p, c);
   await poucePick(p, c);
   await marche(p, c);
   if (!isOn('stratege') || p.gold < 1 || !p.terr.length || !G.pile.length) return;
@@ -1810,6 +1825,7 @@ async function resolve(){
   pl.forEach(p => { p.cachette = p.play.k === 'cachette'; p.targetedBy = []; });
   pl.forEach(p => { if (CARDS[p.play.k].target && p.target != null) P(p.target).targetedBy.push(p.id); });
   const seq = pl.slice().sort((a,b) => b.play.n - a.play.n);
+  G.lowId = seq[seq.length - 1].id;
   G.seq = seq.map(p => p.play); G.cur = []; G.doneIds = []; G.skipNarr = false;
   const blocks = t => { if (!t.cachette || isOn('bourde')) return false; if (isOn('permeable')) { if (t.cachUsed) return false; t.cachUsed = true; } return true; };
   pl.forEach(p => p.cachUsed = false);
@@ -1925,7 +1941,7 @@ async function resolve(){
   if (G.center && G.center.length) { G.center.forEach(t => G.pile.push({r:t.r, r2:t.r2, v:t.v})); reshufflePile(); G.center = []; }
   G.lastOrder = seq.map(p => p.id);
   pl.forEach(p => p.peek = !!(G.dec && p.play.k === 'putsch'));
-  pl.forEach(p => { const o = ownerOf(p.play) || p; if (p.play.k === 'putsch' && G.round === 1) o.putschUsed = true; o.discard.push(p.play); p.play = null; p.target = null; p.show = false; });
+  pl.forEach(p => { const o = ownerOf(p.play) || p; if (p.play.k === 'putsch') p.play.used = true; o.discard.push(p.play); p.play = null; p.target = null; p.show = false; });
   G.decree = null;
   const winners = pl.filter(p => Object.keys(REG).some(r => p.terr.filter(x => hasR(x, r)).length >= 4));
   if (winners.length) return endGame(winners, 'region');
@@ -1951,11 +1967,12 @@ async function peekShow(){
   hideNarr();
   setStatus(`Manche ${G.round} · Tour ${G.turn} : choisis ta prochaine carte`, `Il te reste ${P(0).hand.length} cartes en main.`);
 }
-function putschCost(p){ return G.round === 2 && p.putschUsed ? 3 : 2; }
+function ownPutsch(p){ for (const q of G.players) for (const c of [...q.hand, ...q.discard, q.play]) if (c && c.k === 'putsch' && c.deck === p.deck) return c; return null; }
+function putschCost(p, c){ c = c || (p.play && p.play.k === 'putsch' ? p.play : p.hand.find(x => x.k === 'putsch') || ownPutsch(p)); return c && c.used ? 3 : 2; }
 const nmD = p => `<b class="p"><i class="dotc" style="background:${p.col}"></i>${p.human ? 'Toi' : p.name}</b>`;
 function standings(hide=false){
   const rows = G.players.slice().sort((a,b) => b.terr.length - a.terr.length || b.gold - a.gold);
-  return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'me':''}"><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${tN(t)}" style="background:${tBg(t)}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
+  return `<table class="stand"><tbody>${rows.map((p,i) => `<tr class="${p.human?'mine':''}"${p.human ? ` style="--pc:${p.col}"` : ''}><td>${i+1}</td><td>${nmD(p)}${p.human ? ` <small>(${DECKS[p.deck].rebel})</small>` : ''}<span class="reg">${p.terr.map(t => (!hide || p.human || t.rev || t.known) ? `<i title="${tN(t)}" style="background:${tBg(t)}"></i>` : `<i class="unk" title="Territoire caché"></i>`).join('')}</span></td><td class="n">${p.terr.length} territoire${p.terr.length>1?'s':''} · ${p.gold} or</td></tr>`).join('')}</tbody></table>`;
 }
 function showBox(cls, html, btnLabel, closable=false){
   $('#ebIn').className = 'eb-in ' + cls;
