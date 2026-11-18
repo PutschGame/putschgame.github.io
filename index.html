@@ -616,6 +616,10 @@ footer a:hover{color:var(--gold)}
 footer .credits{color:var(--parch);margin:18px 0 6px;font-size:.95rem}
 footer .credits b{color:var(--gold)}
 footer .credits span{white-space:nowrap}
+footer .contact{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin:14px 0 4px;font-size:.92rem}
+footer .contact a,footer .contact span{display:inline-flex;align-items:center;gap:7px;font-weight:700;color:#cfc2a6}
+footer .contact a:hover{color:var(--gold)}
+footer .contact svg{width:18px;height:18px;flex:none}
 
 /* ---------- Modale vidéo ---------- */
 .modal{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.88);display:none;place-items:center;padding:20px}
@@ -963,12 +967,15 @@ footer .credits span{white-space:nowrap}
 
 <footer>
   <div class="wrap">
-    <img src="img/logo.svg" alt="PUTSCH !">
     <div class="links">
       <a href="#" data-go="regles">Règles</a>
       <a href="#" data-go="decrets">Tireur de décrets</a>
       <a href="#" data-go="commander">Liste d'attente</a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSdV22O-tnlpq2SFyMsFRaOMtcSWzGHBmOQWgxrk61Oy_2oAtw/viewform" target="_blank" rel="noopener">Donner mon avis</a>
+    </div>
+    <div class="contact">
+      <a href="https://www.instagram.com/putschgame/" target="_blank" rel="noopener" aria-label="PUTSCH sur Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>@putschgame</a>
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>putschfr@gmail.com</span>
     </div>
     <p class="credits"><span>Illustrateur : <b>Arnaud Claisse</b></span> · <span>Game designer : <b>Sylvain Russeil</b></span></p>
     <p>© 2024 PUTSCH. Tous droits réservés. Merci de jouer à PUTSCH !</p>
